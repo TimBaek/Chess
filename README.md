@@ -1,2 +1,2 @@
-# a5Project
+# Chess
 CS246 Group Project
