@@ -3,3 +3,5 @@
 #include <iostream>
 
 class View {};
+
+#endif
