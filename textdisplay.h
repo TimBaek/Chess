@@ -1,5 +1,6 @@
 #ifndef __TEXTDISPLAY_H__
 #define __TEXTDISPLAY_H__
+#include "view.h"
 #include <iostream>
 
 class View;
