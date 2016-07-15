@@ -1,4 +1,6 @@
 #include "piece.h"
+#include "board.h"
+#include <memory>
 using namespace std;
 
 // Piece 
@@ -14,22 +16,22 @@ void Piece::notifyBoard(int dr, int dc) {
 }
 
 void Piece::notifyTextDisplay(int dr, int dc) {
-  td_obs->notify(getRow(), getCol(), dr, dc);
+  td_obs->notify(getRow(), getCol(), dr, dc, getLetter());
 }
 
 void Piece::notifyGraphicDisplay(int dr, int dc) {
-  gd_obs->notify(getRow(), getCol(), dr, dc);
+  gd_obs->notify(getRow(), getCol(), dr, dc, getLetter());
 }
 
-int Piece::getRow() {
+int Piece::getRow() const {
   return row;
 }
 
-int Piece::getCol() {
+int Piece::getCol() const {
   return col;
 }
 
-char Piece::getLetter() {
+char Piece::getLetter() const {
   return letter;
 }
 
