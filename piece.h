@@ -11,7 +11,8 @@ class Piece {
   char letter;
 
  public:
-  Piece(shared_ptr<Board> b, shared_ptr<TextDisplay> td, shared_ptr<GraphicDisplay gd, shared_ptr<Player> p, int c, int r, char l);
+  Piece(shared_ptr<Board> b, shared_ptr<TextDisplay> td, 
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l);
   virtual ~Piece();
   void notifyBoard(int dr, int dc);
   void notifyTextDisplay(int dr, int dc);
