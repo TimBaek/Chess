@@ -2,6 +2,7 @@
 #define __TEXTDISPLAY_H__
 #include <iostream>
 
+class View;
 
 class TextDisplay: public View {
   std::vector<std::vector<char>> theDisplay;
