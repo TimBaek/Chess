@@ -1,11 +1,13 @@
 #ifndef _PIECE_H
 #define _PIECE_H
 #include <memory>
+
+
+class Board; //{
+//public:
+//  void notify(int cr, int cc, int dr, int dc);
+//};
 /*
-class Board {
-public:
-  void notify(int cr, int cc, int dr, int dc);
-};
 class TextDisplay {
 public:
   void notify(int r, int c, int rr, int cc, char ch);
