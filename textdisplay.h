@@ -11,7 +11,7 @@ class TextDisplay: public View {
  public:
   TextDisplay(int n);
 
-  void notify(int, int, int, int, char move) override;
+  void notify(int, int, int, int, char move);
   void print (std::ostream &out); 
 
   ~TextDisplay();
