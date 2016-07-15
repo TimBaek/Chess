@@ -1,6 +1,9 @@
 #ifndef _PIECE_H
 #define _PIECE_H
 #include <memory>
+#include "textdisplay.h"
+#include "graphicdisplay.h"
+#include "player.h"
 
 
 class Board; //{
