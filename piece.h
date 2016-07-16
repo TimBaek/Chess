@@ -49,17 +49,19 @@ class King: public Piece {
   bool moved = false;
 
  public:
-  King(bool b=false);
+  King(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l, bool b=false);
   ~King();
-  void move(int row, int col);
+  void move(int row, int col) override;
   bool everMoved();
 };
 
 class Queen: public Piece {
  public:
-  Queen();
+  Queen(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l);
   ~Queen();
-  void move(int row, int col);
+  void move(int row, int col) override;
 };
 
 class Rook: public Piece {
@@ -67,30 +69,34 @@ class Rook: public Piece {
 
  public:
   Rook(bool b=false);
-  ~Rook();
-  void move(int row, int col);
+  ~Rook(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l);
+  void move(int row, int col) override;
   bool everMoved();
 };
 
 class Knight: public Piece {
  public:
-  Knight();
+  Knight(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l);
   ~Knight();
-  void move(int row, int col);
+  void move(int row, int col) override;
 };
 
 class Bishop: public Piece {
  public:
-  Bishop();
+  Bishop(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l);
   ~Bishop();
-  void move(int row, int col);
+  void move(int row, int col) override;
 };
 
 class Pawn: public Piece {
  public:
-  Pawn();
+  Pawn(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l);
   ~Pawn();
-  void move(int row, int col);
+  void move(int row, int col) override;
 };
 
 #endif
