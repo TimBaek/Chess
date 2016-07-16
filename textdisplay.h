@@ -2,6 +2,7 @@
 #define __TEXTDISPLAY_H__
 #include "view.h"
 #include <iostream>
+#include <vector>
 
 class View;
 
@@ -10,7 +11,7 @@ class TextDisplay: public View {
  public:
   TextDisplay(int n);
 
-  void notify(int, int, int, int, char move) override;
+  void notify(int, int, int, int, char move);
   void print (std::ostream &out); 
 
   ~TextDisplay();
