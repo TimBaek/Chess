@@ -1,20 +1,15 @@
 #include "piece.h"
-#include "board.h"
 #include "controller.h"
 #include <memory>
 using namespace std;
 
 // Piece 
-Piece::Piece(shared_ptr<Board> bd, shared_ptr<Player> p, 
-             shared_ptr<Controller> ctrl, int r, int c, char l):
-  board{bd}, player{p}, ctrler{ctrl}, row{r}, col{c}, letter{l} {
+Piece::Piece(shared_ptr<Controller> ctrl, int r, int c, char l, string co):
+  ctrler{ctrl}, row{r}, col{c}, letter{l} colour{co} {
 }
 
 Piece::~Piece() { }
 
-void Piece::notifyBoard(int dr, int dc) {
-  board->notify(*this, dr, dc);
-}
 
 void Piece::notifyController(int dr, int dc) {
   ctrler->notify(*this, dr, dc);
@@ -32,10 +27,13 @@ char Piece::getLetter() const {
   return letter;
 }
 
+string Piece::getColour() const {
+  return colour;
+}
+
 // King
-King::King(shared_ptr<Board> bd, shared_ptr<Player> p, 
-           shared_ptr<Controller> ctrl, int r, int c, char l, bool b):
-  Piece{bd, p, ctrl, r, c, l}, moved{b} {
+King::King(shared_ptr<Controller> ctrl, int r, int c, char l, string co, bool b):
+  Piece{ctrl, r, c, l, co}, moved{b} {
 }
 
 King::~King() { }
@@ -50,9 +48,8 @@ bool King::everMoved() {
 }
 
 // Queen
-Queen::Queen(shared_ptr<Board> bd, shared_ptr<Player> p, 
-             shared_ptr<Controller> ctrl, int r, int c, char l):
-  Piece{bd, p, ctrl, r, c, l} {
+Queen::Queen(shared_ptr<Controller> ctrl, int r, int c, char l, string co):
+  Piece{ctrl, r, c, l, co} {
 }
 
 Queen::~Queen() { }
@@ -63,9 +60,8 @@ void Queen::move(int row, int col) {
 
 
 // Rook
-Rook::Rook(shared_ptr<Board> bd, shared_ptr<Player> p, 
-           shared_ptr<Controller> ctrl, int c, int r, char l, bool b):
-  Piece{bd, p, ctrl, r, c, l}, moved{b} {
+Rook::Rook(shared_ptr<Controller> ctrl, int c, int r, char l, string co, bool b):
+  Piece{ctrl, r, c, l, co}, moved{b} {
 }
 
 Rook::~Rook() { }
@@ -80,9 +76,8 @@ bool Rook::everMoved() {
 }
 
 // Knight
-Knight::Knight(shared_ptr<Board> bd, shared_ptr<Player> p, 
-               shared_ptr<Controller> ctrl, int c, int r, char l):
-  Piece{bd, p, ctrl, r, c, l} {
+Knight::Knight(shared_ptr<Controller> ctrl, int c, int r, char l, string co):
+  Piece{ctrl, r, c, l, co} {
 }
 
 Knight::~Knight() { }
@@ -92,9 +87,8 @@ void Knight::move(int row, int col) {
 }
 
 // Bishop 
-Bishop::Bishop(shared_ptr<Board> bd, shared_ptr<Player> p, 
-               shared_ptr<Controller> ctrl, int c, int r, char l):
-  Piece{bd, p, ctrl, r, c, l} {
+Bishop::Bishop(shared_ptr<Controller> ctrl, int c, int r, char l, string co):
+  Piece{ctrl, r, c, l, co} {
 }
 
 Bishop::~Bishop() { }
@@ -104,16 +98,13 @@ void Bishop::move(int row, int col) {
 }
 
 // Pawn
-Pawn::Pawn(shared_ptr<Board> bd, shared_ptr<Player> p, 
-           shared_ptr<Controller> ctrl, int c, int r, char l, bool b):
-  Piece{bd, p, ctrl, r, c, l} moved{b} {
+Pawn::Pawn(shared_ptr<Controller> ctrl, int c, int r, char l, string co):
+  Piece{ctrl, r, c, l, co} {
 }
 
 Pawn::~Pawn() { }
 
 void Pawn::move(int row, int col) {
-  
-  moved = true;
 
 }
 
