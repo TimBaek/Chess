@@ -36,9 +36,9 @@ char Piece::getLetter() const {
 }
 
 // King
-King::King(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+King::King(shared_ptr<Board> bd, shared_ptr<TextDisplay> td,
     shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l, bool b):
-  Piece{b, td, gd, p, r, c, l}, moved{b} {
+  Piece{bd, td, gd, p, r, c, l}, moved{b} {
 }
 
 King::~King() { }
@@ -66,9 +66,9 @@ void Queen::move(int row, int col) {
 
 
 // Rook
-Rook::Rook(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+Rook::Rook(shared_ptr<Board> bd, shared_ptr<TextDisplay> td,
     shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l, bool b):
-  Piece{b, td, gd, p, r, c, l}, moved{b} {
+  Piece{bd, td, gd, p, r, c, l}, moved{b} {
 }
 
 Rook::~Rook() { }
@@ -117,5 +117,4 @@ Pawn::~Pawn() { }
 void Pawn::move(int row, int col) {
 // not finished
 }
-
 
