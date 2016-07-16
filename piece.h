@@ -5,7 +5,7 @@
 #include "graphicdisplay.h"
 #include "player.h"
 
-
+class Controller;
 class Board; //{
 //public:
 //  void notify(int cr, int cc, int dr, int dc);
@@ -27,7 +27,7 @@ class Piece {
   std::shared_ptr<Board> board;
   std::shared_ptr<Player> player;
   std::shared_ptr<Controller> ctrler;
-  ini row;
+  int row;
   int col;
   char letter;
 
@@ -38,7 +38,7 @@ class Piece {
 	int r, int c, char l);
   virtual ~Piece();
   void notifyBoard(int dr, int dc);
-  void notifyController(int dr, int dc, char l);
+  void notifyController(int dr, int dc);
   virtual void move(int row, int col)=0;
   int getRow() const;
   int getCol() const;

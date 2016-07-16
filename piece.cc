@@ -13,11 +13,11 @@ Piece::Piece(shared_ptr<Board> bd, shared_ptr<Player> p,
 Piece::~Piece() { }
 
 void Piece::notifyBoard(int dr, int dc) {
-  board->notify(getRow(), getCol(), dr, dc);
+  board->notify(*this, dr, dc);
 }
 
-void Piece::notifyController(int dr, int dc, char l) {
-// not yet
+void Piece::notifyController(int dr, int dc) {
+  ctrler->notify(*this, dr, dc);
 }
 
 int Piece::getRow() const {
@@ -112,7 +112,9 @@ Pawn::Pawn(shared_ptr<Board> bd, shared_ptr<Player> p,
 Pawn::~Pawn() { }
 
 void Pawn::move(int row, int col) {
-// not finished
+  
+  moved = true;
+
 }
 
 bool Pawn::everMoved() {
