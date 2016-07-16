@@ -49,7 +49,7 @@ class King: public Piece {
   bool moved = false;
 
  public:
-  King(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
+  King(std::shared_ptr<Board> bd, std::shared_ptr<TextDisplay> td,
       std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l, bool b=false);
   ~King();
   void move(int row, int col) override;
@@ -68,9 +68,9 @@ class Rook: public Piece {
   bool moved = false;
 
  public:
-  Rook(bool b=false);
-  ~Rook(std::shared_ptr<Board> b, std::shared_ptr<TextDisplay> td,
-      std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l);
+  Rook(std::shared_ptr<Board> bd, std::shared_ptr<TextDisplay> td,
+        std::shared_ptr<GraphicDisplay> gd, std::shared_ptr<Player> p, int c, int r, char l, bool b=false);
+  ~Rook();
   void move(int row, int col) override;
   bool everMoved();
 };
