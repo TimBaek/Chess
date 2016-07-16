@@ -1,26 +1,23 @@
 #include "piece.h"
 #include "board.h"
+#include "controller.h"
 #include <memory>
 using namespace std;
 
 // Piece 
-Piece::Piece(shared_ptr<Board> b, shared_ptr<TextDisplay> td, shared_ptr<GraphicDisplay> gd,
-             shared_ptr<Player> p, int c, int r, char l):
-  b_obs{b}, td_obs{td}, gd_obs{gd}, player{p}, col{c}, row{r}, letter{l} {
+Piece::Piece(shared_ptr<Board> bd, shared_ptr<Player> p, 
+             shared_ptr<Controller> ctrl, int r, int c, char l):
+  board{bd}, player{p}, ctrler{ctrl}, row{r}, col{c}, letter{l} {
 }
 
 Piece::~Piece() { }
 
 void Piece::notifyBoard(int dr, int dc) {
-  b_obs->notify(getRow(), getCol(), dr, dc);
+  board->notify(getRow(), getCol(), dr, dc);
 }
 
-void Piece::notifyTextDisplay(int dr, int dc) {
-  td_obs->notify(getRow(), getCol(), dr, dc, getLetter());
-}
-
-void Piece::notifyGraphicDisplay(int dr, int dc) {
-  gd_obs->notify(getRow(), getCol(), dr, dc, getLetter());
+void Piece::notifyController(int dr, int dc, char l) {
+// not yet
 }
 
 int Piece::getRow() const {
@@ -36,9 +33,9 @@ char Piece::getLetter() const {
 }
 
 // King
-King::King(shared_ptr<Board> bd, shared_ptr<TextDisplay> td,
-    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l, bool b):
-  Piece{bd, td, gd, p, r, c, l}, moved{b} {
+King::King(shared_ptr<Board> bd, shared_ptr<Player> p, 
+           shared_ptr<Controller> ctrl, int r, int c, char l, bool b):
+  Piece{bd, p, ctrl, r, c, l}, moved{b} {
 }
 
 King::~King() { }
@@ -53,9 +50,9 @@ bool King::everMoved() {
 }
 
 // Queen
-Queen::Queen(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
-    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
-  Piece{b, td, gd, p, r, c, l} {
+Queen::Queen(shared_ptr<Board> bd, shared_ptr<Player> p, 
+             shared_ptr<Controller> ctrl, int r, int c, char l):
+  Piece{bd, p, ctrl, r, c, l} {
 }
 
 Queen::~Queen() { }
@@ -66,9 +63,9 @@ void Queen::move(int row, int col) {
 
 
 // Rook
-Rook::Rook(shared_ptr<Board> bd, shared_ptr<TextDisplay> td,
-    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l, bool b):
-  Piece{bd, td, gd, p, r, c, l}, moved{b} {
+Rook::Rook(shared_ptr<Board> bd, shared_ptr<Player> p, 
+           shared_ptr<Controller> ctrl, int c, int r, char l, bool b):
+  Piece{bd, p, ctrl, r, c, l}, moved{b} {
 }
 
 Rook::~Rook() { }
@@ -83,9 +80,9 @@ bool Rook::everMoved() {
 }
 
 // Knight
-Knight::Knight(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
-    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
-  Piece{b, td, gd, p, r, c, l} {
+Knight::Knight(shared_ptr<Board> bd, shared_ptr<Player> p, 
+               shared_ptr<Controller> ctrl, int c, int r, char l):
+  Piece{bd, p, ctrl, r, c, l} {
 }
 
 Knight::~Knight() { }
@@ -95,9 +92,9 @@ void Knight::move(int row, int col) {
 }
 
 // Bishop 
-Bishop::Bishop(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
-    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
-  Piece{b, td, gd, p, r, c, l} {
+Bishop::Bishop(shared_ptr<Board> bd, shared_ptr<Player> p, 
+               shared_ptr<Controller> ctrl, int c, int r, char l):
+  Piece{bd, p, ctrl, r, c, l} {
 }
 
 Bishop::~Bishop() { }
@@ -107,9 +104,9 @@ void Bishop::move(int row, int col) {
 }
 
 // Pawn
-Pawn::Pawn(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
-    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
-  Piece{b, td, gd, p, r, c, l} {
+Pawn::Pawn(shared_ptr<Board> bd, shared_ptr<Player> p, 
+           shared_ptr<Controller> ctrl, int c, int r, char l, bool b):
+  Piece{bd, p, ctrl, r, c, l} moved{b} {
 }
 
 Pawn::~Pawn() { }
@@ -117,4 +114,9 @@ Pawn::~Pawn() { }
 void Pawn::move(int row, int col) {
 // not finished
 }
+
+bool Pawn::everMoved() {
+  return moved;
+}
+
 
