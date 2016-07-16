@@ -36,8 +36,9 @@ char Piece::getLetter() const {
 }
 
 // King
-King::King(bool b):
-  Piece{b_obs, td_obs, gd_obs, player, row, col, letter}, moved{b} {
+King::King(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l, bool b):
+  Piece{b, td, gd, p, r, c, l}, moved{b} {
 }
 
 King::~King() { }
@@ -52,8 +53,9 @@ bool King::everMoved() {
 }
 
 // Queen
-Queen::Queen():
-  Piece{b_obs, td_obs, gd_obs, player, row, col, letter} {
+Queen::Queen(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
+  Piece{b, td, gd, p, r, c, l} {
 }
 
 Queen::~Queen() { }
@@ -64,8 +66,9 @@ void Queen::move(int row, int col) {
 
 
 // Rook
-Rook::Rook(bool b):
-  Piece{b_obs, td_obs, gd_obs, player, row, col, letter}, moved{b} {
+Rook::Rook(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l, bool b):
+  Piece{b, td, gd, p, r, c, l}, moved{b} {
 }
 
 Rook::~Rook() { }
@@ -80,8 +83,9 @@ bool Rook::everMoved() {
 }
 
 // Knight
-Knight::Knight():
-  Piece{b_obs, td_obs, gd_obs, player, row, col, letter} {
+Knight::Knight(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
+  Piece{b, td, gd, p, r, c, l} {
 }
 
 Knight::~Knight() { }
@@ -91,8 +95,9 @@ void Knight::move(int row, int col) {
 }
 
 // Bishop 
-Bishop::Bishop():
-  Piece{b_obs, td_obs, gd_obs, player, row, col, letter} {
+Bishop::Bishop(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
+  Piece{b, td, gd, p, r, c, l} {
 }
 
 Bishop::~Bishop() { }
@@ -102,8 +107,9 @@ void Bishop::move(int row, int col) {
 }
 
 // Pawn
-Pawn::Pawn():
-  Piece{b_obs, td_obs, gd_obs, player, row, col, letter} {
+Pawn::Pawn(shared_ptr<Board> b, shared_ptr<TextDisplay> td,
+    shared_ptr<GraphicDisplay> gd, shared_ptr<Player> p, int c, int r, char l):
+  Piece{b, td, gd, p, r, c, l} {
 }
 
 Pawn::~Pawn() { }
