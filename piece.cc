@@ -12,8 +12,10 @@ Piece::Piece(shared_ptr<Board> bd, int r, int c, string co):
 Piece::~Piece() { }
 
 
-void Piece::notifyController(int dr, int dc) {
-  board->notify(*this, dr, dc);
+void Piece::notifyBoard(int dr, int dc) {
+  int tempRow = row;
+  int tempCol = col;
+  board->notify(tempRow, tempCol, dr, dc);
 }
 
 int Piece::getRow() const {
@@ -145,7 +147,7 @@ char Bishop::getLetter() {
 
 // Pawn
 Pawn::Pawn(shared_ptr<Board> bd, int c, int r, string co, bool b):
-  Piece{bd, r, c, co} moved{b} {
+  Piece{bd, r, c, co}, moved{b} {
 }
 
 Pawn::~Pawn() { }
