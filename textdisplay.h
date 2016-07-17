@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-class TextDisplay {
+class TextDisplay: public View {
  std::vector<std::vector<char>> theDisplay;
  public:
         TextDisplay();
