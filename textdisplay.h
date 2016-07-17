@@ -2,12 +2,9 @@
 #define __TEXTDISPLAY_H__
 #include <iostream>
 #include <vector>
-#include "board.h"
-#include "piece.h"
-
-class Board;
 
 class TextDisplay {
+ std::std::vector<<std::vector<char>> theDisplay;
  public:
         TextDisplay();
         ~TextDisplay();
