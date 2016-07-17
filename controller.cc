@@ -50,7 +50,7 @@ void Controller::game() {
 
 				}
 				else if (cmd == "resign") {
-
+					
 				}
 				else throw iv;
 			} catch (InputValidation e) {

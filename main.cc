@@ -1,6 +1,6 @@
 #include "controller.h"
 #include <iostream>
-using napespace std;
+using namespace std;
 
 int main() {
 	Controller c;
