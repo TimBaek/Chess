@@ -1,8 +1,12 @@
 #include "controller.h"
 #include <string>
+#include <memory>
 using namespace std;
 
-Controller::Controller(): b{this}, customized{false} {}
+Controller::Controller(): customized{false} {
+	shared_ptr<Board> ptrb = make_shared<Board>(*this);
+	b = *ptrb;
+}
 Controller::~Controller() {}
 
 void Controller::notify() {
@@ -50,7 +54,7 @@ void Controller::game() {
 
 				}
 				else if (cmd == "resign") {
-					
+
 				}
 				else throw iv;
 			} catch (InputValidation e) {
