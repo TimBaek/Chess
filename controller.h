@@ -1,17 +1,20 @@
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
 
-#include "inputvalidation.h"
-#include "player.h"
-#include "board.h"
 #include <iostream>
 #include <memory>
+
+#include "inputvalidation.h"
+#include "player.h"
+#include "human.h"
+#include "computer.h"
+#include "board.h"
 
 class Controller {
 	std::istream *in;
 	std::shared_ptr<Player> wp, bp;
 	//View td, gd;
-	Board b;
+	Board board;
 	InputValidation iv;
  	bool customized;
  public:

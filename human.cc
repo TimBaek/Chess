@@ -1,7 +1,7 @@
 #include "human.h"
 using namespace std;
 
-Human::Human(string colour, bool win, bool stalemate, bool checkmate): 
+Human::Human(string colour): 
 	colour{colour}, 
 	win{false}, 
 	stalemate{false}, 

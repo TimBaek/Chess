@@ -10,13 +10,11 @@ class Computer: public Player {
 	bool stalemate;
 	bool checkmate;
  public:
- 	Computer(std::string colour, bool win, bool stalemate, bool checkmate);
- 	~Computer();
+ 	Computer(std::string colour);
  	std::string getColour();
 	bool isWin();
 	bool isStalemate();
 	bool isCheckmate();
-	std::string getNode();
 };
 
 #endif
