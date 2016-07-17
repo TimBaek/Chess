@@ -55,17 +55,17 @@ void Board::init(string p1, string p2){
 
 	blackMoves.resize(numPieces("black"));
 	whiteMoves.resize(numPieces("white"));
-
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		blackMoves[i].resize(8);
-		whiteMoves[i].resize(8);
+		//blackMoves[i].resize(8);
+		//whiteMoves[i].resize(8);
 		for(int j=0; j<8; j++){
 			currStates[i][j] = nullptr;
-			blackMoves[i][j].resize(8);
-			whiteMoves[i][j].resize(8);
+			//blackMoves[i][j].resize(8);
+			//whiteMoves[i][j].resize(8);
 		}
 	}
+	/*
 	for(int i=0; i<numPieces("black");i++){
 		for(int j=0; j<8; j++){
 			for(int k=0; k<8; k++){
@@ -73,7 +73,7 @@ void Board::init(string p1, string p2){
 			}
 		}
 	}
-
+	*/
 	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
 }
 
@@ -156,8 +156,10 @@ int Board::numKing(string colour){
 
 int Board::numPieces(string colour){
 	int num=0;
+	if(currStates.size()==0) return 0;
 	for (int i=0; i<8; i++){
 		for(int j=0; j<8; j++){
+			if(currStates[i][j]==nullptr) continue;
 			if(currStates[i][j]->getColour()==colour) num++;
 		}
 	}
