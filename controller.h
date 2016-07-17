@@ -2,6 +2,7 @@
 #define _CONTROLLER_H_
 
 #include "inputvalidation.h"
+#include "player.h"
 #include "board.h"
 #include <iostream>
 
