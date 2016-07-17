@@ -10,7 +10,6 @@ class Player {
   virtual bool isWin() = 0;
   virtual bool isStalemate() = 0;
   virtual bool isCheckmate() = 0;
-  virtual std::string getNode() = 0;
 };
 
 

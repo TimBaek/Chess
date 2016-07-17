@@ -3,8 +3,8 @@
 #include <memory>
 using namespace std;
 
-Controller::Controller(): b{this}, customized{false} {}
-Controller::~Controller() {}
+Controller::Controller(): in{0}, b{this}, customized{false} {}
+Controller::~Controller() { delete in; }
 
 void Controller::notify() {
 	//Player->notify
@@ -20,10 +20,10 @@ void Controller::init() {
 		while (1) {
 			*in >> w >> b;
 			if (iv.playerVal(w,b)) {
-				if (w == "human") wp = new Human();
-				else wp = new Computer();
-				if (b == "human") bp = new Human();
-				else bp = new Computer();
+				if (w == "human") wp = new Human("white");
+				else wp = new Computer("white");
+				if (b == "human") bp = new Human("black");
+				else bp = new Computer("black");
 				break;
 			}
 			else throw iv;
@@ -65,7 +65,7 @@ void Controller::game() {
 }
 
 void Controller::play() {
-	in->exceptions(ios::eofbit|ios::failbit);
+	in->exceptions(ios::failbit|ios::eofbit);
 	iv.menuMessage();
 	try {
 		string cmd;

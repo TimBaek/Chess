@@ -5,8 +5,12 @@
 #include <string>
 
 class Computer: public Player {
+ 	std::string colour;
+	bool win;
+	bool stalemate;
+	bool checkmate;
  public:
- 	Computer();
+ 	Computer(std::string colour, bool win, bool stalemate, bool checkmate);
  	~Computer();
  	std::string getColour();
 	bool isWin();
