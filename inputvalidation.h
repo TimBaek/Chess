@@ -11,6 +11,7 @@ class InputValidation {
  	void menuMessage() const;
  	void errorMessage() const;
  	void gameMessage() const;
+ 	void setupMessage() const;
 };
 
 #endif

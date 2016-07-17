@@ -5,10 +5,11 @@
 #include "player.h"
 #include "board.h"
 #include <iostream>
+#include <memory>
 
 class Controller {
 	std::istream *in;
-	Player wp, bp;
+	std::shared_ptr<Player> wp, bp;
 	//View td, gd;
 	Board b;
 	InputValidation iv;

@@ -1,6 +1,5 @@
 #include "controller.h"
 #include <string>
-#include <memory>
 using namespace std;
 
 Controller::Controller(): in{0}, b{this}, customized{false} {}
@@ -37,6 +36,7 @@ void Controller::init() {
 
 void Controller::setup() {
 	customized = true;
+	iv.setupMessage();
 	b.setup();
 }
 
@@ -48,7 +48,9 @@ void Controller::game() {
 			iv.gameMessage(); //Start new game
 			try {
 				if (cmd == "move") {
-
+					string line;
+					getline(in,line);
+					
 				}
 				else if (cmd == "resign") {
 
