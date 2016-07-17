@@ -11,14 +11,16 @@ void GraphicDisplay::notify(int ir, int ic, int dr, int dc) {
 }
 
 // dtor
-GraphicDispaly::~GraphicDisplay() {}
+GraphicDisplay::~GraphicDisplay() {}
 
 ostream &operator<<(ostream &out, const GraphicDisplay &td) {
+	/*
 	for(int c=0; c < 8; ++c) {
 		for(int r=0; r < 8; ++r) {
 			out << currStates[r][c];	
 		}
 		out << endl;
 	}
+	*/
 	return out;
 }
