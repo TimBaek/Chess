@@ -7,7 +7,7 @@ class InputValidation {
  public:
  	InputValidation();
  	~InputValidation();
- 	bool playerVal(const string& w, const string& b);
+ 	bool playerVal(const std::string& w, const std::string& b);
  	void menuMessage() const;
  	void errorMessage() const;
  	void gameMessage() const;

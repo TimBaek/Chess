@@ -14,8 +14,7 @@ void Controller::notifyView() {
 }
 
 void Controller::init() {
-	//Player init
-	try {
+	try { //Player init
 		string w, b;
 		while (1) {
 			in >> w >> b;
@@ -28,36 +27,40 @@ void Controller::init() {
 			}
 			else throw iv;
 		}
-	} catch (InvalidInput e) {
+		if(!customized) b.init(wp.getColour(), bp.getColour()); //Board init
+		// if(!customized) ... //View init
+	} catch (InputValidation e) {
 		throw e;
 	}
-	//Board init
-	if(!customized) b.init(wp.getColour(), bp.getColour());
-	//View init
-	// if(!customized) ...
 }
 
 void Controller::setup() {
-
+	customized = true;
+	b.setup();
 }
 
 void Controller::game() {
-	iv.gameMessage(); //Start new game
-	init();
 	try {
+		init();
 		string cmd;
 		while (in >> cmd) {
-			if (cmd == "move") {
+			iv.gameMessage(); //Start new game
+			try {
+				if (cmd == "move") {
 
-			}
-			else if (cmd == "resign") {
+				}
+				else if (cmd == "resign") {
 
+				}
+				else throw iv;
+			} catch (InputValidation e) {
+				e.errorMessage();
 			}
-			else throw iv;
 		}
-	} catch (InvalidInput e) {
-		e.errorMessage();
+	} catch (InputValidation e) {
+		throw e;
 	}
+	//customized = false;
 }
 
 void Controller::play() {
@@ -71,7 +74,7 @@ void Controller::play() {
 				else if (cmd == "setup") setup();
 				else if (cmd == "quit") break;
 				else throw iv;
-			} catch (InvalidInput e) {
+			} catch (InputValidation e) {
 				e.errorMessage();
 			} //input failure for menu
 		}
