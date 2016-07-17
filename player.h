@@ -5,12 +5,12 @@ class Player {
 
  public:
   Player();
-  ~Player();
-  std::string getColour();
-  bool isWin();
-  bool isStalemate();
-  bool isCheckmate();
-  std::string getNode();
+  virtual ~Player();
+  virtual std::string getColour() = 0;
+  virtual bool isWin() = 0;
+  virtual bool isStalemate() = 0;
+  virtual bool isCheckmate() = 0;
+  virtual std::string getNode() = 0;
 };
 
 

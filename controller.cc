@@ -3,10 +3,7 @@
 #include <memory>
 using namespace std;
 
-Controller::Controller(): customized{false} {
-	shared_ptr<Board> ptrb = make_shared<Board>(*this);
-	b = *ptrb;
-}
+Controller::Controller(): b{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify() {
@@ -21,7 +18,7 @@ void Controller::init() {
 	try { //Player init
 		string w, b;
 		while (1) {
-			in >> w >> b;
+			*in >> w >> b;
 			if (iv.playerVal(w,b)) {
 				if (w == "human") wp = new Human();
 				else wp = new Computer();
@@ -47,7 +44,7 @@ void Controller::game() {
 	try {
 		init();
 		string cmd;
-		while (in >> cmd) {
+		while (*in >> cmd) {
 			iv.gameMessage(); //Start new game
 			try {
 				if (cmd == "move") {
@@ -68,11 +65,11 @@ void Controller::game() {
 }
 
 void Controller::play() {
-	in.exceptions(ios::eofbit|ios::failbit);
+	in->exceptions(ios::eofbit|ios::failbit);
 	iv.menuMessage();
 	try {
 		string cmd;
-		while (in >> cmd) {
+		while (*in >> cmd) {
 			try {
 				if (cmd == "game") game();
 				else if (cmd == "setup") setup();
