@@ -16,17 +16,6 @@ TextDisplay::TextDisplay() {
 }
 
 void TextDisplay::notify(int ir, int ic, int dr, int dc) {
-	/*if (ir != dr || ic != dc) {
-		if(w) {
-			theDisplay[ir][ic] = ' ';
-			theDisplay[dr][dc] = 
-		} else {
-			theDisplay[ir][ic] = '_';
-			theDisplay[dr][dc] = 
-		}
-	} else {
-			theDisplay[dr][dc] = '_';
-	}*/
 }
 
 // dtor
@@ -35,7 +24,7 @@ TextDisplay::~TextDisplay() {}
 ostream &operator<<(ostream &out, const TextDisplay &td) {
         for(int c=0; c < 8; ++c) {
                 for(int r=0; r < 8; ++r) {
-                        out << theDisplay[r][c];
+                        out << td.theDisplay[r][c];
                 }
                 out << endl;
         }

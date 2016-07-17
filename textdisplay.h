@@ -4,7 +4,7 @@
 #include <vector>
 
 class TextDisplay {
- std::std::vector<<std::vector<char>> theDisplay;
+ std::vector<std::vector<char>> theDisplay;
  public:
         TextDisplay();
         ~TextDisplay();
