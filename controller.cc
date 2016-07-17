@@ -52,7 +52,7 @@ void Controller::game() {
 		while (*in >> cmd) {
 			try {
 				if (cmd == "move") {
-					vector<string> commands;
+					/*vector<string> commands;
 					string line;
 					getline(*in,cords);
 					if (line == "") // move  for Computer
@@ -63,7 +63,7 @@ void Controller::game() {
 						if (commands.size() != 3 || commands.size() != 2) throw iv;
 						else if (commands.size() == 2) //Call piece move
 						else //Call pawn promotion
-					}
+					}*/
 				}
 				else if (cmd == "resign") {
 
