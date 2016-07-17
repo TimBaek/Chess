@@ -41,3 +41,7 @@ void InputValidation::gameMessage() const {
 void InputValidation::setupMessage() const {
 	cout << "Avaliable Commands: [ + Piece cord] [ - cord ] [ = colour ] [ done ]" << endl;
 }
+
+void InputValidation::turnMessage(int i) const {
+	cout << "Player " << i << ". Enter command: " << endl;
+}

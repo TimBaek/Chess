@@ -9,11 +9,13 @@
 #include "human.h"
 #include "computer.h"
 #include "board.h"
+#include "view.h"
+#include "textdisplay.h"
 
 class Controller {
 	std::istream *in;
 	std::shared_ptr<Player> wp, bp;
-	//View td, gd;
+	std::shared_ptr<View> td, gd;
 	Board board;
 	InputValidation iv;
  	bool customized;

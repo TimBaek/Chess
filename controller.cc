@@ -1,5 +1,6 @@
 #include <string>
 #include <sstream>
+#include <vector>
 using namespace std;
 
 #include "controller.h"
@@ -30,7 +31,7 @@ void Controller::init() {
 			else throw iv;
 		}
 		if(!customized) board.init(wp->getColour(), bp->getColour()); //Board init
-		// if(!customized) ... //View init
+		if(!customized) td = make_shared<TextDisplay>();
 	} catch (InputValidation e) {
 		throw e;
 	}
@@ -45,13 +46,24 @@ void Controller::setup() {
 void Controller::game() {
 	try {
 		init();
+		iv.gameMessage(); //Start new game
+		cout << td;
 		string cmd;
 		while (*in >> cmd) {
-			iv.gameMessage(); //Start new game
 			try {
 				if (cmd == "move") {
+					vector<string> commands;
 					string line;
-
+					getline(*in,cords);
+					if (line == "") // move  for Computer
+					else {
+						istringstream iss{line};
+						string tmp;
+						while(iss >> tmp) commands.emplace_back(tmp);
+						if (commands.size() != 3 || commands.size() != 2) throw iv;
+						else if (commands.size() == 2) //Call piece move
+						else //Call pawn promotion
+					}
 				}
 				else if (cmd == "resign") {
 
