@@ -1,8 +1,10 @@
-#include "controller.h"
 #include <string>
+#include <sstream>
 using namespace std;
 
-Controller::Controller(): in{0}, b{this}, customized{false} {}
+#include "controller.h"
+
+Controller::Controller(): in{0}, board{this}, customized{false} {}
 Controller::~Controller() { delete in; }
 
 void Controller::notify() {
@@ -19,15 +21,15 @@ void Controller::init() {
 		while (1) {
 			*in >> w >> b;
 			if (iv.playerVal(w,b)) {
-				if (w == "human") wp = new Human("white");
-				else wp = new Computer("white");
-				if (b == "human") bp = new Human("black");
-				else bp = new Computer("black");
+				if (w == "human") wp = make_shared<Human>("white");
+				else wp = make_shared<Computer>("white");
+				if (b == "human") bp = make_shared<Human>("black");
+				else bp = make_shared<Computer>("black");
 				break;
 			}
 			else throw iv;
 		}
-		if(!customized) b.init(wp.getColour(), bp.getColour()); //Board init
+		if(!customized) board.init(wp->getColour(), bp->getColour()); //Board init
 		// if(!customized) ... //View init
 	} catch (InputValidation e) {
 		throw e;
@@ -37,7 +39,7 @@ void Controller::init() {
 void Controller::setup() {
 	customized = true;
 	iv.setupMessage();
-	b.setup();
+	//b.setup();
 }
 
 void Controller::game() {
@@ -49,8 +51,7 @@ void Controller::game() {
 			try {
 				if (cmd == "move") {
 					string line;
-					getline(in,line);
-					
+
 				}
 				else if (cmd == "resign") {
 

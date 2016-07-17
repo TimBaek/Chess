@@ -1,7 +1,7 @@
 #include "computer.h"
 using namespace std;
 
-Computer::Computer(string colour, bool win, bool stalemate, bool checkmate): 
+Computer::Computer(string colour): 
 	colour{colour}, 
 	win{false}, 
 	stalemate{false}, 

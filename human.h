@@ -10,8 +10,7 @@ class Human: public Player {
 	bool stalemate;
 	bool checkmate;
  public:
-	Huamn(std::string colour, bool win, bool stalemate, bool checkmate);
-	~Human();
+	Human(std::string colour);
 	std::string getColour();
 	bool isWin();
 	bool isStalemate();
