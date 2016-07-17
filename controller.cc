@@ -1,11 +1,20 @@
 #include "controller.h"
 #include <string>
+using namespace std;
 
-Controller::Controller(): gameRunning{false} {}
+Controller::Controller(): b{this}, customized{false} {}
 Controller::~Controller() {}
 
-void Controller::game() {
-	Player wp, bp;
+void Controller::notify() {
+	//Player->notify
+}
+
+void Controller::notifyView() {
+
+}
+
+void Controller::init() {
+	//Player init
 	try {
 		string w, b;
 		while (1) {
@@ -18,21 +27,36 @@ void Controller::game() {
 				break;
 			}
 			else throw iv;
-		} //while
+		}
 	} catch (InvalidInput e) {
 		throw e;
 	}
-	iv.gameMessage();
+	//Board init
+	if(!customized) b.init(wp.getColour(), bp.getColour());
+	//View init
+	// if(!customized) ...
+}
+
+void Controller::setup() {
+
+}
+
+void Controller::game() {
+	iv.gameMessage(); //Start new game
+	init();
 	try {
 		string cmd;
 		while (in >> cmd) {
 			if (cmd == "move") {
-				
-			}
-			else if (cmd == "resign") {}
-		}
-	} catch () {
 
+			}
+			else if (cmd == "resign") {
+
+			}
+			else throw iv;
+		}
+	} catch (InvalidInput e) {
+		e.errorMessage();
 	}
 }
 
@@ -48,7 +72,7 @@ void Controller::play() {
 				else if (cmd == "quit") break;
 				else throw iv;
 			} catch (InvalidInput e) {
-				e.menuErrorMessage();
+				e.errorMessage();
 			} //input failure for menu
 		}
 	} catch (ios::failure) {} //eof

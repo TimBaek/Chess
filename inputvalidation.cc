@@ -29,10 +29,11 @@ void InputValidation::menuMessage() const{
 	cout << "Player Options: [ human | computer[1-4] ]" << endl;
 }
 
-void InputValidation::menuErrorMessage() const {
-	cerr << "Error! Please enter one of the following: [ game white-player black-player ] [ setup ] [ quit ]" << endl;
+void InputValidation::errorMessage() const {
+	cerr << "Error! Please re-enter the inputs" << endl;
 }
 
 void InputValidation::gameMessage() const {
-	cout << "Avaliable Commands: [ move cord cord]" << endl;
+	cout << "Human Avaliable Commands: [ move cord cord ] [ move cord cord cord ] [ resign ]" << endl;
+	cout << "Computer Avaliable Commands: [ move ] [ resign ]"
 }
