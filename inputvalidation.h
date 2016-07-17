@@ -9,7 +9,7 @@ class InputValidation {
  	~InputValidation();
  	bool playerVal(const string& w, const string& b);
  	void menuMessage() const;
- 	void menuErrorMessage() const;
+ 	void errorMessage() const;
  	void gameMessage() const;
 };
 
