@@ -32,16 +32,48 @@ void Board::updateState(int r, int c, int destr, int destc){
 	shared_ptr<Piece> tmp = currStates[r][c];
 	currStates[destr][destc] = tmp;
 	currStates[r][c] = nullptr;
+	updatePossibleMove();
+}
+
+void Board::updatePossibleMove(){
+	for(int i=0; i<8; i++){
+		for(int j=0; j<8; j++){
+			if(currStates[i][j]==nullptr) continue;
+			updatePiece(currStates[i][j]);
+		}
+	}
+}
+
+void Board::updatePiece(shared_ptr<Piece> p){
+
 }
 
 
 void Board::init(string p1, string p2){
 	player1 = p1;
 	player2 = p2;
+
+	blackMoves.resize(numPieces("black"));
+	whiteMoves.resize(numPieces("white"));
+
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		for(int j=0; j<8; j++){ currStates[i][j] = nullptr; }
+		blackMoves[i].resize(8);
+		whiteMoves[i].resize(8);
+		for(int j=0; j<8; j++){
+			currStates[i][j] = nullptr;
+			blackMoves[i][j].resize(8);
+			whiteMoves[i][j].resize(8);
+		}
 	}
+	for(int i=0; i<numPieces("black");i++){
+		for(int j=0; j<8; j++){
+			for(int k=0; k<8; k++){
+				blackMoves[i][j][k] = 0;
+			}
+		}
+	}
+
 	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
 }
 
@@ -54,13 +86,13 @@ void Board::defaultSetup(string colour1, string colour2){
 	//shared_ptr<Board> b = make_shared<Board>(*this);
 	//pawns
 	for (int i=0; i<8; i++){
-		currStates[1][i] = make_shared<Pawn>(this,1,i, colour1);
-		currStates[6][i] = make_shared<Pawn>(this,6,i, colour2);
+		currStates[1][i] = make_shared<Pawn>(this,1,i,colour1);
+		currStates[6][i] = make_shared<Pawn>(this,6,i,colour2);
 	}
 	//rooks
 	for (int i=0; i<8; i+=7){
-		currStates[0][i] = make_shared<Rook>(this,0,i, colour1);
-		currStates[7][i] = make_shared<Rook>(this,7,i, colour2);
+		currStates[0][i] = make_shared<Rook>(this,0,i,colour1);
+		currStates[7][i] = make_shared<Rook>(this,7,i,colour2);
 	}
 	//knights
 	for (int i=1; i<8; i+=5){
@@ -108,7 +140,7 @@ void Board::setup_delete(int r, int c){
 	currStates[r][c] = nullptr;
 }
 
-int Board::setup_numKing(string colour){
+int Board::numKing(string colour){
 	int num=0;
 	char k = colour== "black" ? 'k' : 'K';
 	for(int i=0; i<8; i++){
@@ -120,6 +152,16 @@ int Board::setup_numKing(string colour){
 	}
 	return num;
 
+}
+
+int Board::numPieces(string colour){
+	int num=0;
+	for (int i=0; i<8; i++){
+		for(int j=0; j<8; j++){
+			if(currStates[i][j]->getColour()==colour) num++;
+		}
+	}
+	return num;
 }
 
 
