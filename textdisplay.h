@@ -1,20 +1,18 @@
 #ifndef __TEXTDISPLAY_H__
 #define __TEXTDISPLAY_H__
-#include "view.h"
 #include <iostream>
 #include <vector>
+#include "board.h"
+#include "piece.h"
 
-class View;
+class Board;
 
-class TextDisplay: public View {
-  std::vector<std::vector<char>> theDisplay;
+class TextDisplay {
  public:
-  TextDisplay(int n);
-
-  void notify(int, int, int, int, char move);
-  void print (std::ostream &out); 
-
-  ~TextDisplay();
+        TextDisplay();
+        ~TextDisplay();
+        void notify(int ir, int ic, int dr, int dc);
+        friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 
 #endif
