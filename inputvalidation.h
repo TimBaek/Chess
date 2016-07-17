@@ -1,6 +1,6 @@
 #ifndef _INPUTVALIDATION_H_
 #define _INPUTVALIDATION_H_
-
+#include <string>
 #include <iostream>
 
 class InputValidation {
