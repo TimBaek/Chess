@@ -3,10 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "piece.h"
-#include "textdisplay.h"
 
-class TextDisplay;
-class GraphicDisplay;
 class Controller;
 
 class Board {
@@ -16,11 +13,14 @@ class Board {
   std::string player1;
   std::string player2;
   std::vector<std::vector<std::shared_ptr<Piece>>> currStates;  // current state of the board
-  //std::vector<std::vector<std::std::vector<int>>> possibleMove; // possibleMoves
- 
+  std::vector<std::vector<std::vector<int>>> blackMoves; // possible moves for Black player
+  std::vector<std::vector<std::vector<int>>> whiteMoves; // possible moves for White player
+
   void clearBoard();   // Frees the board.
   void defaultSetup(std::string colour1, std::string colour2);
   void updateState(int r, int c, int destr, int destc);
+  void updatePossibleMove();
+  void updatePiece(std::shared_ptr<Piece> p);
 
  public:
   Board(Controller *ctrl);
@@ -36,7 +36,8 @@ class Board {
   void setup();
   void setup_add(char letter, int r, int c);
   void setup_delete(int r, int c);
-  int setup_numKing(std::string colour);
+  int numKing(std::string colour);
+  int numPieces(std::string colour);
   std::shared_ptr<Piece> checkState(int r, int c);
   friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
