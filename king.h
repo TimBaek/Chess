@@ -6,7 +6,7 @@ class King: public Piece {
   bool moved = false;
 
  public:
-  King(std::shared_ptr<Board> bd, int r, int c, std::string co, bool b=false);
+  King(Board *bd, int r, int c, std::string co, bool b=false);
   ~King();
   void move(int dr, int dc) override;
   bool everMoved();

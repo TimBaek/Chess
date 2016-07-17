@@ -1,7 +1,8 @@
 #include "piece.h"
 #include "knight.h"
+using namespace std;
 
-Knight::Knight(shared_ptr<Board> bd, int c, int r, string co):
+Knight::Knight(Board *bd, int c, int r, string co):
   Piece{bd, r, c, co} {
 }
 

@@ -1,7 +1,8 @@
 #include "piece.h"
 #include "bishop.h"
+using namespace std;
 
-Bishop::Bishop(shared_ptr<Board> bd, int c, int r, string co):
+Bishop::Bishop(Board *bd, int c, int r, string co):
   Piece{bd, r, c, co} {
 }
 

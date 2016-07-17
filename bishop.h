@@ -4,7 +4,7 @@
 
 class Bishop: public Piece {
  public:
-  Bishop(std::shared_ptr<Board> bd, int r, int c, std::string co);
+  Bishop(Board *bd, int r, int c, std::string co);
   ~Bishop();
   void move(int dr, int dc) override;
   char getLetter() override;

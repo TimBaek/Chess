@@ -4,16 +4,25 @@
 #include <string>
 
 class Board;
+/*
+class Piece;
+class Board {
+ public:
+  void notify(int r, int c, Piece &p) {
+  }
+};
+*/
+
 
 class Piece {
  protected:
-  std::shared_ptr<Board> board;
+  Board *board;
   int row;
   int col;
   std::string colour;
 
  public:
-  Piece(std::shared_ptr<Board> bd, int r, int c, std::string co);
+  Piece(Board *bd, int r, int c, std::string co);
   virtual ~Piece();
   void notifyBoard(int dr, int dc);
   virtual void move(int dr, int dc)=0;

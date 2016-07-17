@@ -1,7 +1,8 @@
 #include "piece.h"
 #include "king.h"
+using namespace std;
 
-King::King(shared_ptr<Board> bd, int r, int c, string co, bool b):
+King::King(Board *bd, int r, int c, string co, bool b):
   Piece{bd, r, c, co}, moved{b} {
 }
 

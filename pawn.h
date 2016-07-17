@@ -6,7 +6,7 @@ class Pawn: public Piece {
   bool moved = false;
 
  public:
-  Pawn(std::shared_ptr<Board> bd, int r, int c, std::string co, bool b=false);
+  Pawn(Board *bd, int r, int c, std::string co, bool b=false);
   ~Pawn();
   void move(int dr, int dc) override;
   char getLetter() override;

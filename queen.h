@@ -4,7 +4,7 @@
 
 class Queen: public Piece {
  public:
-  Queen(std::shared_ptr<Board> bd, int r, int c, std::string co);
+  Queen(Board *bd, int r, int c, std::string co);
   ~Queen();
   void move(int dr, int dc) override;
   char getLetter() override;

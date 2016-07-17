@@ -1,7 +1,8 @@
 #include "piece.h"
 #include "queen.h"
+using namespace std;
 
-Queen::Queen(shared_ptr<Board> bd, int r, int c, string co):
+Queen::Queen(Board *bd, int r, int c, string co):
   Piece{bd, r, c, co} {
 }
 
