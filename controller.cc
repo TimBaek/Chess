@@ -6,7 +6,7 @@ using namespace std;
 #include "controller.h"
 
 Controller::Controller(): in{0}, board{this}, customized{false} {}
-Controller::~Controller() { delete in; }
+Controller::~Controller() {}
 
 void Controller::notify() {
 	//Player->notify
@@ -80,11 +80,12 @@ void Controller::game() {
 }
 
 void Controller::play() {
-	in->exceptions(ios::failbit|ios::eofbit);
+	//in->exceptions(ios::failbit|ios::eofbit);
 	iv.menuMessage();
 	try {
 		string cmd;
 		while (*in >> cmd) {
+			cerr << "while begins"<< endl;
 			try {
 				if (cmd == "game") game();
 				else if (cmd == "setup") setup();
