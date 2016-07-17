@@ -6,7 +6,7 @@ using namespace std;
 
 // Piece 
 Piece::Piece(shared_ptr<Board> bd, int r, int c, string co):
-  Board{bd}, row{r}, col{c}, colour{co} {
+  board{bd}, row{r}, col{c}, colour{co} {
 }
 
 Piece::~Piece() { }
