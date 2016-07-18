@@ -9,12 +9,32 @@
 #include "rook.h"
 using namespace std;
 
-Board::Board(Controller *ctrl): ctrl{ctrl}, player1{""}, player2{""} {}
-Board::~Board() {}
+Board::Board(Controller *ctrl): ctrl{ctrl}, player1{""}, player2{""} {
+	// initializing Possible Moves
+	/*
+	for(int i=0; i<numPieces("black"); i++){
+		blackMoves.push_back(vector<vector<int>>());
+		whiteMoves.push_back(vector<vector<int>>());
+		for(int j=0; j<8; j++){
+			blackMoves[i].push_back(vector<int>());
+			whiteMoves[i].push_back(vector<int>());
+			for(int k=0; k<8; k++){
+				blackMoves[i][j].push_back(0);
+				whiteMoves[i][j].push_back(0);
+			}
+		}
+	}
+	*/
+}
+Board::~Board() {
+	currStates.pop();
+	//blackMoves.pop();
+	//whiteMoves.pop();
+}
 
 
 void Board::notify(int r, int c, Piece &p){
-	updateState(r,c, (p.getRow()), (p.getCol()));
+	updateState(r,c,(p.getRow()), (p.getCol()));
 }
 
 bool Board::isThere(Piece &p, int r, int c){
@@ -22,9 +42,11 @@ bool Board::isThere(Piece &p, int r, int c){
 }
 
 bool Board::canMove(int r, int c, int destr, int destc){
+
 	return true;
 }
 
+// Assume canMove(r,c,destr,destc)
 void Board::updateState(int r, int c, int destr, int destc){
 	shared_ptr<Piece> tmp = currStates[r][c];
 	currStates[destr][destc] = tmp;
@@ -49,34 +71,22 @@ void Board::updatePiece(shared_ptr<Piece> p){
 void Board::init(string p1, string p2){
 	player1 = p1;
 	player2 = p2;
-
 	// initializing Current State
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		blackMoves.push_back(vector<vector<int>>(8));
+		//blackMoves.push_back(vector<vector<int>>(8));
 		for(int j=0; j<8; j++){
 			currStates[i][j] = nullptr;
 		}
 	}
-
 	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
+	/*
+	for(int i=0; i<8; i++){
+		blackMoves.push_back(currStates[0][i]);
 
-	// initializing Possible Moves
-	cerr << "blackMoves initialization" << endl;
-	cerr << "numBlack is " << numPieces("black") << endl;
-	for(int i=0; i<numPieces("black"); i++){
-		blackMoves.push_back(vector<vector<int>>());
-		whiteMoves.push_back(vector<vector<int>>());
-		for(int j=0; j<8; j++){
-			blackMoves[i].push_back(vector<int>());
-			whiteMoves[i].push_back(vector<int>());
-			for(int k=0; k<8; k++){
-				blackMoves[i][j].push_back(0);
-				whiteMoves[i][j].push_back(0);
-			}
-		}
 	}
-
+	*/
+	updatePossibleMove();
 }
 
 

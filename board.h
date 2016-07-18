@@ -17,6 +17,8 @@ class Board {
   std::vector<std::vector<std::shared_ptr<Piece>>> currStates;  // current state of the board
   std::vector<std::vector<std::vector<int>>> blackMoves; // possible moves for Black player
   std::vector<std::vector<std::vector<int>>> whiteMoves; // possible moves for White player
+  std::vector<shared_ptr<Piece>> blackCheck;
+  std::vector<shared_ptr<Piece>> whiteCheck;
 
   void defaultSetup(std::string colour1, std::string colour2);
   void updateState(int r, int c, int destr, int destc);
