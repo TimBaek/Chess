@@ -30,8 +30,12 @@ void Controller::init() {
 			}
 			else throw iv;
 		}
-		if(!customized) board.init(wp->getColour(), bp->getColour()); //Board init
-		if(!customized) td = make_shared<TextDisplay>();
+		if(!customized) {
+			board.init(wp->getColour(), bp->getColour()); //Board init
+			td = make_shared<TextDisplay>();
+			td->notify(&board);
+		}
+
 	} catch (InputValidation e) {
 		throw e;
 	}

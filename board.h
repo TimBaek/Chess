@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include "piece.h"
+#include "textdisplay.h"
+#include "graphicdisplay.h"
 
 class Controller;
 
@@ -31,6 +33,7 @@ class Board {
 
   bool isThere(Piece &p, int r, int c);
   bool canMove(Piece &p, int r, int c);
+  //TextDisplay &getTd() const;
   //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
   void init(std::string p1, std::string p2);
   void setup();
@@ -38,9 +41,10 @@ class Board {
   void setup_delete(int r, int c);
   int numKing(std::string colour);
   int numPieces(std::string colour);
+  bool isEmpty(int r, int c);
   char getLetter(int r, int c);
   std::shared_ptr<Piece> checkState(int r, int c);
-  friend std::ostream &operator<<(std::ostream &out, const Board &b);
+  //friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 
 #endif

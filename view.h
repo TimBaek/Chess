@@ -8,7 +8,6 @@ class View {
    public:
         View();
         virtual ~View() = 0;
-        virtual void notify(int ir, int ic, int dr, int dc) = 0;
 };
 
 #endif

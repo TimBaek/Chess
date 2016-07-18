@@ -9,7 +9,7 @@
 #include "human.h"
 #include "computer.h"
 #include "board.h"
-#include "view.h"
+//#include "view.h"
 #include "textdisplay.h"
 #include "graphicdisplay.h"
 

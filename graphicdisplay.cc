@@ -7,7 +7,7 @@ GraphicDisplay::GraphicDisplay() {
 }
 
 
-void GraphicDisplay::notify(int ir, int ic, int dr, int dc) {
+void GraphicDisplay::notify(Board *b) {
 }
 
 // dtor

@@ -3,6 +3,14 @@
 using namespace std;
 
 TextDisplay::TextDisplay() {
+
+    for(int i=0; i<8; i++) {
+        theDisplay.push_back(vector<char>(8));
+        /*for(int j=0; j<8; j++) {
+            //theDisplay[i][j] = (i+j)%2 == 0 ? '_' : ' ';
+        }*/
+    }
+    /*
     for(int i=0; i<8; i++) {
         theDisplay.push_back(vector<char>(8));
         if(i<2 || i>5) continue;
@@ -10,7 +18,6 @@ TextDisplay::TextDisplay() {
         	theDisplay[i][j] = (i+j)%2 == 0 ? '_' : ' ';
         }
     }
-
     for(int j=0; j<8; j++){
         theDisplay[1][j] = 'P';
         theDisplay[6][j] = 'p';
@@ -30,13 +37,18 @@ TextDisplay::TextDisplay() {
     //kings
     theDisplay[0][4] = 'K';
     theDisplay[7][4] = 'k';
-
-
-
+    */
 }
-void TextDisplay::notify(int ir, int ic, int dr, int dc) {
-    theDisplay[dr][dc] = theDisplay[ir][ic];
-    theDisplay[ir][ic] = (ir+ic)%2 == 0 ? '_' : ' ';
+
+void TextDisplay::notify(Board *b) {
+    for(int i=0; i<8; i++){
+        for(int j=0; j<8; j++){
+            if(b->isEmpty(i,j)){ theDisplay[i][j] = (i+j)%2 == 0 ? '_' : ' '; }
+            else{ theDisplay[i][j] = b->getLetter(i,j); }
+        }
+    }
+    //theDisplay[dr][dc] = theDisplay[ir][ic];
+    //theDisplay[ir][ic] = (ir+ic)%2 == 0 ? '_' : ' ';
 }
 // dtor
 TextDisplay::~TextDisplay() {}

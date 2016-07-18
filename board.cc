@@ -171,12 +171,29 @@ shared_ptr<Piece> Board::checkState(int r, int c){
 	return currStates[r][c];
 }
 
+bool Board::isEmpty(int r, int c){
+	return currStates[r][c]==nullptr;
+
+}
+
 char Board::getLetter(int r, int c){
 	if(currStates[r][c]==nullptr) return ' ';
 	else return currStates[r][c]->getLetter();
 }
 
+/*
+TextDisplay &Board::getTd() const {
+	for(int i=0; i<8; i++){
+		for(int j=0; j<8; j++){
+			td->setCoord()
+		}
+	}
+	return *td;
+}
+
 ostream &operator<<(std::ostream &out, const Board &b){
+	out << b.getTd();
 	return out;
 }
+*/
 
