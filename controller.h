@@ -11,11 +11,13 @@
 #include "board.h"
 #include "view.h"
 #include "textdisplay.h"
+#include "graphicdisplay.h"
 
 class Controller {
 	std::istream *in;
 	std::shared_ptr<Player> wp, bp;
-	std::shared_ptr<View> td, gd;
+	std::shared_ptr<TextDisplay> td;
+	std::shared_ptr<GraphicDisplay> gd;
 	Board board;
 	InputValidation iv;
  	bool customized;

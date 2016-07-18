@@ -38,6 +38,7 @@ class Board {
   void setup_delete(int r, int c);
   int numKing(std::string colour);
   int numPieces(std::string colour);
+  char getLetter(int r, int c);
   std::shared_ptr<Piece> checkState(int r, int c);
   friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };

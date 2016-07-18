@@ -47,7 +47,7 @@ void Controller::game() {
 	try {
 		init();
 		iv.gameMessage(); //Start new game
-		cout << td;
+		cout << *td;
 		string cmd;
 		while (*in >> cmd) {
 			try {

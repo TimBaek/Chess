@@ -96,19 +96,19 @@ void Board::defaultSetup(string colour1, string colour2){
 	}
 	//knights
 	for (int i=1; i<8; i+=5){
-		currStates[0][i] = make_shared<Knight>(this,0,i, colour1);
-		currStates[7][i] = make_shared<Knight>(this,7,i, colour2);
+		currStates[0][i] = make_shared<Knight>(this,0,i,colour1);
+		currStates[7][i] = make_shared<Knight>(this,7,i,colour2);
 	}
 	//bishops
 	for (int i=2; i<8; i+=3){
-		currStates[0][i] = make_shared<Bishop>(this,0,i, colour1);
-		currStates[7][i] = make_shared<Bishop>(this,7,i, colour2);
+		currStates[0][i] = make_shared<Bishop>(this,0,i,colour1);
+		currStates[7][i] = make_shared<Bishop>(this,7,i,colour2);
 	}
 	//kings and queens
-	currStates[0][4] = make_shared<King>(this,0,4, colour1);
-	currStates[7][4] = make_shared<King>(this,7,4, colour2);
-	currStates[0][3] = make_shared<Queen>(this,0,3, colour1);
-	currStates[7][3] = make_shared<Queen>(this,7,3, colour2);
+	currStates[0][4] = make_shared<King>(this,0,4,colour1);
+	currStates[7][4] = make_shared<King>(this,7,4,colour2);
+	currStates[0][3] = make_shared<Queen>(this,0,3,colour1);
+	currStates[7][3] = make_shared<Queen>(this,7,3,colour2);
 }
 
 
@@ -171,6 +171,10 @@ shared_ptr<Piece> Board::checkState(int r, int c){
 	return currStates[r][c];
 }
 
+char Board::getLetter(int r, int c){
+	if(currStates[r][c]==nullptr) return ' ';
+	else return currStates[r][c]->getLetter();
+}
 
 ostream &operator<<(std::ostream &out, const Board &b){
 	return out;
