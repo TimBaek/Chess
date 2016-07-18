@@ -18,7 +18,6 @@ class Board {
   std::vector<std::vector<std::vector<int>>> blackMoves; // possible moves for Black player
   std::vector<std::vector<std::vector<int>>> whiteMoves; // possible moves for White player
 
-  void clearBoard();   // Frees the board.
   void defaultSetup(std::string colour1, std::string colour2);
   void updateState(int r, int c, int destr, int destc);
   void updatePossibleMove();
@@ -32,7 +31,7 @@ class Board {
   void notify(int r, int c, Piece &p);
 
   bool isThere(Piece &p, int r, int c);
-  bool canMove(Piece &p, int r, int c);
+  bool canMove(int r, int c, int destr, int destc);
   //TextDisplay &getTd() const;
   //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
   void init(std::string p1, std::string p2);
@@ -44,7 +43,6 @@ class Board {
   bool isEmpty(int r, int c);
   char getLetter(int r, int c);
   std::shared_ptr<Piece> checkState(int r, int c);
-  //friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };
 
 #endif

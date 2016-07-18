@@ -12,9 +12,6 @@ using namespace std;
 Board::Board(Controller *ctrl): ctrl{ctrl}, player1{""}, player2{""} {}
 Board::~Board() {}
 
-void Board::clearBoard(){
-
-}
 
 void Board::notify(int r, int c, Piece &p){
 	updateState(r,c, (p.getRow()), (p.getCol()));
@@ -24,7 +21,7 @@ bool Board::isThere(Piece &p, int r, int c){
 	return((p.getRow()==r) && (p.getCol()==c));
 }
 
-bool Board::canMove(Piece &p, int r, int c){
+bool Board::canMove(int r, int c, int destr, int destc){
 	return true;
 }
 
@@ -53,28 +50,33 @@ void Board::init(string p1, string p2){
 	player1 = p1;
 	player2 = p2;
 
-	blackMoves.resize(numPieces("black"));
-	whiteMoves.resize(numPieces("white"));
+	// initializing Current State
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		//blackMoves[i].resize(8);
-		//whiteMoves[i].resize(8);
+		blackMoves.push_back(vector<vector<int>>(8));
 		for(int j=0; j<8; j++){
 			currStates[i][j] = nullptr;
-			//blackMoves[i][j].resize(8);
-			//whiteMoves[i][j].resize(8);
 		}
 	}
-	/*
-	for(int i=0; i<numPieces("black");i++){
+
+	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
+
+	// initializing Possible Moves
+	cerr << "blackMoves initialization" << endl;
+	cerr << "numBlack is " << numPieces("black") << endl;
+	for(int i=0; i<numPieces("black"); i++){
+		blackMoves.push_back(vector<vector<int>>());
+		whiteMoves.push_back(vector<vector<int>>());
 		for(int j=0; j<8; j++){
+			blackMoves[i].push_back(vector<int>());
+			whiteMoves[i].push_back(vector<int>());
 			for(int k=0; k<8; k++){
-				blackMoves[i][j][k] = 0;
+				blackMoves[i][j].push_back(0);
+				whiteMoves[i][j].push_back(0);
 			}
 		}
 	}
-	*/
-	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
+
 }
 
 
@@ -180,20 +182,3 @@ char Board::getLetter(int r, int c){
 	if(currStates[r][c]==nullptr) return ' ';
 	else return currStates[r][c]->getLetter();
 }
-
-/*
-TextDisplay &Board::getTd() const {
-	for(int i=0; i<8; i++){
-		for(int j=0; j<8; j++){
-			td->setCoord()
-		}
-	}
-	return *td;
-}
-
-ostream &operator<<(std::ostream &out, const Board &b){
-	out << b.getTd();
-	return out;
-}
-*/
-
