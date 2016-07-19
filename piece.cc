@@ -11,8 +11,6 @@ Piece::~Piece() { }
 
 void Piece::move(int dr, int dc) {
   notifyBoard(dr, dc);
-  row = dr;
-  col = col;
   moved = true;
 }
 
@@ -23,6 +21,8 @@ bool Piece::everMoved() {
 void Piece::notifyBoard(int dr, int dc) {
   int tempRow = row;
   int tempCol = col;
+  row = dr;
+  col = dc;
   board->notify(tempRow, tempCol, *this);
 }
 
