@@ -172,10 +172,6 @@ int Board::numPieces(string colour){
 
 
 shared_ptr<Piece> Board::checkState(int r, int c){
-	auto cs = currStates[r][c];
-	cout << r << ' ' << c << endl;
-	cout << cs->getRow() << ' ' << cs->getCol() << endl;
-	cout << cs->getLetter() << endl;
 	return currStates[r][c];
 }
 
@@ -190,6 +186,7 @@ char Board::getLetter(int r, int c){
 }
 
 bool Board::canMove(shared_ptr<Piece> p, int destr, int destc, string plcol) {
+	if (p == nullptr) return false;
 	char let = p->getLetter();
 
 	if (let == 'k' || let == 'K') {
@@ -347,7 +344,6 @@ bool Board::canMoveN(shared_ptr<Piece> p, int destr, int destc, string col) {
 	int ccol = p->getCol();
 
 	if (col != colour) return false;
-	if (checkState(destr,destc)->getColour() == colour) return false;
 	if ((destc == ccol +2 && destr == crow +1) ||
 	    (destc == ccol +2 && destr == crow -1) ||
 	    (destc == ccol -2 && destr == crow +1) ||
@@ -356,7 +352,10 @@ bool Board::canMoveN(shared_ptr<Piece> p, int destr, int destc, string col) {
 	    (destr == crow +2 && destc == ccol -1) ||
 	    (destr == crow -2 && destc == ccol +1) ||
 	    (destr == crow -2 && destc == ccol -1)) {
-	    return true;
+		if (checkState(destr,destc) == nullptr ||
+			checkState(destr,destc)->getColour() != colour) {
+	    	return true;
+		}
 	} else {
 		return false;
 	}
@@ -411,7 +410,7 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 		if (checkState(destr,destc)->getColour() != colour) return true;
 	// double step move
 	} else if (destr == crow +2 && destc == ccol) {
-		if (p->everMoved() &&
+		if (p->everMoved() == false &&
 			checkState(crow +1, ccol) == nullptr &&
 			checkState(crow +2, ccol) == nullptr) {
 			return true;
