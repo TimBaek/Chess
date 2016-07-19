@@ -10,11 +10,8 @@ Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
 	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer)) throw iv;
-	cout << "Erro4" << endl;
 	board.checkState(r,c)->move(destr,destc);
-	cout << "Erro5" << endl;
 	td->notify(&board);
-	cout << "Erro6" << endl;
 }
 
 void Controller::init() {
@@ -46,6 +43,7 @@ void Controller::init() {
 void Controller::setup() {
 	customized = true;
 	iv.setupMessage();
+	td = make_shared<TextDisplay>();
 	board.setup();
 	try {
 		string cmd;
@@ -56,18 +54,23 @@ void Controller::setup() {
 				if (cmd == "+") {
 					*in >> p >> c >> r;
 					if (iv.isValid(r,c,p)) {
+						cout << "Error1" << endl;
 						board.setup_add(p, r-'0'-1, c-'a');
+						cout << "Error2" << endl;
+						td->notify(&board);
 					}
 					else throw iv;
 				} else if (cmd == "-") {
 					*in >> c >> r;
 					if (iv.isValid(r,c)) {
 						board.setup_delete(r-'0'-1, c-'a');
+						td->notify(&board);
 					}
 					else throw iv;
 				} else if (cmd == "=") {
 					*in >> colour;
 				} else if (cmd == "done") {
+					break;
 					//check condtion
 					// if true exit
 					// else back to loop
