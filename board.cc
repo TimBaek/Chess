@@ -390,13 +390,16 @@ bool Board::canMove(shared_ptr<Pawn> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
-
+cout << "err1" << endl;
 	if (col != colour) return false;
 	// attack move
+cout << "err2" << endl;
 	if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
+		cout << "err3" << endl;
 		if (checkState(destr,destc)->getColour() != colour) return true;
 	// double step move
 	} else if (destr == crow +2 && destc == ccol) {
+cout << "err4" << endl;
 		if (p->everMoved() &&
 			checkState(crow +1, ccol) == nullptr &&
 			checkState(crow +2, ccol) == nullptr) {
@@ -404,10 +407,12 @@ bool Board::canMove(shared_ptr<Pawn> p, int destr, int destc, string col) {
 		}
 	// regular move
 	} else if (destr == crow +1 && destc == ccol) {
+		cout << "err5" << endl;
 		if (checkState(crow +1, ccol) == nullptr) return true;
 	} else {
 		return false;
 	}
+	cout << "err6" << endl;
 }
 
 /*
