@@ -7,9 +7,8 @@ class InputValidation {
  public:
  	InputValidation();
  	~InputValidation();
- 	bool canCreatePlayer(const std::string& w, const std::string& b);
- 	bool canSetup(const std::string& p = "", const std::string& c = "");
- 	int convertChartoInt(const char& c);
+ 	bool isPlayer(const std::string& w, const std::string& b);
+ 	bool isValid(const char& r, const char& c, const char& p = '');
  	void menuMessage() const;
  	void errorMessage() const;
  	void gameMessage() const;

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "inputvalidation.h"
 #include "player.h"
@@ -15,12 +16,14 @@
 
 class Controller {
 	std::istream *in;
+	std::string currPlayer;
 	std::shared_ptr<Player> wp, bp;
 	std::shared_ptr<TextDisplay> td;
 	std::shared_ptr<GraphicDisplay> gd;
 	Board board;
 	InputValidation iv;
  	bool customized;
+ 	void setcurrPlayer();
  public:
  	Controller();
  	~Controller();
@@ -28,8 +31,7 @@ class Controller {
  	void play();
  	void game();
  	void setup();
- 	void notify(); //notify the Piece 
- 	void notifyView(); //notify the View
+ 	void notify(int r, int c, int destr, int destc); //notify the Piece
 };
 
 #endif

@@ -4,7 +4,7 @@ using namespace std;
 InputValidation::InputValidation() {}
 InputValidation::~InputValidation() {}
 
-bool InputValidation::canCreatePlayer(const string& w, const string& b) {
+bool InputValidation::isPlayer(const string& w, const string& b) {
 	string wlevel, blevel;
 	if (w == "human" && b == "human") return true;
 	else if (w == "human" && b.substr(0,8) == "computer") {
@@ -20,15 +20,17 @@ bool InputValidation::canCreatePlayer(const string& w, const string& b) {
 	} else return false;
 }
 
-bool InputValidation::canSetup(const std::string& p = "", const std::string& c = "") {
-	if (p != "" && c != "") {
-		return ((p.find_first_of("PRNBQK") != string::npos || p.find_first_of("prnbqk") != string::npos) && 
-				(c[0].find_first_of("abcdefgh") != string::npos && c[1].find_first_of("12345678") != string::npos));
-	} else return (c[0].find_first_of("abcdefgh") != string::npos && c[1].find_first_of("12345678") != string::npos);
-}
+bool InputValidation::isValid(const char& r, const char& c, const char& p = '') {
+	string lpiece = "prnbqk";
+	string upiece = "PRNBQK";
+	string row = "12345678";
+	string column = "abcdefgh";
 
-int InputValidation::convertChartoInt(const char& c) {
-	return c - 'a';
+	if (p != '') {
+		return ((lpiece.find_first_of(p) != string::npos || upiece.find_first_of(p) != string::npos) && 
+				(row.find_first_of(r) != string::npos && column.find_first_of(c) != string::npos));
+	}
+	else return (row.find_first_of(r) != string::npos && column.find_first_of(c) != string::npos);
 }
 
 void InputValidation::menuMessage() const{
