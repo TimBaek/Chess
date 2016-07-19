@@ -2,7 +2,7 @@
 #include "pawn.h"
 using namespace std;
 
-Pawn::Pawn(Board *bd, int c, int r, string co, bool b):
+Pawn::Pawn(Board *bd, int r, int c, string co, bool b):
   Piece{bd, r, c, co, b} {
 }
 

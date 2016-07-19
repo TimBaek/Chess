@@ -2,7 +2,7 @@
 #include "bishop.h"
 using namespace std;
 
-Bishop::Bishop(Board *bd, int c, int r, string co, bool b):
+Bishop::Bishop(Board *bd, int r, int c, string co, bool b):
   Piece{bd, r, c, co, b} {
 }
 
