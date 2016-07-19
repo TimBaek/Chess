@@ -9,7 +9,7 @@ Controller::Controller(): in{&cin}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
-	if (!board.canMove(checkState(r,c), destr, destc)) throw iv;
+	if (!board.canMove(board.checkState(r,c), destr, destc)) throw iv;
 	board.checkState(r,c)->move(destr,destc);
 	td->notify(&board);
 }
@@ -89,7 +89,7 @@ void Controller::game() {
 					string move;
 					getline(*in,move);
 					vector<string> cord;
-					if (move == "") // move  for Computer
+					if (move == "") cout << "Call move Computer" << endl;
 					else {
 						istringstream iss{move};
 						string tmp;

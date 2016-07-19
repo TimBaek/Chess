@@ -20,13 +20,13 @@ bool InputValidation::isPlayer(const string& w, const string& b) {
 	} else return false;
 }
 
-bool InputValidation::isValid(const char& r, const char& c, const char& p = '') {
+bool InputValidation::isValid(const char& r, const char& c, const char& p) {
 	string lpiece = "prnbqk";
 	string upiece = "PRNBQK";
 	string row = "12345678";
 	string column = "abcdefgh";
 
-	if (p != '') {
+	if (p != ' ') {
 		return ((lpiece.find_first_of(p) != string::npos || upiece.find_first_of(p) != string::npos) && 
 				(row.find_first_of(r) != string::npos && column.find_first_of(c) != string::npos));
 	}

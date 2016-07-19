@@ -8,7 +8,7 @@ class InputValidation {
  	InputValidation();
  	~InputValidation();
  	bool isPlayer(const std::string& w, const std::string& b);
- 	bool isValid(const char& r, const char& c, const char& p = '');
+ 	bool isValid(const char& r, const char& c, const char& p = ' ');
  	void menuMessage() const;
  	void errorMessage() const;
  	void gameMessage() const;
