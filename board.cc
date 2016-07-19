@@ -187,11 +187,11 @@ char Board::getLetter(int r, int c){
 
 
 
-bool Board::canMove(King *k, int destr, int destc) {
+bool Board::canMove(King *k, int destr, int destc, string col) {
 	string colour = k->getColour();
 	int crow = k->getRow();
 	int ccol = k->getCol();
-
+	if (col != colour) return false;
 	if ((abs(destr -crow) == 1 && abs(destc -ccol) == 1) ||
 		(destr == crow && (destc == ccol +1 || destc == ccol -1)) ||
 		(destc == ccol && (destr == crow +1 || destc == crow -1))) {
@@ -224,6 +224,8 @@ bool Board::canMove(Queen *q, int destr, int destc) {
 	string colour = q->getColour();
 	int crow = q->getRow();
 	int ccol = q->getCol();
+
+	if (col != colour) return false;
 	if (destr == crow || destc != ccol) {
 		while (true) {
 			if (destr < crow) {
@@ -288,6 +290,8 @@ bool Board::canMove(Rook *rk, int destr, int destc) {
 	string colour = rk->getColour();
 	int crow = rk->getRow();
 	int ccol = rk->getCol();
+	
+	if (col != colour) return false;
 	if (destr != crow && destc != ccol) return false;
 	while (true) {
 		if (destr < crow) {
@@ -320,6 +324,8 @@ bool Board::canMove(Knight *n, int destr, int destc) {
 	string colour = n->getColour();
 	int crow = n->getRow();
 	int ccol = n->getCol();
+
+	if (col != colour) return false;
 	if (checkState(destr,destc)->getColour() == colour) return false;
 	if ((destc == ccol +2 && destr == crow +1) ||
 	    (destc == ccol +2 && destr == crow -1) ||
@@ -340,6 +346,8 @@ bool Board::canMove(Bishop *b, int destr, int destc) {
 	string colour = b->getColour();
 	int crow = b->getRow();
 	int ccol = b->getCol();
+
+	if (col != colour) return false;
 	if (abs(crow -destr) != abs(ccol -destc)) return false;
 	while(true) {
 		if (crow < destr && ccol < destc) {
@@ -376,6 +384,7 @@ bool Board::canMove(Pawn *p, int destr, int destc) {
 	int crow = p->getRow();
 	int ccol = p->getCol();
 
+	if (col != colour) return false;
 	// attack move
 	if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
 		if (checkState(destr,destc)->getColour() != colour) return true;
