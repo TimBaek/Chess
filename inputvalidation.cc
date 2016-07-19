@@ -35,7 +35,7 @@ bool InputValidation::isValid(const char& r, const char& c, const char& p) {
 
 void InputValidation::menuMessage() const{
 	cout << "Welcm to Chess!" << endl;
-	cout << "Avaliable Commands: [ game white-player black-player ] [ setup ] [ quit ]" << endl;
+	cout << "Avaliable Commands: [ game white-player black-player display] [ setup ] [ quit ]" << endl;
 	cout << "Player Options: [ human | computer[1-4] ]" << endl;
 }
 
@@ -44,7 +44,7 @@ void InputValidation::errorMessage() const {
 }
 
 void InputValidation::gameMessage() const {
-	cout << "Human Avaliable Commands: [ move cord cord ] [ move cord cord cord ] [ resign ]" << endl;
+	cout << "Human Avaliable Commands: [ move cord cord ] [ move cord cord piece ] [ resign ]" << endl;
 	cout << "Computer Avaliable Commands: [ move ] [ resign ]" << endl;
 }
 

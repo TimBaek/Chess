@@ -5,35 +5,36 @@ using namespace std;
 
 #include "controller.h"
 
-Controller::Controller(): in{&cin}, board{this}, customized{false} {}
+Controller::Controller(): in{&cin}, board{this}, customized{false}, currPlayer{""} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
-	if (!board.canMove(board.checkState(r,c), destr, destc)) throw iv;
+	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer)) throw iv;
 	board.checkState(r,c)->move(destr,destc);
 	td->notify(&board);
 }
 
 void Controller::init() {
-	try { //Player init
-		string w, b;
-		while (1) {
-			*in >> w >> b;
-			if (iv.isPlayer(w,b)) {
-				if (w == "human") wp = make_shared<Human>("white");
-				else wp = make_shared<Computer>("white");
-				if (b == "human") bp = make_shared<Human>("black");
-				else bp = make_shared<Computer>("black");
-				break;
-			}
-			else throw iv;
-		}
-		if(!customized) {
+	try {
+		string w, b, d;
+		*in >> w >> b >> d;
+		 //Player init
+		if (!iv.isPlayer(w,b)) throw iv;
+		if (w == "human") wp = make_shared<Human>("white");
+		else wp = make_shared<Computer>("white");
+		if (b == "human") bp = make_shared<Human>("black");
+		else bp = make_shared<Computer>("black");
+
+		if (!customized) {
 			board.init(wp->getColour(), bp->getColour()); //Board init
+		}
+		if (!customized && d == "td") {
 			td = make_shared<TextDisplay>();
 			td->notify(&board);
 		}
-
+		else {
+			cout << "Initialize graphic display" << endl;
+		}
 	} catch (InputValidation e) {
 		throw e;
 	}
@@ -81,7 +82,19 @@ void Controller::game() {
 		iv.gameMessage(); //Start new game
 		while (1) {
 			cout << *td;
-
+			switch(currPlayer) {
+				case "":
+					currPlayer = "white";
+					cout << "White turn: ";
+					break;
+				case "white":
+					currPlayer = "black";
+					cout << "Black turn: ";
+					break;
+				case "black":
+					currPlayer = "white";
+					cout << "White turn: ";
+			}
 			try {
 				string cmd;
 				*in >> cmd;
