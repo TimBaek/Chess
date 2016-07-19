@@ -33,6 +33,19 @@ bool InputValidation::isValid(const char& r, const char& c, const char& p) {
 	else return (row.find_first_of(r) != string::npos && column.find_first_of(c) != string::npos);
 }
 
+void InputValidation::setCurrPlayer(string& p) {
+	if (p == ""){
+		currPlayer = "white";
+		cout << "White turn: ";
+	} else if (p == "white") {
+		currPlayer = "black";
+		cout << "Black turn: ";
+	} else {
+		currPlayer = "white";
+		cout << "White turn: ";
+	}
+}
+
 void InputValidation::menuMessage() const{
 	cout << "Welcm to Chess!" << endl;
 	cout << "Avaliable Commands: [ game white-player black-player display] [ setup ] [ quit ]" << endl;

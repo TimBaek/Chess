@@ -82,19 +82,7 @@ void Controller::game() {
 		iv.gameMessage(); //Start new game
 		while (1) {
 			cout << *td;
-			switch(currPlayer) {
-				case "":
-					currPlayer = "white";
-					cout << "White turn: ";
-					break;
-				case "white":
-					currPlayer = "black";
-					cout << "Black turn: ";
-					break;
-				case "black":
-					currPlayer = "white";
-					cout << "White turn: ";
-			}
+			iv.setCurrPlayer(currPlayer);
 			try {
 				string cmd;
 				*in >> cmd;
