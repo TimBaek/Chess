@@ -21,7 +21,7 @@ void Controller::init() {
 		string w, b;
 		while (1) {
 			*in >> w >> b;
-			if (iv.playerVal(w,b)) {
+			if (iv.canCreatePlayer(w,b)) {
 				if (w == "human") wp = make_shared<Human>("white");
 				else wp = make_shared<Computer>("white");
 				if (b == "human") bp = make_shared<Human>("black");
@@ -44,7 +44,31 @@ void Controller::init() {
 void Controller::setup() {
 	customized = true;
 	iv.setupMessage();
-	//b.setup();
+	board.setup();
+
+	string cmd;
+	while (*in >> cmd) {
+		try {
+			string piece, cord, colour;
+			if (cmd == "+") {
+				*in >> piece >> cord;
+				if (iv.canSetup(piece,cord)) board.setup_add(piece[0], iv.convertChartoInt(cord[0]), cord[1]);
+				else throw iv;
+			} else if (cmd == "-") {
+				*in >> cord;
+				if (iv.canSetup(piece)) board.setup_delete(iv.convertChartoInt(cord[0]), cord[1]);
+				else throw iv;
+			} else if (cmd == "=") {
+				*in >> colour;
+			} else if (cmd == "done") {
+				//check condtion
+				// if true exit
+				// else back to loop
+			} else throw iv;
+		} catch (InputValidation e) {
+			e.errorMessage();
+		}
+	}
 }
 
 void Controller::game() {
@@ -58,7 +82,7 @@ void Controller::game() {
 				if (cmd == "move") {
 					/*vector<string> commands;
 					string line;
-					getline(*in,cords);
+					getline(*in,cord);
 					if (line == "") // move  for Computer
 					else {
 						istringstream iss{line};
@@ -68,11 +92,9 @@ void Controller::game() {
 						else if (commands.size() == 2) //Call piece move
 						else //Call pawn promotion
 					}*/
-				}
-				else if (cmd == "resign") {
+				} else if (cmd == "resign") {
 
-				}
-				else throw iv;
+				} else throw iv;
 			} catch (InputValidation e) {
 				e.errorMessage();
 			}
