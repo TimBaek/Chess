@@ -97,7 +97,7 @@ void Controller::game() {
 
 						if (cord.size() != 3 || cord.size() != 2) throw iv;
 						else if (cord.size() == 2) {
-							if (!isValid(cord[0][1],cord[0][0]) || !isValid(cord[1][1],cord[1][0])) throw iv;
+							if (!iv.isValid(cord[0][1],cord[0][0]) || !iv.isValid(cord[1][1],cord[1][0])) throw iv;
 							int r,c,destr,destc;
 							r = cord[0][1]-'0'- 1;
 							c = cord[0][0]-'a';
@@ -105,7 +105,7 @@ void Controller::game() {
 							destc = cord[1][0]-'a';
 							notify(r,c,destr,destc);
 						} else {
-							if(!isValid(cord[0][1],cord[0][0],cord[2][0]) || !isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
+							if(!iv.isValid(cord[0][1],cord[0][0],cord[2][0]) || !iv.isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
 							cout << "//Call pawn promotion" << endl;
 						}
 					}
