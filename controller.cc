@@ -10,8 +10,11 @@ Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
 	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer)) throw iv;
+	cout << "Erro4" << endl;
 	board.checkState(r,c)->move(destr,destc);
+	cout << "Erro5" << endl;
 	td->notify(&board);
+	cout << "Erro6" << endl;
 }
 
 void Controller::init() {
@@ -96,13 +99,13 @@ void Controller::game() {
 						string tmp;
 						while(iss >> tmp) cord.emplace_back(tmp);
 
-						if (cord.size() != 3 || cord.size() != 2) throw iv;
+						if (cord.size() != 3 && cord.size() != 2) throw iv;
 						else if (cord.size() == 2) {
 							if (!iv.isValid(cord[0][1],cord[0][0]) || !iv.isValid(cord[1][1],cord[1][0])) throw iv;
 							int r,c,destr,destc;
-							r = cord[0][1]-'0'- 1;
-							c = cord[0][0]-'a';
-							destr = cord[1][1]-'0'- 1;
+							r = cord[0][1]-'0'-1;
+							c = cord[0][0]-'a';	
+							destr = cord[1][1]-'0'-1;
 							destc = cord[1][0]-'a';
 							notify(r,c,destr,destc);
 						} else {

@@ -2,7 +2,7 @@
 #include "knight.h"
 using namespace std;
 
-Knight::Knight(Board *bd, int c, int r, string co, bool b=false):
+Knight::Knight(Board *bd, int c, int r, string co, bool b):
   Piece{bd, r, c, co, b} {
 }
 

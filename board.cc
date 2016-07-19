@@ -172,6 +172,10 @@ int Board::numPieces(string colour){
 
 
 shared_ptr<Piece> Board::checkState(int r, int c){
+	auto cs = currStates[r][c];
+	cout << r << ' ' << c << endl;
+	cout << cs->getRow() << ' ' << cs->getCol() << endl;
+	cout << cs->getLetter() << endl;
 	return currStates[r][c];
 }
 
@@ -185,7 +189,10 @@ char Board::getLetter(int r, int c){
 	else return currStates[r][c]->getLetter();
 }
 
+bool Board::canMove(shared_ptr<Piece> p, int destr, int destc, string col) {
 
+	return canMove(currStates[p->getRow()][p->getCol()], destr, destc, col);
+}
 
 bool Board::canMove(shared_ptr<King> k, int destr, int destc, string col) {
 	string colour = k->getColour();

@@ -37,6 +37,7 @@ class Board {
   void notify(int r, int c, Piece &p);
 
   bool isThere(Piece &p, int r, int c);
+  bool canMove(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
   bool canMove(std::shared_ptr<King> k, int destr, int destc, std::string col);
   bool canMove(std::shared_ptr<Queen> q, int destr, int destc, std::string col);
   bool canMove(std::shared_ptr<Rook> rk, int destr, int destc, std::string col);
