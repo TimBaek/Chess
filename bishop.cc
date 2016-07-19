@@ -2,17 +2,11 @@
 #include "bishop.h"
 using namespace std;
 
-Bishop::Bishop(Board *bd, int c, int r, string co):
-  Piece{bd, r, c, co} {
+Bishop::Bishop(Board *bd, int c, int r, string co, bool b):
+  Piece{bd, r, c, co, b} {
 }
 
 Bishop::~Bishop() { }
-
-void Bishop::move(int dr, int dc) {
-  notifyBoard(dr, dc);
-  row = dr;
-  col = dc;
-}
 
 char Bishop::getLetter() {
   if (colour == "white") {

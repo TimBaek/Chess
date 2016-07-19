@@ -3,21 +3,10 @@
 using namespace std;
 
 King::King(Board *bd, int r, int c, string co, bool b):
-  Piece{bd, r, c, co}, moved{b} {
+  Piece{bd, r, c, co, b} {
 }
 
 King::~King() { }
-
-void King::move(int dr, int dc) {
-  notifyBoard(dr, dc);
-  row = dr;
-  col = dc;
-  moved = true;
-}
-
-bool King::everMoved() {
-  return moved;
-}
 
 char King::getLetter() {
   if (colour == "white") {

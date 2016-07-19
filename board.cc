@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 #include "board.h"
 #include "bishop.h"
 #include "king.h"
@@ -9,44 +10,23 @@
 #include "rook.h"
 using namespace std;
 
-Board::Board(Controller *ctrl): ctrl{ctrl}, player1{""}, player2{""} {
-	// initializing Possible Moves
-	/*
-	for(int i=0; i<numPieces("black"); i++){
-		blackMoves.push_back(vector<vector<int>>());
-		whiteMoves.push_back(vector<vector<int>>());
-		for(int j=0; j<8; j++){
-			blackMoves[i].push_back(vector<int>());
-			whiteMoves[i].push_back(vector<int>());
-			for(int k=0; k<8; k++){
-				blackMoves[i][j].push_back(0);
-				whiteMoves[i][j].push_back(0);
-			}
-		}
-	}
-	*/
-}
-Board::~Board() {
-	currStates.pop();
-	//blackMoves.pop();
-	//whiteMoves.pop();
-}
+Board::Board(Controller *ctrl): ctrl{ctrl}, player1{""}, player2{""} {}
+Board::~Board() {}
 
 
 void Board::notify(int r, int c, Piece &p){
-	updateState(r,c,(p.getRow()), (p.getCol()));
+	updateState(r,c, (p.getRow()), (p.getCol()));
 }
 
 bool Board::isThere(Piece &p, int r, int c){
 	return((p.getRow()==r) && (p.getCol()==c));
 }
 
+/*
 bool Board::canMove(int r, int c, int destr, int destc){
-
 	return true;
 }
-
-// Assume canMove(r,c,destr,destc)
+*/
 void Board::updateState(int r, int c, int destr, int destc){
 	shared_ptr<Piece> tmp = currStates[r][c];
 	currStates[destr][destc] = tmp;
@@ -71,22 +51,34 @@ void Board::updatePiece(shared_ptr<Piece> p){
 void Board::init(string p1, string p2){
 	player1 = p1;
 	player2 = p2;
+
 	// initializing Current State
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		//blackMoves.push_back(vector<vector<int>>(8));
+		blackMoves.push_back(vector<vector<int>>(8));
 		for(int j=0; j<8; j++){
 			currStates[i][j] = nullptr;
 		}
 	}
-	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
-	/*
-	for(int i=0; i<8; i++){
-		blackMoves.push_back(currStates[0][i]);
 
+	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
+
+	// initializing Possible Moves
+	cerr << "blackMoves initialization" << endl;
+	cerr << "numBlack is " << numPieces("black") << endl;
+	for(int i=0; i<numPieces("black"); i++){
+		blackMoves.push_back(vector<vector<int>>());
+		whiteMoves.push_back(vector<vector<int>>());
+		for(int j=0; j<8; j++){
+			blackMoves[i].push_back(vector<int>());
+			whiteMoves[i].push_back(vector<int>());
+			for(int k=0; k<8; k++){
+				blackMoves[i][j].push_back(0);
+				whiteMoves[i][j].push_back(0);
+			}
+		}
 	}
-	*/
-	updatePossibleMove();
+
 }
 
 
@@ -191,4 +183,213 @@ bool Board::isEmpty(int r, int c){
 char Board::getLetter(int r, int c){
 	if(currStates[r][c]==nullptr) return ' ';
 	else return currStates[r][c]->getLetter();
+}
+
+
+
+bool Board::canMove(King *k, int destr, int destc) {
+	string colour = k->getColour();
+	int crow = k->getRow();
+	int ccol = k->getCol();
+
+	if ((abs(destr -crow) == 1 && abs(destc -ccol) == 1) ||
+		(destr == crow && (destc == ccol +1 || destc == ccol -1)) ||
+		(destc == ccol && (destr == crow +1 || destc == crow -1))) {
+		if (checkState(destr,destc) == nullptr ||
+			checkState(destr,destc)->getColour() != colour) {
+			return true;
+		} else {
+			return false;
+		}
+	} else if (destr == crow && (destc == ccol +2 || destc == ccol -2)) {
+		while(1 <= ccol || ccol <= 8) {
+			if (destc > ccol) {
+				++ccol;
+			} else {
+				--ccol;
+			} 
+			if (!checkState(crow,ccol)) break;
+		}
+		if ((checkState(crow,ccol)->getLetter() == 
+			(colour == "white"? 'R' : 'r')) &&
+			checkState(crow,ccol)->everMoved() == false) {
+			return true;
+		} 
+	} else {
+		return false;
+	}
+}
+
+bool Board::canMove(Queen *q, int destr, int destc) {
+	string colour = q->getColour();
+	int crow = q->getRow();
+	int ccol = q->getCol();
+	if (destr == crow || destc != ccol) {
+		while (true) {
+			if (destr < crow) {
+				--crow;
+			} else if (destr > crow) {
+				++crow;
+			} else if (destc < ccol) {
+				--ccol;
+			} else if (destc > ccol) {
+				++ccol;
+			}
+			if (destr == crow && destc == ccol) {
+				if (checkState(crow,ccol)->getColour() == colour) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				if (checkState(crow,ccol) == nullptr) {
+					continue;
+				} else {
+					return false;
+				}
+			}
+		}	
+	} else if (abs(crow -destr) != abs(ccol -destc)) {
+		while(true) {
+			if (crow < destr && ccol < destc) {
+				++crow;
+				++ccol;
+			} else if (crow < destr && ccol > destc) {
+				++crow;
+				--ccol;
+			} else if (crow > destr && ccol < destc) {
+				--crow;
+				++ccol;
+			} else {
+				--crow;
+				--ccol;
+			}
+			if (crow != destr && ccol != destc) {
+				if (checkState(crow,ccol) == nullptr) {
+					continue;
+				} else {
+					return false;
+				}
+			} else {
+				if (checkState(crow,ccol)->getColour() == colour) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}	
+	} else {
+		 return false;
+	}
+
+}
+
+bool Board::canMove(Rook *rk, int destr, int destc) {
+	string colour = rk->getColour();
+	int crow = rk->getRow();
+	int ccol = rk->getCol();
+	if (destr != crow && destc != ccol) return false;
+	while (true) {
+		if (destr < crow) {
+			--crow;
+		} else if (destr > crow) {
+			++crow;
+		} else if (destc < ccol) {
+			--ccol;
+		} else if (destc > ccol) {
+			++ccol;
+		}
+		if (destr == crow && destc == ccol) {
+			if (checkState(crow,ccol)->getColour() == colour) {
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			if (checkState(crow,ccol) == nullptr) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+	}
+}
+
+
+bool Board::canMove(Knight *n, int destr, int destc) {
+	string colour = n->getColour();
+	int crow = n->getRow();
+	int ccol = n->getCol();
+	if (checkState(destr,destc)->getColour() == colour) return false;
+	if ((destc == ccol +2 && destr == crow +1) ||
+	    (destc == ccol +2 && destr == crow -1) ||
+	    (destc == ccol -2 && destr == crow +1) ||
+	    (destc == ccol -2 && destr == crow -1) ||
+	    (destr == crow +2 && destc == ccol +1) ||
+	    (destr == crow +2 && destc == ccol -1) ||
+	    (destr == crow -2 && destc == ccol +1) ||
+	    (destr == crow -2 && destc == ccol -1)) {
+	    return true;
+	} else {
+		return false;
+	}
+}
+
+
+bool Board::canMove(Bishop *b, int destr, int destc) {
+	string colour = b->getColour();
+	int crow = b->getRow();
+	int ccol = b->getCol();
+	if (abs(crow -destr) != abs(ccol -destc)) return false;
+	while(true) {
+		if (crow < destr && ccol < destc) {
+			++crow;
+			++ccol;
+		} else if (crow < destr && ccol > destc) {
+			++crow;
+			--ccol;
+		} else if (crow > destr && ccol < destc) {
+			--crow;
+			++ccol;
+		} else {
+			--crow;
+			--ccol;
+		}
+		if (crow != destr && ccol != destc) {
+			if (checkState(crow,ccol) == nullptr) {
+				continue;
+			} else {
+				return false;
+			}
+		} else {
+			if (checkState(crow,ccol)->getColour() == colour) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+}
+
+bool Board::canMove(Pawn *p, int destr, int destc) {
+	string colour = p->getColour();
+	int crow = p->getRow();
+	int ccol = p->getCol();
+
+	// attack move
+	if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
+		if (checkState(destr,destc)->getColour() != colour) return true;
+	// double step move
+	} else if (destr == crow +2 && destc == ccol) {
+		if (p->everMoved() &&
+			checkState(crow +1, ccol) == nullptr &&
+			checkState(crow +2, ccol) == nullptr) {
+			return true;
+		}
+	// regular move
+	} else if (destr == crow +1 && destc == ccol) {
+		if (checkState(crow +1, ccol) == nullptr) return true;
+	} else {
+		return false;
+	}
 }

@@ -4,9 +4,8 @@
 
 class Bishop: public Piece {
  public:
-  Bishop(Board *bd, int r, int c, std::string co);
+  Bishop(Board *bd, int r, int c, std::string co, bool b=false);
   ~Bishop();
-  void move(int dr, int dc) override;
   char getLetter() override;
 };
 

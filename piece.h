@@ -2,6 +2,8 @@
 #define _PIECE_H_
 #include <memory>
 #include <string>
+#include <vector>
+#include <utility>
 
 class Board;
 /*
@@ -20,12 +22,14 @@ class Piece {
   int row;
   int col;
   std::string colour;
+  bool moved = false;
 
  public:
-  Piece(Board *bd, int r, int c, std::string co);
+  Piece(Board *bd, int r, int c, std::string co, bool b=false);
   virtual ~Piece();
   void notifyBoard(int dr, int dc);
-  virtual void move(int dr, int dc)=0;
+  void move(int dr, int dc);
+  bool everMoved();
   int getRow() const;
   int getCol() const;
   virtual char getLetter()=0;

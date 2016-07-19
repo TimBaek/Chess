@@ -8,9 +8,7 @@ class Pawn: public Piece {
  public:
   Pawn(Board *bd, int r, int c, std::string co, bool b=false);
   ~Pawn();
-  void move(int dr, int dc) override;
   char getLetter() override;
-  bool everMoved();
 };
 
 

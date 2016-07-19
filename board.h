@@ -7,6 +7,12 @@
 #include "graphicdisplay.h"
 
 class Controller;
+class King;
+class Queen;
+class Rook;
+class Knight;
+class Bishop;
+class Pawn;
 
 class Board {
   //std::vector<Piece> P1;
@@ -17,8 +23,6 @@ class Board {
   std::vector<std::vector<std::shared_ptr<Piece>>> currStates;  // current state of the board
   std::vector<std::vector<std::vector<int>>> blackMoves; // possible moves for Black player
   std::vector<std::vector<std::vector<int>>> whiteMoves; // possible moves for White player
-  std::vector<shared_ptr<Piece>> blackCheck;
-  std::vector<shared_ptr<Piece>> whiteCheck;
 
   void defaultSetup(std::string colour1, std::string colour2);
   void updateState(int r, int c, int destr, int destc);
@@ -33,7 +37,12 @@ class Board {
   void notify(int r, int c, Piece &p);
 
   bool isThere(Piece &p, int r, int c);
-  bool canMove(int r, int c, int destr, int destc);
+  bool canMove(King *k, int destr, int destc);
+  bool canMove(Queen *q, int destr, int destc);
+  bool canMove(Rook *rk, int destr, int destc);
+  bool canMove(Knight *n, int destr, int destc);
+  bool canMove(Bishop *b, int destr, int destc);
+  bool canMove(Pawn *p, int destr, int destc);
   //TextDisplay &getTd() const;
   //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
   void init(std::string p1, std::string p2);

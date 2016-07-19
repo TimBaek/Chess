@@ -4,9 +4,8 @@
 
 class Knight: public Piece {
  public:
-  Knight(Board *bd, int r, int c, std::string co);
+  Knight(Board *bd, int r, int c, std::string co, bool b=false);
   ~Knight();
-  void move(int dr, int dc) override;
   char getLetter() override;
 };
 
