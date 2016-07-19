@@ -38,12 +38,12 @@ class Board {
 
   bool isThere(Piece &p, int r, int c);
   bool canMove(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
-  bool canMove(std::shared_ptr<King> k, int destr, int destc, std::string col);
-  bool canMove(std::shared_ptr<Queen> q, int destr, int destc, std::string col);
-  bool canMove(std::shared_ptr<Rook> rk, int destr, int destc, std::string col);
-  bool canMove(std::shared_ptr<Knight> n, int destr, int destc, std::string col);
-  bool canMove(std::shared_ptr<Bishop> b, int destr, int destc, std::string col);
-  bool canMove(std::shared_ptr<Pawn> p, int destr, int destc, std::string col);
+  bool canMoveK(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
+  bool canMoveQ(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
+  bool canMoveR(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
+  bool canMoveN(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
+  bool canMoveB(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
+  bool canMoveP(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
   //TextDisplay &getTd() const;
   //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
   void init(std::string p1, std::string p2);
