@@ -37,12 +37,12 @@ class Board {
   void notify(int r, int c, Piece &p);
 
   bool isThere(Piece &p, int r, int c);
-  bool canMove(King *k, int destr, int destc);
-  bool canMove(Queen *q, int destr, int destc);
-  bool canMove(Rook *rk, int destr, int destc);
-  bool canMove(Knight *n, int destr, int destc);
-  bool canMove(Bishop *b, int destr, int destc);
-  bool canMove(Pawn *p, int destr, int destc);
+  bool canMove(shared_ptr<King> k, int destr, int destc, std::string col);
+  bool canMove(shared_ptr<Queen> q, int destr, int destc, std::string col);
+  bool canMove(shared_ptr<Rook> rk, int destr, int destc, std::string col);
+  bool canMove(shared_ptr<Knight> n, int destr, int destc), std::string col;
+  bool canMove(shared_ptr<Bishop> b, int destr, int destc, std::string col);
+  bool canMove(shared_ptr<Pawn> p, int destr, int destc, std::string col);
   //TextDisplay &getTd() const;
   //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
   void init(std::string p1, std::string p2);

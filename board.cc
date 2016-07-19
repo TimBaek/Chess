@@ -187,7 +187,7 @@ char Board::getLetter(int r, int c){
 
 
 
-bool Board::canMove(King *k, int destr, int destc, string col) {
+bool Board::canMove(shared_ptr<King> k, int destr, int destc, string col) {
 	string colour = k->getColour();
 	int crow = k->getRow();
 	int ccol = k->getCol();
@@ -220,7 +220,7 @@ bool Board::canMove(King *k, int destr, int destc, string col) {
 	}
 }
 
-bool Board::canMove(Queen *q, int destr, int destc) {
+bool Board::canMove(shared_ptr<Queen> q, int destr, int destc, string col) {
 	string colour = q->getColour();
 	int crow = q->getRow();
 	int ccol = q->getCol();
@@ -286,7 +286,7 @@ bool Board::canMove(Queen *q, int destr, int destc) {
 
 }
 
-bool Board::canMove(Rook *rk, int destr, int destc) {
+bool Board::canMove(shared_ptr<Rook> rk, int destr, int destc, string col) {
 	string colour = rk->getColour();
 	int crow = rk->getRow();
 	int ccol = rk->getCol();
@@ -320,7 +320,7 @@ bool Board::canMove(Rook *rk, int destr, int destc) {
 }
 
 
-bool Board::canMove(Knight *n, int destr, int destc) {
+bool Board::canMove(shared_ptr<Knight> n, int destr, int destc, string col) {
 	string colour = n->getColour();
 	int crow = n->getRow();
 	int ccol = n->getCol();
@@ -342,7 +342,7 @@ bool Board::canMove(Knight *n, int destr, int destc) {
 }
 
 
-bool Board::canMove(Bishop *b, int destr, int destc) {
+bool Board::canMove(shared_ptr<Bishop> b, int destr, int destc, string col) {
 	string colour = b->getColour();
 	int crow = b->getRow();
 	int ccol = b->getCol();
@@ -379,7 +379,7 @@ bool Board::canMove(Bishop *b, int destr, int destc) {
 	}
 }
 
-bool Board::canMove(Pawn *p, int destr, int destc) {
+bool Board::canMove(shared_ptr<Pawn> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
@@ -402,3 +402,15 @@ bool Board::canMove(Pawn *p, int destr, int destc) {
 		return false;
 	}
 }
+
+/*
+bool Board::isChecked(int r, int c, int destr, int destc) {
+	vector<vector<shared_ptr<Piece>>> virtBoard;
+	for(int r=0; r < 8; ++r) {
+		virtBoard.emplace_back(vector<shared_ptr<Piece>>{});
+		for(int c=0; c < 8; ++c) {
+
+		}
+	}
+}
+*/
