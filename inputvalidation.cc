@@ -33,17 +33,9 @@ bool InputValidation::isValid(const char& r, const char& c, const char& p) {
 	else return (row.find_first_of(r) != string::npos && column.find_first_of(c) != string::npos);
 }
 
-void InputValidation::setCurrPlayer(string& p) {
-	if (p == ""){
-		p = "white";
-		cout << "White turn: ";
-	} else if (p == "white") {
-		p = "black";
-		cout << "Black turn: ";
-	} else {
-		p = "white";
-		cout << "White turn: ";
-	}
+void InputValidation::currPlayerMessage(string& p) {
+	if (p == "white") cout << "White turn: ";
+	else cout << "Black turn: ";
 }
 
 void InputValidation::menuMessage() const{

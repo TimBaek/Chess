@@ -23,7 +23,7 @@ class Controller {
 	Board board;
 	InputValidation iv;
  	bool customized;
- 	void setcurrPlayer();
+ 	void setNextPlayer();
  public:
  	Controller();
  	~Controller();

@@ -5,13 +5,18 @@ using namespace std;
 
 #include "controller.h"
 
-Controller::Controller(): in{&cin}, board{this}, customized{false}, currPlayer{""} {}
+Controller::Controller(): in{&cin}, board{this}, customized{false}, currPlayer{"white"} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
 	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer)) throw iv;
 	board.checkState(r,c)->move(destr,destc);
 	td->notify(&board);
+}
+
+void Controller::setNextPlayer() {
+	if (currPlayer == "white") currPlayer = "black";
+	else currPlayer = "white";
 }
 
 void Controller::init() {
@@ -67,6 +72,7 @@ void Controller::setup() {
 					else throw iv;
 				} else if (cmd == "=") {
 					*in >> colour;
+					currPlayer = colour;
 				} else if (cmd == "done") {
 					break;
 					//check condtion
@@ -86,7 +92,7 @@ void Controller::game() {
 		iv.gameMessage(); //Start new game
 		while (1) {
 			cout << *td;
-			iv.setCurrPlayer(currPlayer);
+			iv.currPlayerMessage(currPlayer);
 			try {
 				string cmd;
 				*in >> cmd;
@@ -122,6 +128,8 @@ void Controller::game() {
 				// if checkmate: out checkmate -> break
 				// if stalemate: out stalemate -> break
 				// if check: out check
+
+				setNextPlayer();
 			} catch (InputValidation e) {
 				e.errorMessage();
 			}
