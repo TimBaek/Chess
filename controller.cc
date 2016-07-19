@@ -54,9 +54,7 @@ void Controller::setup() {
 				if (cmd == "+") {
 					*in >> p >> c >> r;
 					if (iv.isValid(r,c,p)) {
-						cout << "Error1" << endl;
 						board.setup_add(p, r-'0'-1, c-'a');
-						cout << "Error2" << endl;
 						td->notify(&board);
 					}
 					else throw iv;
