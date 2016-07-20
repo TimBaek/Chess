@@ -17,6 +17,7 @@
 class Controller {
 	std::istream *in;
 	std::string currPlayer;
+	std::string displayOption;
 	std::shared_ptr<Player> wp, bp;
 	std::shared_ptr<TextDisplay> td;
 	std::shared_ptr<GraphicDisplay> gd;
@@ -24,10 +25,10 @@ class Controller {
 	InputValidation iv;
  	bool customized;
  	void setNextPlayer();
+ 	void init();
  public:
  	Controller();
  	~Controller();
- 	void init();
  	void play();
  	void game();
  	void setup();

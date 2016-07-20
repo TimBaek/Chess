@@ -40,12 +40,14 @@ void InputValidation::currPlayerMessage(string& p) {
 
 void InputValidation::menuMessage() const{
 	cout << "Welcome to Chess!" << endl;
-	cout << "Avaliable Commands: [ game white-player black-player display] [ setup ] [ quit ]" << endl;
+	cout << endl;
+	cout << "Avaliable Commands: [ game white-player black-player display] [ setup display ] [ quit ]" << endl;
 	cout << "Player Options: [ human | computer[1-4] ]" << endl;
+	cout << "Display Options: [ td ] [ gd ]" << endl;
 }
 
 void InputValidation::errorMessage() const {
-	cerr << "Error! Please re-enter the inputs" << endl;
+	cerr << "Error! Please re-enter." << endl;
 }
 
 void InputValidation::gameMessage() const {
@@ -55,8 +57,4 @@ void InputValidation::gameMessage() const {
 
 void InputValidation::setupMessage() const {
 	cout << "Avaliable Commands: [ + Piece cord] [ - cord ] [ = colour ] [ done ]" << endl;
-}
-
-void InputValidation::turnMessage(int i) const {
-	cout << "Player " << i << ". Enter command: " << endl;
 }
