@@ -208,7 +208,7 @@ bool Board::canMoveK(shared_ptr<Piece> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
-
+	// regular moves
 	if ((abs(destr -crow) == 1 && abs(destc -ccol) == 1) ||
 		(destr == crow && (destc == ccol +1 || destc == ccol -1)) ||
 		(destc == ccol && (destr == crow +1 || destc == crow -1))) {
@@ -218,20 +218,27 @@ bool Board::canMoveK(shared_ptr<Piece> p, int destr, int destc, string col) {
 		} else {
 			return false;
 		}
+	// castleing move
 	} else if (destr == crow && (destc == ccol +2 || destc == ccol -2)) {
+		// checking if the squares are empty
 		while(1 <= ccol || ccol <= 8) {
-			if (destc > ccol) {
+			if (destc > p->getCol()) {
 				++ccol;
 			} else {
 				--ccol;
 			} 
-			if (!checkState(crow,ccol)) break;
+			if (checkState(crow,ccol) != nullptr) break;
 		}
-		if ((checkState(crow,ccol)->getLetter() == 
+		// checking if there is an ally rook
+		if (checkState(crow,ccol) != nullptr &&
+			p->everMoved() == false &&
+			(checkState(crow,ccol)->getLetter() == 
 			(colour == "white"? 'R' : 'r')) &&
 			checkState(crow,ccol)->everMoved() == false) {
 			return true;
-		} 
+		} else {
+			return false;
+		}
 	} else {
 		return false;
 	}
@@ -257,6 +264,8 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 				if (checkState(destr,destc) == nullptr ||
 					checkState(destr,destc)->getColour() != colour) {
 					return true;
+				} else {
+					return false;
 				}
 			} else {
 				if (checkState(crow,ccol) == nullptr) {
@@ -291,6 +300,8 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 				if (checkState(destr,destc) == nullptr ||
 					checkState(destr,destc)->getColour() != colour) {
 					return true;
+				} else {
+					return false;
 				}
 			}
 		}	
@@ -319,7 +330,9 @@ bool Board::canMoveR(shared_ptr<Piece> p, int destr, int destc, string col) {
 			if (checkState(destr,destc) == nullptr ||
 				checkState(destr,destc)->getColour() != colour) {
 				return true;
-			} 
+			} else {
+				return false;
+			}
 		} else {
 			if (checkState(crow,ccol) == nullptr) {
 				continue;
