@@ -123,12 +123,13 @@ void Controller::game() {
 				if (wp->isCheckmate()) { // checkmate
 					iv.checkmateMessage(wp->getColour());
 					break;
-				} else {
+				}
+				if (bp->isCheckmate()) {
 					iv.checkmateMessage(bp->getColour());
 					break;
 				}
 				if (wp->isCheck()) iv.checkMessage(wp->getColour()); //check
-				else iv.checkMessage(wp->getColour());
+				if (bp->isCheck()) iv.checkMessage(bp->getColour());
 				if (wp->isStalemate() && bp->isStalemate()) iv.stalemateMessage();
 
 				setNextPlayer();
