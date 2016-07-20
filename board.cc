@@ -319,11 +319,10 @@ bool Board::canMoveR(shared_ptr<Piece> p, int destr, int destc, string col) {
 			++ccol;
 		}
 		if (destr == crow && destc == ccol) {
-			if (checkState(crow,ccol)->getColour() == colour) {
-				return false;
-			} else {
+			if (checkState(destr,destc) == nullptr ||
+				checkState(destr,destc)->getColour() != colour) {
 				return true;
-			}
+			} 
 		} else {
 			if (checkState(crow,ccol) == nullptr) {
 				continue;
