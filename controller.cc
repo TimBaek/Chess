@@ -63,9 +63,10 @@ void Controller::init() {
 		else wp = make_shared<Computer>("white");
 		if (b == "human") bp = make_shared<Human>("black");
 		else bp = make_shared<Computer>("black");
+		board.setPlayers(wp,bp);
 
 		//Board init
-		if (!customized) board.init(wp->getColour(), bp->getColour());
+		if (!customized) board.init();
 
 		//Display init
 		view->notify(&board);

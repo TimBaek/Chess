@@ -2,6 +2,8 @@
 #include <vector>
 #include <cstdlib>
 #include "board.h"
+#include "human.h"
+#include "computer.h"
 #include "bishop.h"
 #include "king.h"
 #include "knight.h"
@@ -10,7 +12,7 @@
 #include "rook.h"
 using namespace std;
 
-Board::Board(Controller *ctrl): ctrl{ctrl}, player1{""}, player2{""} {}
+Board::Board(Controller *ctrl): ctrl{ctrl}, wp{nullptr}, bp{nullptr} {}
 Board::~Board() {}
 
 
@@ -48,10 +50,7 @@ void Board::updatePiece(shared_ptr<Piece> p){
 }
 
 
-void Board::init(string p1, string p2){
-	player1 = p1;
-	player2 = p2;
-
+void Board::init(){
 	// initializing Current State
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
@@ -60,8 +59,7 @@ void Board::init(string p1, string p2){
 			currStates[i][j] = nullptr;
 		}
 	}
-
-	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
+	defaultSetup(wp->getColour(), bp->getColour());
 
 	// initializing Possible Moves
 	//cerr << "blackMoves initialization" << endl;
@@ -81,7 +79,10 @@ void Board::init(string p1, string p2){
 
 }
 
-
+void Board::setPlayers(shared_ptr<Player> w, shared_ptr<Player> b) {
+	wp = w;
+	bp = b;
+}
 
 // Default setup:
 // colour1 is for the white player

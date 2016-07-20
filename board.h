@@ -3,10 +3,13 @@
 #include <iostream>
 #include <vector>
 #include "piece.h"
+#include "player.h"
 #include "textdisplay.h"
 #include "graphicdisplay.h"
 
 class Controller;
+class Human;
+class Computer;
 class King;
 class Queen;
 class Rook;
@@ -18,8 +21,7 @@ class Board {
   //std::vector<Piece> P1;
   //std::vector<Piece> P2;
   Controller *ctrl; // The Controller
-  std::string player1;
-  std::string player2;
+  std::shared_ptr<Player> wp, bp;
   std::vector<std::vector<std::shared_ptr<Piece>>> currStates;  // current state of the board
   std::vector<std::vector<std::vector<int>>> blackMoves; // possible moves for Black player
   std::vector<std::vector<std::vector<int>>> whiteMoves; // possible moves for White player
@@ -46,7 +48,8 @@ class Board {
   bool canMoveP(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
   //TextDisplay &getTd() const;
   //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
-  void init(std::string p1, std::string p2);
+  void init();
+  void setPlayers(std::shared_ptr<Player> w, std::shared_ptr<Player> b);
   void setup();
   void setup_add(char letter, int r, int c);
   void setup_delete(int r, int c);
