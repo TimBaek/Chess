@@ -3,11 +3,14 @@
 #include <iostream>
 #include <vector>
 
-class View {
+class Board;
 
-   public:
-        View();
-        virtual ~View() = 0;
+class View {
+ public:
+ 	View();
+ 	virtual ~View() = 0;
+ 	virtual void notify(Board *b) = 0;
+ 	virtual void print() = 0;
 };
 
 #endif

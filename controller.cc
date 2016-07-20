@@ -11,8 +11,7 @@ Controller::~Controller() {}
 void Controller::notify(int r, int c, int destr, int destc) {
 	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer)) throw iv;
 	board.checkState(r,c)->move(destr,destc);
-	if (displayOption == "td") td->notify(&board);
-	else //gd->notify(&board);
+	view->notify(&board);
 }
 
 void Controller::setNextPlayer() {
@@ -25,13 +24,11 @@ void Controller::setup() {
 	string d;
 	while (*in >> d) {
 		if (d == "td") {
-			displayOption = d;
-			td = make_shared<TextDisplay>();
+			view = make_shared<TextDisplay>();
 			board.setup();
 			break;
 		} else if (d == "gd") {
-			displayOption = d;
-			gd = make_shared<GraphicDisplay>();
+			view = make_shared<GraphicDisplay>();
 			board.setup();
 			break;
 		} else iv.errorMessage();
@@ -47,14 +44,14 @@ void Controller::setup() {
 				*in >> p >> c >> r;
 				if (iv.isValid(r,c,p)) {
 					board.setup_add(p, r-'0'-1, c-'a');
-					td->notify(&board);			// Fix this
+					view->notify(&board);
 				}
 				else throw iv;
 			} else if (cmd == "-") {
 				*in >> c >> r;
 				if (iv.isValid(r,c)) {
 					board.setup_delete(r-'0'-1, c-'a');
-					td->notify(&board);			// Fix this
+					view->notify(&board);
 				}
 				else throw iv;
 			} else if (cmd == "=") {
@@ -93,12 +90,10 @@ void Controller::init() {
 		//Display init
 		if (!customized) {
 			if (d == "td") {
-				displayOption = d;
-				td = make_shared<TextDisplay>();
-				td->notify(&board);	//Fix this
+				view = make_shared<TextDisplay>();
+				view->notify(&board);
 			} else {
-				displayOption = d;
-				gd = make_shared<GraphicDisplay>();	
+				view = make_shared<GraphicDisplay>();	
 			}
 		}
 	} catch (InputValidation e) {
@@ -111,7 +106,7 @@ void Controller::game() {
 		init();
 		iv.gameMessage(); //Start new game
 		while (1) {
-			cout << *td;
+			view->print();
 			iv.currPlayerMessage(currPlayer);
 			try {
 				string cmd;

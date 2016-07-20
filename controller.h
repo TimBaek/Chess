@@ -6,21 +6,17 @@
 #include <string>
 
 #include "inputvalidation.h"
-#include "player.h"
-#include "human.h"
-#include "computer.h"
 #include "board.h"
-//#include "view.h"
 #include "textdisplay.h"
 #include "graphicdisplay.h"
+#include "human.h"
+#include "computer.h"
 
 class Controller {
 	std::istream *in;
 	std::string currPlayer;
-	std::string displayOption;
-	std::shared_ptr<Player> wp, bp;
-	std::shared_ptr<TextDisplay> td;
-	std::shared_ptr<GraphicDisplay> gd;
+	std::shared_ptr<Player> wp,bp;
+	std::shared_ptr<View> view;
 	Board board;
 	InputValidation iv;
  	bool customized;
