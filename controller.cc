@@ -21,39 +21,22 @@ void Controller::setNextPlayer() {
 
 void Controller::setup() {
 	customized = true;
-	string d;
-	while (*in >> d) {
-		if (d == "td") {
-			view = make_shared<TextDisplay>();
-			board.setup();
-			break;
-		} else if (d == "gd") {
-			view = make_shared<GraphicDisplay>();
-			board.setup();
-			break;
-		} else iv.errorMessage();
-	} // Fix up to here
-
 	iv.setupMessage();
 	string cmd;
+	board.setup();
 	while (*in >> cmd) {
+		cout << "Setup: ";
 		try {
 			char p, r, c;
 			string colour;
 			if (cmd == "+") {
 				*in >> p >> c >> r;
-				if (iv.isValid(r,c,p)) {
-					board.setup_add(p, r-'0'-1, c-'a');
-					view->notify(&board);
-				}
-				else throw iv;
+				if (!iv.isValid(r,c,p)) throw iv;
+				board.setup_add(p, r-'0'-1, c-'a');	
 			} else if (cmd == "-") {
 				*in >> c >> r;
-				if (iv.isValid(r,c)) {
-					board.setup_delete(r-'0'-1, c-'a');
-					view->notify(&board);
-				}
-				else throw iv;
+				if (!iv.isValid(r,c)) throw iv;
+				board.setup_delete(r-'0'-1, c-'a');
 			} else if (cmd == "=") {
 				*in >> colour;
 				currPlayer = colour;
@@ -72,8 +55,7 @@ void Controller::setup() {
 void Controller::init() {
 	try {
 		string w, b, d;
-		*in >> w >> b;
-		if (!customized) *in >> d;
+		*in >> w >> b >> d;
 		
 		if (!iv.isPlayer(w,b)) throw iv;
 		if (d != "td" && d != "gd") throw iv;
@@ -88,14 +70,10 @@ void Controller::init() {
 		if (!customized) board.init(wp->getColour(), bp->getColour());
 
 		//Display init
-		if (!customized) {
-			if (d == "td") {
-				view = make_shared<TextDisplay>();
-				view->notify(&board);
-			} else {
-				view = make_shared<GraphicDisplay>();	
-			}
-		}
+		if (d == "td") view = make_shared<TextDisplay>();
+		else view = make_shared<GraphicDisplay>();	
+		view->notify(&board);
+		
 	} catch (InputValidation e) {
 		throw e;
 	}
@@ -137,13 +115,21 @@ void Controller::game() {
 						}
 					}
 				} else if (cmd == "resign") {
-
+					iv.resignMessage(currPlayer);
+					break;
 				} else throw iv;
 
 				// Display state of the game
-				// if checkmate: out checkmate -> break
-				// if stalemate: out stalemate -> break
-				// if check: out check
+				if (wp->isCheckmate()) { // checkmate
+					iv.checkmateMessage(wp->getColour());
+					break;
+				} else {
+					iv.checkmateMessage(bp->getColour());
+					break;
+				}
+				if (wp->isCheck()) iv.checkMessage(wp->getColour()); //check
+				else iv.checkMessage(wp->getColour());
+				if (wp->isStalemate() && bp->isStalemate()) iv.stalemateMessage();
 
 				setNextPlayer();
 			} catch (InputValidation e) {
@@ -160,8 +146,8 @@ void Controller::play() {
 	in->exceptions(ios::failbit|ios::eofbit);
 	iv.menuMessage();
 	string cmd;
-	cout << "Please enter command: ";
 	while (1) {
+		cout << "Menu: ";
 		try {
 			*in >> cmd;
 			if (cmd == "game") game();

@@ -6,16 +6,16 @@
 
 class Human: public Player {
 	std::string colour;
-	bool win;
 	bool stalemate;
 	bool checkmate;
+	bool check;
  public:
 	Human(std::string colour);
 	~Human();
 	std::string getColour();
-	bool isWin();
 	bool isStalemate();
 	bool isCheckmate();
+	bool isCheck();
 };
 
 #endif

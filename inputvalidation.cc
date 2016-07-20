@@ -41,9 +41,10 @@ void InputValidation::currPlayerMessage(string& p) {
 void InputValidation::menuMessage() const{
 	cout << "Welcome to Chess!" << endl;
 	cout << endl;
-	cout << "Avaliable Commands: [ game white-player black-player display] [ setup display ] [ quit ]" << endl;
+	cout << "Avaliable Commands: [ game white-player black-player display] [ setup ] [ quit ]" << endl;
 	cout << "Player Options: [ human | computer[1-4] ]" << endl;
 	cout << "Display Options: [ td ] [ gd ]" << endl;
+	cout << endl;
 }
 
 void InputValidation::errorMessage() const {
@@ -57,4 +58,23 @@ void InputValidation::gameMessage() const {
 
 void InputValidation::setupMessage() const {
 	cout << "Avaliable Commands: [ + Piece cord] [ - cord ] [ = colour ] [ done ]" << endl;
+}
+
+void InputValidation::checkMessage(const string& colour) {
+	if (colour == "white") cout << "White is in check." << endl;
+	else cout << "Black is in check." << endl;
+}
+
+void InputValidation::checkmateMessage(const string& colour) {
+	if (colour == "white") cout << "Checkmate! White wins!" << endl;
+	else cout << "Checkmate! Black wins!" << endl;
+}
+
+void InputValidation::stalemateMessage() {
+	cout << "Stalemate!" << endl;
+}
+
+void InputValidation::resignMessage(const string& currPlayer) {
+	if (currPlayer == "white") cout << "Black wins!" << endl;
+	else cout << "White wins!" << endl;
 }

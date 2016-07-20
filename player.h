@@ -7,8 +7,8 @@ class Player {
  	Player();
  	virtual ~Player() = 0;
  	virtual std::string getColour() = 0;
- 	virtual bool isWin() = 0;
  	virtual bool isStalemate() = 0;
+ 	virtual bool isCheck() = 0;
  	virtual bool isCheckmate() = 0;
 };
 
