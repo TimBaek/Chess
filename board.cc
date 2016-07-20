@@ -448,13 +448,34 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 }
 
 /*
-bool Board::isChecked(int r, int c, int destr, int destc) {
-	vector<vector<shared_ptr<Piece>>> virtBoard;
-	for(int r=0; r < 8; ++r) {
-		virtBoard.emplace_back(vector<shared_ptr<Piece>>{});
-		for(int c=0; c < 8; ++c) {
-
+bool Board::isChecked(int r, int c, int destr, int destc, string colour) {
+	vector<vector<shared_ptr<Piece>>> vBoard;
+	char klet = (colour == "white"? 'K':'k');
+	int krow = -1;
+	int kcol = -1;
+	// setting vBoard based on currState
+	for(int i=0; r < 8; ++i) {
+		vBoard.emplace_back(vector<shared_ptr<Piece>>(8));
+		for(int j=0; j < 8; ++j) {
+			auto p = checkState(i,j);
+			if (p) {
+				if (p->getLetter() == klet) {
+					krow = p->getRow();
+					kcol = p->getCol();
+				}
+				vBoard[i].emplace_back(Piece{this,p->getRow(),p->getCol(),p->getColour()});
+			} else {
+				vBoard[i].emplace_back(nullptr);
+			}
 		}
 	}
+	vBoard[destr][destc] = checkState(r,c);
+	vBoard[r][c] = nullptr;
+	if (krow == r && kcol == c) {
+		krow = destr;
+		kcol = destc;
+	}
+
 }
+
 */
