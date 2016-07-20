@@ -242,7 +242,7 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 	int crow = p->getRow();
 	int ccol = p->getCol();
 
-	if (destr == crow || destc != ccol) {
+	if (destr == crow || destc == ccol) {
 		while (true) {
 			if (destr < crow) {
 				--crow;
@@ -254,9 +254,8 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 				++ccol;
 			}
 			if (destr == crow && destc == ccol) {
-				if (checkState(crow,ccol)->getColour() == colour) {
-					return false;
-				} else {
+				if (checkState(destr,destc) == nullptr ||
+					checkState(destr,destc)->getColour() != colour) {
 					return true;
 				}
 			} else {
@@ -267,7 +266,7 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 				}
 			}
 		}	
-	} else if (abs(crow -destr) != abs(ccol -destc)) {
+	} else if (abs(crow -destr) == abs(ccol -destc)) {
 		while(true) {
 			if (crow < destr && ccol < destc) {
 				++crow;
@@ -289,9 +288,8 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 					return false;
 				}
 			} else {
-				if (checkState(crow,ccol)->getColour() == colour) {
-					return false;
-				} else {
+				if (checkState(destr,destc) == nullptr ||
+					checkState(destr,destc)->getColour() != colour) {
 					return true;
 				}
 			}
@@ -299,7 +297,6 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 	} else {
 		 return false;
 	}
-
 }
 
 bool Board::canMoveR(shared_ptr<Piece> p, int destr, int destc, string col) {
