@@ -385,7 +385,7 @@ bool Board::canMoveB(shared_ptr<Piece> p, int destr, int destc, string col) {
 			}
 		} else {
 			if (checkState(crow,ccol) == nullptr ||
-				checkState(crow,ccol)->getColour != colour) {
+				checkState(crow,ccol)->getColour() != colour) {
 				return true;
 			} else {
 				return false;
