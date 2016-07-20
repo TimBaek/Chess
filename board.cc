@@ -64,8 +64,8 @@ void Board::init(string p1, string p2){
 	player1 == "white" ? defaultSetup(player1, player2) : defaultSetup(player2, player1);
 
 	// initializing Possible Moves
-	cerr << "blackMoves initialization" << endl;
-	cerr << "numBlack is " << numPieces("black") << endl;
+	//cerr << "blackMoves initialization" << endl;
+	//cerr << "numBlack is " << numPieces("black") << endl;
 	for(int i=0; i<numPieces("black"); i++){
 		blackMoves.push_back(vector<vector<int>>());
 		whiteMoves.push_back(vector<vector<int>>());
@@ -398,21 +398,41 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 	int crow = p->getRow();
 	int ccol = p->getCol();
 
-	// attack move
-	if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
-		if (checkState(destr,destc)->getColour() != colour) return true;
-	// double step move
-	} else if (destr == crow +2 && destc == ccol) {
-		if (p->everMoved() == false &&
-			checkState(crow +1, ccol) == nullptr &&
-			checkState(crow +2, ccol) == nullptr) {
-			return true;
+	if (colour == "white") {
+		// attack move
+		if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
+			if (checkState(destr,destc)->getColour() != colour) return true;
+		// double step move
+		} else if (destr == crow +2 && destc == ccol) {
+			if (p->everMoved() == false &&
+				checkState(crow +1, ccol) == nullptr &&
+				checkState(crow +2, ccol) == nullptr) {
+				return true;
+			}
+		// regular move
+		} else if (destr == crow +1 && destc == ccol) {
+			if (checkState(crow +1, ccol) == nullptr) return true;
+		} else {
+			return false;
 		}
-	// regular move
-	} else if (ldestr == crow +1 && destc == ccol) {
-		if (checkState(crow +1, ccol) == nullptr) return true;
-	} else {
-		return false;
+	}
+	else {
+		// attack move
+		if (destr == crow -1 && (destc == ccol +1 || destc == ccol -1)) {
+			if (checkState(destr,destc)->getColour() != colour) return true;
+		// double step move
+		} else if (destr == crow -2 && destc == ccol) {
+			if (p->everMoved() == false &&
+				checkState(crow -1, ccol) == nullptr &&
+				checkState(crow -2, ccol) == nullptr) {
+				return true;
+			}
+		// regular move
+		} else if (destr == crow -1 && destc == ccol) {
+			if (checkState(crow -1, ccol) == nullptr) return true;
+		} else {
+			return false;
+		}	
 	}
 }
 

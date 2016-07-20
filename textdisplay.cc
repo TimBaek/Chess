@@ -1,5 +1,6 @@
 #include <iostream>
 #include "textdisplay.h"
+#include "board.h"
 using namespace std;
 
 TextDisplay::TextDisplay() {
@@ -15,7 +16,7 @@ TextDisplay::TextDisplay() {
         theDisplay.push_back(vector<char>(8));
         if(i<2 || i>5) continue;
         for(int j=0; j<8; j++) {
-        	theDisplay[i][j] = (i+j)%2 == 0 ? '_' : ' ';
+            theDisplay[i][j] = (i+j)%2 == 0 ? '_' : ' ';
         }
     }
     for(int j=0; j<8; j++){
@@ -53,34 +54,14 @@ void TextDisplay::notify(Board *b) {
 // dtor
 TextDisplay::~TextDisplay() {}
 
-ostream &operator<<(ostream &out, const TextDisplay &td) {
-
+void TextDisplay::print() {
     for(int r=7; r >= 0; r--) {
-        out << r+1 << " ";
+        cout << r+1 << " ";
         for(int c=0; c < 8; c++) {
-            out << td.theDisplay[r][c];
+            cout << theDisplay[r][c];
         }
-        out << endl;
+        cout << endl;
     }
-    out << endl;
-    out << "  abcdefgh" << endl;
-    return out;
-}
-
-void TextDisplay::setup(){
-    if(theDisplay.size()!=0) theDisplay.clear();
-    for(int i=0; i<8; i++) {
-        theDisplay.push_back(vector<char>(8));
-        for(int j=0; j<8; j++) {
-            theDisplay[i][j] = (i+j)%2 == 0 ? '_' : ' ';
-        }
-    }
-}
-
-void TextDisplay::setup_add(char letter, int r, int c){
-    theDisplay[r][c] = letter;
-}
-
-void TextDisplay::setup_delete(int r, int c){
-    theDisplay[r][c] = (r+c)%2 == 0 ? '_' : ' ';
+    cout << endl;
+    cout << "  abcdefgh" << endl;
 }

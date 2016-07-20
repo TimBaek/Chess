@@ -11,6 +11,7 @@ class Computer: public Player {
 	bool checkmate;
  public:
  	Computer(std::string colour);
+ 	~Computer();
  	std::string getColour();
 	bool isWin();
 	bool isStalemate();

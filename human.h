@@ -11,6 +11,7 @@ class Human: public Player {
 	bool checkmate;
  public:
 	Human(std::string colour);
+	~Human();
 	std::string getColour();
 	bool isWin();
 	bool isStalemate();
