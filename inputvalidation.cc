@@ -38,13 +38,15 @@ void InputValidation::currPlayerMessage(string& p) {
 	else cout << "Black turn: ";
 }
 
-void InputValidation::menuMessage() const{
+void InputValidation::level0Message() const {
 	cout << "Welcome to Chess!" << endl;
+	cout << "Please choose your option of display: [ td ] [ gd ]" << endl;
+}
+
+void InputValidation::menuMessage() const{
 	cout << endl;
-	cout << "Avaliable Commands: [ game white-player black-player display] [ setup ] [ quit ]" << endl;
+	cout << "Avaliable Commands: [ game white-player black-player ] [ setup ] [ quit ]" << endl;
 	cout << "Player Options: [ human | computer[1-4] ]" << endl;
-	cout << "Display Options: [ td ] [ gd ]" << endl;
-	cout << endl;
 }
 
 void InputValidation::errorMessage() const {
@@ -52,11 +54,13 @@ void InputValidation::errorMessage() const {
 }
 
 void InputValidation::gameMessage() const {
+	cout << endl;
 	cout << "Human Avaliable Commands: [ move cord cord ] [ move cord cord piece ] [ resign ]" << endl;
 	cout << "Computer Avaliable Commands: [ move ] [ resign ]" << endl;
 }
 
 void InputValidation::setupMessage() const {
+	cout << endl;
 	cout << "Avaliable Commands: [ + Piece cord] [ - cord ] [ = colour ] [ done ]" << endl;
 }
 

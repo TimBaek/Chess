@@ -10,6 +10,7 @@ class InputValidation {
  	bool isPlayer(const std::string& w, const std::string& b);
  	bool isValid(const char& r, const char& c, const char& p = ' ');
  	void currPlayerMessage(std::string& p);
+ 	void level0Message() const;
  	void menuMessage() const;
  	void errorMessage() const;
  	void gameMessage() const;

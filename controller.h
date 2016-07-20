@@ -7,18 +7,23 @@
 
 #include "inputvalidation.h"
 #include "board.h"
+#include "view.h"
 #include "textdisplay.h"
 #include "graphicdisplay.h"
+#include "player.h"
 #include "human.h"
 #include "computer.h"
+//#include "window.h"
 
 class Controller {
 	std::istream *in;
 	std::string currPlayer;
+	std::string displayOption;
 	std::shared_ptr<Player> wp,bp;
 	std::shared_ptr<View> view;
 	Board board;
 	InputValidation iv;
+	//Xwindow xw;
  	bool customized;
  	void setNextPlayer();
  	void init();

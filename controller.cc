@@ -22,13 +22,13 @@ void Controller::setNextPlayer() {
 void Controller::setup() {
 	customized = true;
 	iv.setupMessage();
-	string cmd;
 	board.setup();
-	while (*in >> cmd) {
+	while (1) {
 		cout << "Setup: ";
 		try {
+			string cmd, colour;
 			char p, r, c;
-			string colour;
+			*in >> cmd;
 			if (cmd == "+") {
 				*in >> p >> c >> r;
 				if (!iv.isValid(r,c,p)) throw iv;
@@ -54,11 +54,9 @@ void Controller::setup() {
 
 void Controller::init() {
 	try {
-		string w, b, d;
-		*in >> w >> b >> d;
-		
+		string w, b;
+		*in >> w >> b;
 		if (!iv.isPlayer(w,b)) throw iv;
-		if (d != "td" && d != "gd") throw iv;
 
 		//Player init
 		if (w == "human") wp = make_shared<Human>("white");
@@ -70,10 +68,7 @@ void Controller::init() {
 		if (!customized) board.init(wp->getColour(), bp->getColour());
 
 		//Display init
-		if (d == "td") view = make_shared<TextDisplay>();
-		else view = make_shared<GraphicDisplay>();	
 		view->notify(&board);
-		
 	} catch (InputValidation e) {
 		throw e;
 	}
@@ -84,6 +79,7 @@ void Controller::game() {
 		init();
 		iv.gameMessage(); //Start new game
 		while (1) {
+			cout << endl;
 			view->print();
 			iv.currPlayerMessage(currPlayer);
 			try {
@@ -111,7 +107,7 @@ void Controller::game() {
 							notify(r,c,destr,destc);
 						} else {
 							if(!iv.isValid(cord[0][1],cord[0][0],cord[2][0]) || !iv.isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
-							cout << "//Call pawn promotion" << endl;
+							//cout << "//Call pawn promotion" << endl;
 						}
 					}
 				} else if (cmd == "resign") {
@@ -145,6 +141,24 @@ void Controller::game() {
 
 void Controller::play() {
 	in->exceptions(ios::failbit|ios::eofbit);
+	iv.level0Message();
+	string d;
+	while (*in >> d) {
+		try {
+			if (d == "td") {
+				view = make_shared<TextDisplay>();
+				break;
+			} else if (d == "gd") {
+				view = make_shared<GraphicDisplay>();
+				break;
+			} else throw iv;
+			
+		} catch (InputValidation e) {
+			e.errorMessage();
+		}
+	}
+	displayOption = d;
+
 	iv.menuMessage();
 	string cmd;
 	while (1) {
