@@ -13,6 +13,7 @@ class Human: public Player {
 	Human(std::string colour);
 	~Human();
 	std::string getColour();
+	std::string getName();
 	bool isStalemate();
 	bool isCheckmate();
 	bool isCheck();
