@@ -12,16 +12,16 @@ class Computer: public Player {
 	Board *b;
 	int level;
 	int currR,currC,destR,destC;
-	std::string randomMove();
+	void randomMove();
  public:
- 	Computer(std::string colour, int level);
+ 	Computer(std::string colour, int level, Board *b);
  	~Computer();
  	std::string getColour();
  	std::string getName();
- 	int getX();
-	int getY();
-	int getDestX();
-	int getDestY();
+ 	int getR();
+	int getC();
+	int getDestR();
+	int getDestC();
 	bool isStalemate();
 	bool isCheckmate();
 	bool isCheck();
