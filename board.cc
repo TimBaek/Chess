@@ -448,6 +448,22 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 	}
 }
 
+
+void Board::castling(int r, int c, int destc) {
+	int rrow = r;
+	int rcol = c;
+	int jumpedCol = (c < destc? c +1 : c -1);
+	while(true) {
+		if (c < destc) {
+			++rcol;
+		} else {
+			--rcol;
+		}
+		if (checkState(rrow, rcol)) break;
+	}
+	checkState(rrow,rcol)->move(r,jumpedCol);
+	checkState(r,c)->move(r,destc);
+}
 /*
 bool Board::isChecked(int r, int c, int destr, int destc, string colour) {
 	vector<vector<shared_ptr<Piece>>> vBoard;
