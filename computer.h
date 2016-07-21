@@ -1,6 +1,6 @@
 #ifndef _COMPUTER_H_
 #define _COMPUTER_H_
-
+#include "board.h"
 #include "player.h"
 #include <string>
 
@@ -9,13 +9,19 @@ class Computer: public Player {
 	bool stalemate;
 	bool checkmate;
 	bool check;
+	Board *b;
+	int level;
+	std::string randomMove();
  public:
- 	Computer(std::string colour);
+ 	Computer(std::string colour, int level);
  	~Computer();
  	std::string getColour();
+ 	std::string getName();
 	bool isStalemate();
 	bool isCheckmate();
 	bool isCheck();
+	void setBoard(Board *b);
+	std::string nextMove();
 };
 
 #endif
