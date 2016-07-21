@@ -439,7 +439,7 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 			return false;
 		}
 	}
-	else {
+	else if(colour=="black") {
 		// attack move
 		if (destr == crow -1 && (destc == ccol +1 || destc == ccol -1)) {
 			if (checkState(destr,destc) &&
@@ -458,6 +458,7 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 			return false;
 		}	
 	}
+	else { return false; }
 }
 
 
