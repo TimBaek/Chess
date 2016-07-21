@@ -11,17 +11,23 @@ class Computer: public Player {
 	bool check;
 	Board *b;
 	int level;
+	int currR,currC,destR,destC;
 	std::string randomMove();
  public:
  	Computer(std::string colour, int level);
  	~Computer();
  	std::string getColour();
  	std::string getName();
+ 	int getX();
+	int getY();
+	int getDestX();
+	int getDestY();
 	bool isStalemate();
 	bool isCheckmate();
 	bool isCheck();
 	void setBoard(Board *b);
 	std::string nextMove();
+
 };
 
 #endif
