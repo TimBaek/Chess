@@ -409,17 +409,28 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
+	char allyPawn = p->getLetter();
+	char enemyPawn = (allyPawn == 'p'? 'P':'p'); 
 
 	if (colour == "white") {
 		// attack move
 		if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
-			if (checkState(destr,destc)->getColour() != colour) return true;
+			if (checkState(destr, destc) &&
+				checkState(destr,destc)->getColour() != colour) return true;
 		// double step move
 		} else if (destr == crow +2 && destc == ccol) {
 			if (p->everMoved() == false &&
 				checkState(crow +1, ccol) == nullptr &&
 				checkState(crow +2, ccol) == nullptr) {
-				return true;
+/*				if (ccol -1 >= 0 && checkState(destr, ccol -1) &&
+					checkState(destr, ccol -1)->getLetter == enemyPawn) {
+					checkState(destr, ccol -1)->setEnPassant(true);
+				}
+				if (ccol +1 <= 8 && checkState(crow +2, ccol +1) &&
+					checkState(destr, ccol +1)->getLetter == enemyPawn) {
+					checkState(destr, ccol +1)->setEnPassant(true);
+				}
+*/				return true;
 			}
 		// regular move
 		} else if (destr == crow +1 && destc == ccol) {
@@ -431,7 +442,8 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 	else {
 		// attack move
 		if (destr == crow -1 && (destc == ccol +1 || destc == ccol -1)) {
-			if (checkState(destr,destc)->getColour() != colour) return true;
+			if (checkState(destr,destc) &&
+				checkState(destr,destc)->getColour() != colour) return true;
 		// double step move
 		} else if (destr == crow -2 && destc == ccol) {
 			if (p->everMoved() == false &&
