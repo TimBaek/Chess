@@ -5,18 +5,18 @@ using namespace std;
 
 #include "controller.h"
 
-Controller::Controller(): in{&cin}, board{this}, customized{false}, currPlayer{"white"} {}
+Controller::Controller(): in{&cin}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
-	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer)) throw iv;
+	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || currPlayer->isCheck()) throw iv;
 	board.checkState(r,c)->move(destr,destc);
 	view->notify(&board);
 }
 
 void Controller::setNextPlayer() {
-	if (currPlayer == "white") currPlayer = "black";
-	else currPlayer = "white";
+	if (currPlayerColour == "white") currPlayer = bp;
+	else currPlayer = wp;
 }
 
 void Controller::setup() {
@@ -39,7 +39,9 @@ void Controller::setup() {
 				board.setup_delete(r-'0'-1, c-'a');
 			} else if (cmd == "=") {
 				*in >> colour;
-				currPlayer = colour;
+				if (colour == "white") currPlayerColour = "white";
+				else if (colour == "black") currPlayerColour = "black";
+				else throw iv;
 			} else if (cmd == "done") {
 				break;
 				//check condtion
@@ -63,7 +65,13 @@ void Controller::init() {
 		else wp = make_shared<Computer>("white");
 		if (b == "human") bp = make_shared<Human>("black");
 		else bp = make_shared<Computer>("black");
+		
 		board.setPlayers(wp,bp);
+		if (!customized) currPlayer = wp;
+		if (customized) {
+			if (currPlayerColour == "white" || currPlayerColour == "") currPlayer = wp;
+			else currPlayer = bp;
+		}
 
 		//Board init
 		if (!customized) board.init();
@@ -80,9 +88,10 @@ void Controller::game() {
 		init();
 		iv.gameMessage(); //Start new game
 		while (1) {
+			currPlayerColour = currPlayer->getColour();
 			cout << endl;
 			view->print();
-			iv.currPlayerMessage(currPlayer);
+			iv.currPlayerMessage(currPlayerColour);
 			try {
 				string cmd;
 				*in >> cmd;
@@ -112,12 +121,12 @@ void Controller::game() {
 						}
 					}
 				} else if (cmd == "resign") {
-					iv.resignMessage(currPlayer);
+					iv.resignMessage(currPlayerColour);
 					break;
 				} else throw iv;
 
 				// Display state of the game
-				if (wp->isCheckmate()) { // checkmate
+				/*if (wp->isCheckmate()) { // checkmate
 					iv.checkmateMessage(wp->getColour());
 					break;
 				}
@@ -127,7 +136,7 @@ void Controller::game() {
 				}
 				if (wp->isCheck()) iv.checkMessage(wp->getColour()); //check
 				if (bp->isCheck()) iv.checkMessage(bp->getColour());
-				if (wp->isStalemate() && bp->isStalemate()) iv.stalemateMessage();
+				if (wp->isStalemate() && bp->isStalemate()) iv.stalemateMessage(); */
 
 				setNextPlayer();
 			} catch (InputValidation e) {
@@ -158,7 +167,6 @@ void Controller::play() {
 			e.errorMessage();
 		}
 	}
-	displayOption = d;
 
 	iv.menuMessage();
 	string cmd;
