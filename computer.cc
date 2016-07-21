@@ -5,7 +5,7 @@
 #include <sstream>
 using namespace std;
 
-Computer::Computer(string colour, int level): colour{colour}, stalemate{false}, checkmate{false}, check{false}, b{nullptr}, level{level} {}
+Computer::Computer(string colour, int level): colour{colour}, stalemate{false}, checkmate{false}, check{false}, b{nullptr}, level{level}, currR{-1}, currC{-1}, destR{-1}, destC{-1} {}
 
 Computer::~Computer() {}
 
@@ -20,31 +20,42 @@ bool Computer::isCheck() { return check; }
 
 void Computer::setBoard(Board *board){ b = board; }
 
-string Computer::nextMove(){
-	if(level==1) return randomMove();
+int Computer::getR(){ return currX; }
+int Computer::getC(){ return currY; }
+int Computer::getDestR(){ return destX; }
+int Computer::getDestC(){ return destY; }
+
+void Computer::nextMove(){
+	if(level==1) randomMove();
 }
 
-string Computer::randomMove(){
-	std::vector<string> v;
+void Computer::randomMove(){
+	vector<int> v1;
+	vector<int> v2;
+	vector<int> v3;
+	vector<int> v4;
 	int index=0;
 	for(int r=0; r<8; r++){
 		for(int c=0; c<8; c++){
 			if(b->isEmpty(r,c)) continue;
 			if(b->checkState(r,c)->getColour() != getColour()) continue;
-			char letter = b->checkState(r,c)->getLetter();
-			letter = letter < 'Z' ? letter + 'a' - 'A' : letter;
+			//char letter = b->checkState(r,c)->getLetter();
+			//letter = letter < 'Z' ? letter + 'a' - 'A' : letter;
 			for(int i=0; i<8; i++){
 				for(int j=0; j<8; j++){
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
-					stringstream ss;
-					ss << r << c << i << j;
-					string s = ss.str();
-					v.push_back(s);
+					v1.push_back(r);
+					v2.push_back(c);
+					v3.push_back(destr);
+					v4.push_back(destc);
 				}
 			}
 		}
 	}
 	srand (time(NULL));
-	int x = rand() % v.size();
-	return v[x];
+	int x = rand() % v1.size();
+	currR = v1[x];
+	currC = v2[x];
+	destR = v3[x];
+	destC = v4[x];
 }
