@@ -20,4 +20,4 @@ int Human::getC(){ return -1; }
 int Human::getDestR(){ return -1; }
 int Human::getDestC(){ return -1; }
 
-void nextMove(){ }
+void Human::nextMove(){ }
