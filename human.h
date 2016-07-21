@@ -14,6 +14,11 @@ class Human: public Player {
 	~Human();
 	std::string getColour();
 	std::string getName();
+	int getR();
+ 	int getC();
+ 	int getDestR();
+ 	int getDestC();
+ 	void nextMove();
 	bool isStalemate();
 	bool isCheckmate();
 	bool isCheck();
