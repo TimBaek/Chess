@@ -26,8 +26,7 @@ class Computer: public Player {
 	bool isCheckmate();
 	bool isCheck();
 	void setBoard(Board *b);
-	std::string nextMove();
-
+	void nextMove();
 };
 
 #endif

@@ -14,7 +14,6 @@ bool Human::isCheckmate() { return checkmate; }
 
 bool Human::isCheck() { return check; }
 
-
 int Human::getR(){ return -1; }
 
 int Human::getC(){ return -1; }

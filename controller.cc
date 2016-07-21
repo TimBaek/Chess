@@ -1,6 +1,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
 using namespace std;
 
 #include "controller.h"
@@ -9,8 +10,15 @@ Controller::Controller(): in{&cin}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
-	if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || currPlayer->isCheck()) throw iv;
-	board.checkState(r,c)->move(destr,destc);
+	if (currPlayer->getName() == "human") {
+		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || currPlayer->isCheck()) throw iv;	
+	}
+	 // Castling Move
+	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
+		if (destr == r && abs(destc - c) == 2) {
+			board.castling(r,c,destc);	
+		}
+	} else board.checkState(r,c)->move(destr,destc); // Regular Move
 	view->notify(&board);
 }
 
@@ -60,11 +68,21 @@ void Controller::init() {
 		*in >> w >> b;
 		if (!iv.isPlayer(w,b)) throw iv;
 
+		//Board init
+		if (!customized) board.init();
+
 		//Player init
+		//int level;
 		if (w == "human") wp = make_shared<Human>("white");
-		else wp = make_shared<Computer>("white");
+		else {
+			//level = atoi(w.substr(9,1));
+			wp = make_shared<Computer>("white", 1, &board);
+		}
 		if (b == "human") bp = make_shared<Human>("black");
-		else bp = make_shared<Computer>("black");
+		else {
+			//level = atoi(w.substr(9,1));
+			bp = make_shared<Computer>("black", 1, &board);
+		}
 		
 		board.setPlayers(wp,bp);
 		if (!customized) currPlayer = wp;
@@ -72,9 +90,6 @@ void Controller::init() {
 			if (currPlayerColour == "white" || currPlayerColour == "") currPlayer = wp;
 			else currPlayer = bp;
 		}
-
-		//Board init
-		if (!customized) board.init();
 
 		//Display init
 		view->notify(&board);
@@ -99,8 +114,9 @@ void Controller::game() {
 					string move;
 					getline(*in,move);
 					vector<string> cord;
-					if (move == "") {
-						// cout << "Call move Computer" << endl;
+					if (move == "") { // move for Computer
+						currPlayer->nextMove();
+						notify(currPlayer->getR(), currPlayer->getC(), currPlayer->getDestR(), currPlayer->getDestC());
 					}
 					else {
 						istringstream iss{move};
