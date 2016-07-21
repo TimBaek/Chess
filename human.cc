@@ -5,6 +5,7 @@ Human::Human(string colour): colour{colour}, stalemate{false}, checkmate{false},
 
 Human::~Human() {}
 
+string Human::getName() { return "human"; }
 string Human::getColour() { return colour; }
 
 bool Human::isStalemate() { return stalemate; }
