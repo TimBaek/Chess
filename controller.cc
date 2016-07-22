@@ -17,8 +17,10 @@ void Controller::notify(int r, int c, int destr, int destc) {
 	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
 		if (destr == r && abs(destc - c) == 2) {
 			board.castling(r,c,destc);	
-		}
-	} else board.checkState(r,c)->move(destr,destc); // Regular Move
+		} 
+	} 
+	board.checkState(r,c)->move(destr,destc); // Regular Move
+	board.offEnPassant(currPlayerColour);
 	view->notify(&board);
 }
 

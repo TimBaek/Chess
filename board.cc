@@ -407,6 +407,22 @@ bool Board::canMoveB(shared_ptr<Piece> p, int destr, int destc, string col) {
 	}
 }
 
+
+void Board::offEnPassant(string colour) {
+	int row = -1;
+	if (colour == "white") {
+		row = 3;
+	} else {
+		row = 4;
+	}
+	for(int i=0; i < 8; ++i) {
+		auto piece = checkState(row,i);
+		if (piece && piece->getLetter() == 'P') {
+//			piece->setEnPassant(false);
+		}
+	}
+}
+
 bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
@@ -421,19 +437,23 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 				checkState(destr,destc)->getColour() != colour) return true;
 		// double step move
 		} else if (destr == crow +2 && destc == ccol) {
-			if (p->everMoved() == false &&
+/*			if (p->everMoved() == false &&
 				checkState(crow +1, ccol) == nullptr &&
 				checkState(crow +2, ccol) == nullptr) {
-/*				if (ccol -1 >= 0 && checkState(destr, ccol -1) &&
-					checkState(destr, ccol -1)->getLetter == enemyPawn) {
-					checkState(destr, ccol -1)->setEnPassant(true);
+				auto left = checkState(destr, ccol -1);
+				auto leftPawn = static_cast<shared_ptr<Pawn>>(left);
+				if (ccol -1 >= 0 && leftPawn &&
+					leftPawn->getLetter() == enemyPawn) {
+					leftPawn->setEnPassant(true);
 				}
-				if (ccol +1 <= 8 && checkState(crow +2, ccol +1) &&
-					checkState(destr, ccol +1)->getLetter == enemyPawn) {
-					checkState(destr, ccol +1)->setEnPassant(true);
+				auto right = checkState(destr, ccol +1);
+				auto rightPawn = static_cast<shared_ptr<Pawn>>(left);
+				if (ccol +1 <= 8 && rightPawn &&
+					rightPawn->getLetter() == enemyPawn) {
+					rightPawn->setEnPassant(true);
 				}
 */				return true;
-			}
+			
 		// regular move
 		} else if (destr == crow +1 && destc == ccol) {
 			if (checkState(crow +1, ccol) == nullptr) return true;
@@ -477,7 +497,7 @@ void Board::castling(int r, int c, int destc) {
 		if (checkState(rrow, rcol)) break;
 	}
 	checkState(rrow,rcol)->move(r,jumpedCol);
-	checkState(r,c)->move(r,destc);
+//	checkState(r,c)->move(r,destc); removed
 }
 /*
 bool Board::isChecked(int r, int c, int destr, int destc, string colour) {

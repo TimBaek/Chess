@@ -39,6 +39,7 @@ class Board {
   void notify(int r, int c, Piece &p);
 
   bool isThere(Piece &p, int r, int c);
+  void offEnPassant(std::string colour);
   void castling(int r, int c, int destc);
   bool canMove(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
   bool canMoveK(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
