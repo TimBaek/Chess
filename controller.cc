@@ -68,10 +68,9 @@ void Controller::setup() {
 				else if (colour == "black") currPlayerColour = "black";
 				else throw iv;
 			} else if (cmd == "done") {
-				break;
-				//check condtion
-				// if true exit
-				// else back to loop
+				if (board.numKing("white") != 1 || board.numKing("black") != 1) iv.numKingMessage();
+				else if (!board.isbadPawnPosition()) iv.badPawnPositionMessage();
+				else break;
 			} else throw iv;
 		} catch (InputValidation e) {
 			e.errorMessage();
@@ -124,7 +123,7 @@ void Controller::game() {
 					string move;
 					getline(*in,move);
 					vector<string> cord;
-					if (move == "") { // move for Computer
+					if (move == "" && currPlayer->getName() == "computer") { // move for Computer
 						currPlayer->nextMove();
 						notify(currPlayer->getR(), currPlayer->getC(), currPlayer->getDestR(), currPlayer->getDestC());
 					}

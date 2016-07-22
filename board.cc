@@ -150,6 +150,7 @@ int Board::numKing(string colour){
 	char k = colour== "black" ? 'k' : 'K';
 	for(int i=0; i<8; i++){
 		for(int j=0; j<8; j++){
+			if (currStates[i][j] == nullptr) continue;
 			if((currStates[i][j]->getColour()==colour)&&
 				(currStates[i][j]->getLetter() == k))
 				num++;
@@ -179,7 +180,18 @@ shared_ptr<Piece> Board::checkState(int r, int c){
 
 bool Board::isEmpty(int r, int c){
 	return currStates[r][c]==nullptr;
+}
 
+bool Board::isbadPawnPosition() {
+	for (int c = 0; c < 8; c++) {
+		if (currStates[7][c] == nullptr) continue;
+		if(currStates[7][c]->getLetter() == 'p') return false;
+	}
+	for (int c = 0; c < 8; c++) {
+		if (currStates[0][c] == nullptr) continue;
+		if(currStates[0][c]->getLetter() == 'P') return false;
+	}
+	return true;
 }
 
 char Board::getLetter(int r, int c){
