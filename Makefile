@@ -5,9 +5,9 @@ DEPENDS = ${OBJECTS:.o=.d}
 EXEC = chess
 
 ${EXEC}: ${OBJECTS}
-        ${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11
 -include ${DEPENDS}
 
 .PHONY: clean
 clean:
-        rm ${OBJECTS} ${EXEC} ${DEPENDS}
+	rm ${OBJECTS} ${EXEC} ${DEPENDS}
