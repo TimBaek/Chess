@@ -15,3 +15,11 @@ char Pawn::getLetter() {
     return 'p';
   }
 }
+
+bool Pawn::canEnPassant() {
+	return EnPassant;
+}
+
+void Pawn::setEnPassant(bool b) {
+	EnPassant = b;
+}
