@@ -14,6 +14,8 @@ class Computer: public Player {
 	int currR,currC,destR,destC;
 	void randomMove();
 	void avoidCapture();
+	void capturingMove();
+	//void avoidCapture2();
  public:
  	Computer(std::string colour, int level, Board *b);
  	~Computer();
