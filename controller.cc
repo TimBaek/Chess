@@ -27,8 +27,8 @@ void Controller::notify(int r, int c, int destr, int destc) {
 			else board.setup_delete(destr +1, destc);
 		}
 	}
-	board.checkState(r,c)->move(destr,destc); // Regular Move
 	board.offEnPassant(currPlayerColour);
+	board.checkState(r,c)->move(destr,destc); // Regular Move
 	view->notify(&board);
 }
 
