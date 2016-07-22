@@ -95,11 +95,13 @@ void InputValidation::badPawnPositionMessage() const {
 }
 
 void InputValidation::regameMessage() const {
-	cout << "Would you like to play again? (y/n)" << endl;
+	cout << "Would you like to play again? (y/n): ";
 }
 
 void InputValidation::printScore(const int& w, const int& b) {
+	cout << endl;
 	cout << "Final score:" << endl;
 	cout << "White: " << w << endl;
 	cout << "Black: " << b << endl;
+	cout << endl;
 }
