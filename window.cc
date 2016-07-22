@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "window.h"
 
+
 using namespace std;
 
 Xwindow::Xwindow(int width, int height) {
@@ -31,7 +32,7 @@ Xwindow::Xwindow(int width, int height) {
   // Set up colours.
   XColor xcolour;
   Colormap cmap;
-  char color_vals[7][10]={"white", "black", "red", "green", "blue"};
+  char color_vals[7][15]={"white", "black", "peru", "beige", "wheat", "saddle brown", "brown"};
 
   cmap=DefaultColormap(d,DefaultScreen(d));
   for(int i=0; i < 5; ++i) {
@@ -66,6 +67,11 @@ void Xwindow::fillRectangle(int x, int y, int width, int height, int colour) {
 }
 
 void Xwindow::drawString(int x, int y, string msg) {
+  XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
+}
+
+void Xwindow::drawStringWhite(int x, int y, string msg) {
+  XSetForeground(d,gc,colours[White]);
   XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
 }
 

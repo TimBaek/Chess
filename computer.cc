@@ -38,7 +38,6 @@ int Computer::getScore() {
 }
 
 void Computer::nextMove(){
-cout << "nextMove called with level " << level << endl;
 	if(level==1) randomMove();
 	else if(level==2){ avoidCapture(); }
 	else if(level==3){ capturingMove(); }
@@ -52,9 +51,6 @@ void Computer::randomMove(){
 			if(b->checkState(r,c)->getColour() != getColour()) continue;
 			for(int i=0; i<8; i++){
 				for(int j=0; j<8; j++){
-char ch1 = 'a' + c;
-char ch2 = 'a' + j;
-cout << "try moving: " << ch1 << r+1 << " to " << ch2 << i+1 <<  endl;
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
 					coord1.push_back(Coordinates{r,c});
 					coord2.push_back(Coordinates{i,j});
@@ -68,9 +64,6 @@ cout << "try moving: " << ch1 << r+1 << " to " << ch2 << i+1 <<  endl;
 	currC = coord1[x].col;
 	destR = coord2[x].row;
 	destC = coord2[x].col;
-char c1 = 'a' + currC;
-char c2 = 'a' + destC;	
-cout << "moved: " << c1 << currR+1 << " to " << c2 << destR+1 <<  endl;
 }
 
 void Computer::avoidCapture(){
