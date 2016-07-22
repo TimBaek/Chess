@@ -16,7 +16,7 @@ char Pawn::getLetter() {
   }
 }
 
-bool Pawn::canEnPassant() {
+bool Pawn::canEnPassant() const {
 	return EnPassant;
 }
 
