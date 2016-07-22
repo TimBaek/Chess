@@ -72,15 +72,9 @@ void Controller::init() {
 
 		//Player init
 		if (w == "human") wp = make_shared<Human>("white");
-		else {
-			//level = atoi(w.substr(9,1));
-			wp = make_shared<Computer>("white", 1, &board);
-		}
+		else wp = make_shared<Computer>("white", stoi(w.substr(8,1)), &board);
 		if (b == "human") bp = make_shared<Human>("black");
-		else {
-			//level = atoi(w.substr(9,1));
-			bp = make_shared<Computer>("black", 1, &board);
-		}
+		else bp = make_shared<Computer>("black", stoi(w.substr(8,1)), &board);
 		
 		board.setPlayers(wp,bp);
 		if (!customized) currPlayer = wp;
