@@ -13,7 +13,7 @@
 #include "player.h"
 #include "human.h"
 #include "computer.h"
-//#include "window.h"
+#include "window.h"
 
 class Controller {
 	std::istream *in;
@@ -23,7 +23,6 @@ class Controller {
 	std::shared_ptr<View> view;
 	Board board;
 	InputValidation iv;
-	//Xwindow xw;
  	bool customized;
  	void setNextPlayer();
  	void init();

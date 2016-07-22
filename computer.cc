@@ -166,7 +166,6 @@ void Computer::capturingMove(){
 	if(currPriority==0) avoidCapture();
 	char c1 = 'a' + currC;
 	char c2 = 'a' + destC;
-cout << "moved: " << c1 << currR+1 << " to " << c2 << destR+1 <<  endl;
 }
 
 

@@ -215,7 +215,8 @@ void Controller::play() {
 				view = make_shared<TextDisplay>();
 				break;
 			} else if (d == "gd") {
-				view = make_shared<GraphicDisplay>();
+				shared_ptr<Xwindow> xw = make_shared<Xwindow>();
+				view = make_shared<GraphicDisplay>(xw);
 				break;
 			} else throw iv;
 			
