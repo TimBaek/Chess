@@ -15,6 +15,8 @@ class InputValidation {
  	void errorMessage() const;
  	void gameMessage() const;
  	void setupMessage() const;
+ 	void numKingMessage() const;
+ 	void badPawnPositionMessage() const;
  	void checkMessage(const std::string& colour);
  	void checkmateMessage(const std::string& colour);
  	void stalemateMessage();

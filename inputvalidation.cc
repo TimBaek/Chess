@@ -85,3 +85,11 @@ void InputValidation::resignMessage(const string& currPlayer) {
 	if (currPlayer == "white") cout << "Black wins!" << endl;
 	else cout << "White wins!" << endl;
 }
+
+void InputValidation::numKingMessage() const {
+	cout << "Error! Players do not have 1 king each!" << endl;
+}
+ 
+void InputValidation::badPawnPositionMessage() const {
+	cout << "Error! Pawn exists in first or last row!" << endl;
+}

@@ -58,6 +58,7 @@ class Board {
   int numKing(std::string colour);
   int numPieces(std::string colour);
   bool isEmpty(int r, int c);
+  bool isbadPawnPosition();
   char getLetter(int r, int c);
   std::shared_ptr<Piece> checkState(int r, int c);
   bool isPromo(int destr, int destc);
