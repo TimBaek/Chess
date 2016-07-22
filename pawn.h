@@ -10,7 +10,7 @@ class Pawn: public Piece {
   ~Pawn();
   char getLetter() override;
   bool canEnPassant() const;
-  void setEnpassant(bool b);
+  void setEnPassant(bool b);
 };
 
 
