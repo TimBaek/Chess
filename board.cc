@@ -234,8 +234,9 @@ bool Board::canMoveK(shared_ptr<Piece> p, int destr, int destc, string col) {
 		}
 	// castleing move
 	} else if (destr == crow && (destc == ccol +2 || destc == ccol -2)) {
+		if (checkState(crow,ccol)->everMoved() == true) return false;
 		// checking if the squares are empty
-		while(1 <= ccol || ccol <= 8) {
+		while(0 < ccol && ccol < 7) {
 			if (destc > p->getCol()) {
 				++ccol;
 			} else {
@@ -247,8 +248,7 @@ bool Board::canMoveK(shared_ptr<Piece> p, int destr, int destc, string col) {
 		if (checkState(crow,ccol) != nullptr &&
 			p->everMoved() == false &&
 			(checkState(crow,ccol)->getLetter() == 
-			(colour == "white"? 'R' : 'r')) &&
-			checkState(crow,ccol)->everMoved() == false) {
+			(colour == "white"? 'R' : 'r'))) {
 			return true;
 		} else {
 			return false;
