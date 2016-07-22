@@ -11,6 +11,7 @@ class Computer: public Player {
 	bool check;
 	Board *b;
 	int level;
+	int score;
 	int currR,currC,destR,destC;
 	void randomMove();
 	void avoidCapture();
@@ -30,6 +31,8 @@ class Computer: public Player {
 	bool isCheck();
 	void setBoard(Board *b);
 	void nextMove();
+	void addScore();
+	int getScore();
 };
 
 #endif

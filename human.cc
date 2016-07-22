@@ -1,7 +1,7 @@
 #include "human.h"
 using namespace std;
 
-Human::Human(string colour): colour{colour}, stalemate{false}, checkmate{false}, check{false} {}
+Human::Human(string colour): colour{colour}, stalemate{false}, checkmate{false}, check{false}, score{0} {}
 
 Human::~Human() {}
 
@@ -21,3 +21,11 @@ int Human::getDestR(){ return -1; }
 int Human::getDestC(){ return -1; }
 
 void Human::nextMove(){ }
+
+void Human::addScore() {
+	score++;
+}
+
+int Human::getScore() {
+	return score;
+}

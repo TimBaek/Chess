@@ -27,6 +27,8 @@ class Controller {
  	bool customized;
  	void setNextPlayer();
  	void init();
+ 	void calculateScore(std::string colour);
+ 	void rebuild();
  public:
  	Controller();
  	~Controller();

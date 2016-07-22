@@ -16,11 +16,13 @@ class InputValidation {
  	void gameMessage() const;
  	void setupMessage() const;
  	void numKingMessage() const;
+ 	void regameMessage() const;
  	void badPawnPositionMessage() const;
  	void checkMessage(const std::string& colour);
  	void checkmateMessage(const std::string& colour);
  	void stalemateMessage();
  	void resignMessage(const std::string& currPlayer);
+ 	void printScore(const int& w, const int& b);
 };
 
 #endif

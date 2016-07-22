@@ -30,7 +30,6 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	}
 	board.offEnPassant(currPlayerColour);
 	board.checkState(r,c)->move(destr,destc); // Regular Move
-	cerr << "Error1" << endl;
 	if (board.isPromo(destr,destc)) {
 		if (piece == 'K' || piece == 'k') throw iv;
 		board.setup_delete(destr,destc);
@@ -42,6 +41,17 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 void Controller::setNextPlayer() {
 	if (currPlayerColour == "white") currPlayer = bp;
 	else currPlayer = wp;
+}
+
+void Controller::calculateScore(string colour) {
+	if (colour == "white") wp->addScore();
+	else bp->addScore();
+}
+
+void Controller::rebuild() {
+	board.init();
+	view->notify(&board);
+	currPlayer = wp;
 }
 
 void Controller::setup() {
@@ -156,7 +166,9 @@ void Controller::game() {
 					}
 				} else if (cmd == "resign") {
 					iv.resignMessage(currPlayerColour);
-					break;
+					if (currPlayerColour == "white") calculateScore("black");
+					else calculateScore("white");
+					throw 1;
 				} else throw iv;
 
 				// Display state of the game
@@ -173,6 +185,16 @@ void Controller::game() {
 				if (wp->isStalemate() && bp->isStalemate()) iv.stalemateMessage(); */
 
 				setNextPlayer();
+			} catch (int e) {
+				string ans;
+				iv.regameMessage();
+				*in >> ans;
+				if (ans == "Y" || ans == "y") {
+					rebuild();
+				} else {
+					iv.printScore(wp->getScore(), bp->getScore());
+					break;
+				}
 			} catch (InputValidation e) {
 				e.errorMessage();
 			}

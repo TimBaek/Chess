@@ -3,6 +3,7 @@
 #include <string>
 
 class Player {
+	int score;
  public:
  	Player();
  	virtual ~Player() = 0;
@@ -16,6 +17,8 @@ class Player {
  	virtual int getDestR() = 0;
  	virtual int getDestC() = 0;
  	virtual void nextMove() = 0;
+ 	virtual void addScore() = 0;
+ 	virtual int getScore() = 0;
 };
 
 

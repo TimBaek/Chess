@@ -93,3 +93,13 @@ void InputValidation::numKingMessage() const {
 void InputValidation::badPawnPositionMessage() const {
 	cout << "Error! Pawn exists in first or last row!" << endl;
 }
+
+void InputValidation::regameMessage() const {
+	cout << "Would you like to play again? (y/n)" << endl;
+}
+
+void InputValidation::printScore(const int& w, const int& b) {
+	cout << "Final score:" << endl;
+	cout << "White: " << w << endl;
+	cout << "Black: " << b << endl;
+}

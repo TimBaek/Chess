@@ -5,7 +5,7 @@
 #include <sstream>
 using namespace std;
 
-Computer::Computer(string colour, int level, Board *b): colour{colour}, stalemate{false}, checkmate{false}, check{false}, b{b}, level{level}, currR{-1}, currC{-1}, destR{-1}, destC{-1} {}
+Computer::Computer(string colour, int level, Board *b): colour{colour}, stalemate{false}, checkmate{false}, check{false}, b{b}, level{level}, currR{-1}, currC{-1}, destR{-1}, destC{-1}, score{0} {}
 
 Computer::~Computer() {}
 
@@ -28,6 +28,14 @@ int Computer::getR(){ return currR; }
 int Computer::getC(){ return currC; }
 int Computer::getDestR(){ return destR; }
 int Computer::getDestC(){ return destC; }
+
+void Computer::addScore() {
+	score++;
+}
+
+int Computer::getScore() {
+	return score;
+}
 
 void Computer::nextMove(){
 cout << "nextMove called with level " << level << endl;
