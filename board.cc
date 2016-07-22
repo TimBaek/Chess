@@ -410,15 +410,17 @@ bool Board::canMoveB(shared_ptr<Piece> p, int destr, int destc, string col) {
 
 
 void Board::offEnPassant(string colour) {
-	int row = (colour == "white"? 3 : 4);
+	int row = (colour == "white"? 4 : 3);
 	for(int i=0; i < 8; ++i) {
 		auto piece = checkState(row,i);
-		if (row == 3 && piece && piece->getLetter() == 'P') {
+		if (row == 4 && piece && piece->getLetter() == 'P') {
 			auto pawn = dynamic_pointer_cast<Pawn>(piece);
 			pawn->setEnPassant(false);
-		} else if (row == 4 && piece && piece->getLetter() == 'p') {
+//			cout << row << ' ' << i << ' ' << "cant EnPassant" << endl;
+		} else if (row == 3 && piece && piece->getLetter() == 'p') {
 			auto pawn = dynamic_pointer_cast<Pawn>(piece);
 			pawn->setEnPassant(false);
+//			cout << row << ' ' << i << ' ' << "cant EnPassant" << endl;
 		}
  	}
 }
@@ -447,14 +449,14 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 					auto left = dynamic_pointer_cast<Pawn>(checkState(destr,ccol-1));
 					if (left && left->getLetter() == enemyPawn) {
 						left->setEnPassant(true);
-						cout << destr << ' ' << ccol -1 << ' ' << "can EnPassant" << endl;
+//						cout << destr << ' ' << ccol -1 << ' ' << "can EnPassant" << endl;
 					}
 				}
 				if (ccol +1 <= 7.) {
 					auto right = dynamic_pointer_cast<Pawn>(checkState(destr,ccol+1));
 					if (right && right->getLetter() == enemyPawn) {
 						right->setEnPassant(true);
-						cout << destr << ' ' << ccol +1 << ' ' << "can EnPassant" << endl;
+//						cout << destr << ' ' << ccol +1 << ' ' << "can EnPassant" << endl;
 					}
 				}
 				return true;	
@@ -483,14 +485,14 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 					auto left = dynamic_pointer_cast<Pawn>(checkState(destr,ccol-1));
 					if (left && left->getLetter() == enemyPawn) {
 						left->setEnPassant(true);
-						cout << destr << ' ' << ccol -1 << ' ' << "can EnPassant" << endl;
+//						cout << destr << ' ' << ccol -1 << ' ' << "can EnPassant" << endl;
 					}
 				}
 				if (ccol +1 <= 7) {
 					auto right = dynamic_pointer_cast<Pawn>(checkState(destr,ccol+1));
 					if (right && right->getLetter() == enemyPawn) {
 						right->setEnPassant(true);
-						cout << destr << ' ' << ccol +1 << ' ' << "can EnPassant" << endl;
+//						cout << destr << ' ' << ccol +1 << ' ' << "can EnPassant" << endl;
 					}
 				}
 				return true;
