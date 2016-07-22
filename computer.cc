@@ -44,6 +44,9 @@ void Computer::randomMove(){
 			if(b->checkState(r,c)->getColour() != getColour()) continue;
 			for(int i=0; i<8; i++){
 				for(int j=0; j<8; j++){
+char ch1 = 'a' + c;
+char ch2 = 'a' + j;
+cout << "try moving: " << ch1 << r+1 << " to " << ch2 << i+1 <<  endl;
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
 					coord1.push_back(Coordinates{r,c});
 					coord2.push_back(Coordinates{i,j});
