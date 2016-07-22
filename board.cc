@@ -384,7 +384,7 @@ bool Board::canMoveB(shared_ptr<Piece> p, int destr, int destc, string col) {
 		} else if (crow > destr && ccol < destc) {
 			--crow;
 			++ccol;
-		} else if (corw > dest && ccol > destc) {
+		} else if (crow > destr && ccol > destc) {
 			--crow;
 			--ccol;
 		} else {
