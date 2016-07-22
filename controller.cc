@@ -11,7 +11,8 @@ Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc) {
 	if (currPlayer->getName() == "human") {
-		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || currPlayer->isCheck()) throw iv;	
+		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) /*|| 
+			board.willBeChecked(r,c,destr,destc,currPlayerColour)*/) throw iv;	
 	}
 	// Castling Move
 	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
@@ -29,7 +30,7 @@ void Controller::notify(int r, int c, int destr, int destc) {
 	}
 	board.offEnPassant(currPlayerColour);
 	board.checkState(r,c)->move(destr,destc); // Regular Move
-	if (board.isPromo(r,c,destc,destr)) {
+	if (board.isPromo(r,c,destr,destc)) {
 		board.setup_delete(destr,destc);
 		board.setup_add(board.checkState(r,c)->getLetter(),destr,destc);
 	}

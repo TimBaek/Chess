@@ -523,6 +523,15 @@ void Board::castling(int r, int c, int destc) {
 	checkState(rrow,rcol)->move(r,jumpedCol);
 //	checkState(r,c)->move(r,destc); removed
 }
+
+bool Board::isPromo(int r, int c, int destr, int destc) {
+	if ((checkState(r,c)->getLetter() == 'p' && destr == 0) ||
+		(checkState(r,c)->getLetter() == 'P' && destr == 7)) {
+		return true;
+	} else {
+		return false;
+	}
+} 
 /*
 bool Board::isChecked(int r, int c, int destr, int destc, string colour) {
 	vector<vector<shared_ptr<Piece>>> vBoard;
