@@ -31,7 +31,7 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	board.offEnPassant(currPlayerColour);
 	board.checkState(r,c)->move(destr,destc); // Regular Move
 	cerr << "Error1" << endl;
-	if (board.isPromo(r,c,destr,destc)) {
+	if (board.isPromo(destr,destc)) {
 		if (piece == 'K' || piece == 'k') throw iv;
 		board.setup_delete(destr,destc);
 		board.setup_add(piece,destr,destc);
@@ -149,7 +149,9 @@ void Controller::game() {
 							c = cord[0][0]-'a';	
 							destr = cord[1][1]-'0'-1;
 							destc = cord[1][0]-'a';
-							piece = cord[2][0];
+							if (currPlayerColour == "white" && islower(cord[2][0])) piece = toupper(cord[2][0]);
+							else if (currPlayerColour == "black" && isupper(cord[2][0])) piece = tolower(cord[2][0]);
+							else piece = cord[2][0];
 							notify(r,c,destr,destc,piece);
 						}
 					}
