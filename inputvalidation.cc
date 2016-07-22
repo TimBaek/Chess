@@ -1,3 +1,5 @@
+#include <ctype.h>
+#include <stdio.h>
 #include "inputvalidation.h"
 using namespace std;
 
@@ -20,7 +22,8 @@ bool InputValidation::isPlayer(const string& w, const string& b) {
 	} else return false;
 }
 
-bool InputValidation::isValid(const char& r, const char& c, const char& p) {
+bool InputValidation::isValid(const char& r, char& c, const char& p) {
+	if (isupper(c)) c = tolower(c);
 	string lpiece = "prnbqk";
 	string upiece = "PRNBQK";
 	string row = "12345678";

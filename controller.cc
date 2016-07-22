@@ -2,8 +2,6 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
-#include <ctype.h>
-#include <stdio.h>
 using namespace std;
 
 #include "controller.h"
@@ -42,12 +40,10 @@ void Controller::setup() {
 			if (cmd == "+") {
 				*in >> p >> c >> r;
 				if (!iv.isValid(r,c,p)) throw iv;
-				if (isupper(c)) c = tolower(c);
 				board.setup_add(p, r-'0'-1, c-'a');	
 			} else if (cmd == "-") {
 				*in >> c >> r;
 				if (!iv.isValid(r,c)) throw iv;
-				if (isupper(c)) c = tolower(c);
 				board.setup_delete(r-'0'-1, c-'a');
 			} else if (cmd == "=") {
 				*in >> colour;
