@@ -18,7 +18,15 @@ void Controller::notify(int r, int c, int destr, int destc) {
 		if (destr == r && abs(destc - c) == 2) {
 			board.castling(r,c,destc);	
 		} 
-	} 
+	}
+	// EnPassant Move 
+	else if (board.checkState(r,c)->getLetter() == 'p' || board.checkState(r,c)->getLetter() == 'P') {
+		if (abs(destr -r) == 1 && abs(destc -c) == 1 &&
+			board.isEmpty(destr,destc)) {
+			if (currPlayerColour == "white") board.setup_delete(destr -1,destc);
+			else board.setup_delete(destr +1, destc);
+		}
+	}
 	board.checkState(r,c)->move(destr,destc); // Regular Move
 	board.offEnPassant(currPlayerColour);
 	view->notify(&board);
