@@ -33,7 +33,7 @@ class Controller {
  	void play();
  	void game();
  	void setup();
- 	void notify(int r, int c, int destr, int destc); //notify the Piece
+ 	void notify(int r, int c, int destr, int destc, char piece = ' '); //notify the Piece
 };
 
 #endif

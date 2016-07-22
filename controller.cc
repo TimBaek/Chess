@@ -9,7 +9,7 @@ using namespace std;
 Controller::Controller(): in{&cin}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
-void Controller::notify(int r, int c, int destr, int destc) {
+void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	if (currPlayer->getName() == "human") {
 		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) /*|| 
 			board.willBeChecked(r,c,destr,destc,currPlayerColour)*/) throw iv;	
@@ -30,9 +30,11 @@ void Controller::notify(int r, int c, int destr, int destc) {
 	}
 	board.offEnPassant(currPlayerColour);
 	board.checkState(r,c)->move(destr,destc); // Regular Move
+	cerr << "Error1" << endl;
 	if (board.isPromo(r,c,destr,destc)) {
+		if (piece == 'K' || piece == 'k') throw iv;
 		board.setup_delete(destr,destc);
-		board.setup_add(board.checkState(r,c)->getLetter(),destr,destc);
+		board.setup_add(piece,destr,destc);
 	}
 	view->notify(&board);
 }
@@ -139,9 +141,16 @@ void Controller::game() {
 							destr = cord[1][1]-'0'-1;
 							destc = cord[1][0]-'a';
 							notify(r,c,destr,destc);
-						} else {
+						} else { // Pawn Promotion
 							if(!iv.isValid(cord[0][1],cord[0][0],cord[2][0]) || !iv.isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
-							//cout << "//Call pawn promotion" << endl;
+							int r,c,destr,destc;
+							char piece;
+							r = cord[0][1]-'0'-1;
+							c = cord[0][0]-'a';	
+							destr = cord[1][1]-'0'-1;
+							destc = cord[1][0]-'a';
+							piece = cord[2][0];
+							notify(r,c,destr,destc,piece);
 						}
 					}
 				} else if (cmd == "resign") {
