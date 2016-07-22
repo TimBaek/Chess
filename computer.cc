@@ -57,6 +57,7 @@ void Computer::randomMove(){
 	currC = coord1[x].col;
 	destR = coord2[x].row;
 	destC = coord2[x].col;
+cout << "moved: " << c1 << currR+1 << " to " << c2 << destR+1 <<  endl;
 }
 
 void Computer::avoidCapture(){
