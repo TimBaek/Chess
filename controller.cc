@@ -13,7 +13,7 @@ void Controller::notify(int r, int c, int destr, int destc) {
 	if (currPlayer->getName() == "human") {
 		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || currPlayer->isCheck()) throw iv;	
 	}
-	 // Castling Move
+	// Castling Move
 	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
 		if (destr == r && abs(destc - c) == 2) {
 			board.castling(r,c,destc);	
@@ -71,10 +71,12 @@ void Controller::init() {
 		if (!iv.isPlayer(w,b)) throw iv;
 
 		//Player init
+		int level;
+		stringstream ss;
 		if (w == "human") wp = make_shared<Human>("white");
 		else wp = make_shared<Computer>("white", stoi(w.substr(8,1)), &board);
 		if (b == "human") bp = make_shared<Human>("black");
-		else bp = make_shared<Computer>("black", stoi(w.substr(8,1)), &board);
+		else bp = make_shared<Computer>("black", stoi(b.substr(8,1)), &board);
 		
 		board.setPlayers(wp,bp);
 		if (!customized) currPlayer = wp;
