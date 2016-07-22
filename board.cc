@@ -363,14 +363,10 @@ bool Board::canMoveN(shared_ptr<Piece> p, int destr, int destc, string col) {
 	int crow = p->getRow();
 	int ccol = p->getCol();
 
-	if ((destc == ccol +2 && destr == crow +1) ||
-	    (destc == ccol +2 && destr == crow -1) ||
-	    (destc == ccol -2 && destr == crow +1) ||
-	    (destc == ccol -2 && destr == crow -1) ||
-	    (destr == crow +2 && destc == ccol +1) ||
-	    (destr == crow +2 && destc == ccol -1) ||
-	    (destr == crow -2 && destc == ccol +1) ||
-	    (destr == crow -2 && destc == ccol -1)) {
+	if ((destc == ccol +2 && (destr == crow +1 || destr == crow -1)) ||
+	    (destc == ccol -2 && (destr == crow +1 || destr == crow -1)) ||
+	    (destr == crow +2 && (destc == ccol +1 || destc == ccol -1)) ||
+	    (destr == crow -2 && (destc == ccol +1 || destc == ccol -1))) {
 		if (checkState(destr,destc) == nullptr ||
 			checkState(destr,destc)->getColour() != colour) {
 	    	return true;
