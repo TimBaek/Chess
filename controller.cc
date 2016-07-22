@@ -19,16 +19,20 @@ void Controller::notify(int r, int c, int destr, int destc) {
 			board.castling(r,c,destc);	
 		} 
 	}
-	// EnPassant Move 
+	// EnPassant Move + Pawn Promotion
 	else if (board.checkState(r,c)->getLetter() == 'p' || board.checkState(r,c)->getLetter() == 'P') {
 		if (abs(destr -r) == 1 && abs(destc -c) == 1 &&
 			board.isEmpty(destr,destc)) {
 			if (currPlayerColour == "white") board.setup_delete(destr -1,destc);
 			else board.setup_delete(destr +1, destc);
-		}
+		} 
 	}
 	board.offEnPassant(currPlayerColour);
 	board.checkState(r,c)->move(destr,destc); // Regular Move
+	if (board.isPromo(r,c,destc,destr)) {
+		board.setup_delete(destr,destc);
+		board.setup_add(board.checkState(r,c)->getLetter(),destr,destc);
+	}
 	view->notify(&board);
 }
 
@@ -79,8 +83,6 @@ void Controller::init() {
 		if (!iv.isPlayer(w,b)) throw iv;
 
 		//Player init
-		int level;
-		stringstream ss;
 		if (w == "human") wp = make_shared<Human>("white");
 		else wp = make_shared<Computer>("white", stoi(w.substr(8,1)), &board);
 		if (b == "human") bp = make_shared<Human>("black");
