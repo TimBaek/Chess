@@ -2,6 +2,8 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
+#include <ctype.h>
+#include <stdio.h>
 using namespace std;
 
 #include "controller.h"
@@ -40,10 +42,12 @@ void Controller::setup() {
 			if (cmd == "+") {
 				*in >> p >> c >> r;
 				if (!iv.isValid(r,c,p)) throw iv;
+				if (isupper(c)) c = tolower(c);
 				board.setup_add(p, r-'0'-1, c-'a');	
 			} else if (cmd == "-") {
 				*in >> c >> r;
 				if (!iv.isValid(r,c)) throw iv;
+				if (isupper(c)) c = tolower(c);
 				board.setup_delete(r-'0'-1, c-'a');
 			} else if (cmd == "=") {
 				*in >> colour;
@@ -68,11 +72,7 @@ void Controller::init() {
 		*in >> w >> b;
 		if (!iv.isPlayer(w,b)) throw iv;
 
-		//Board init
-		if (!customized) board.init();
-
 		//Player init
-		//int level;
 		if (w == "human") wp = make_shared<Human>("white");
 		else {
 			//level = atoi(w.substr(9,1));
@@ -90,6 +90,9 @@ void Controller::init() {
 			if (currPlayerColour == "white" || currPlayerColour == "") currPlayer = wp;
 			else currPlayer = bp;
 		}
+
+		//Board init
+		if (!customized) board.init();
 
 		//Display init
 		view->notify(&board);

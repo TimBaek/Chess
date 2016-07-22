@@ -59,7 +59,7 @@ void Board::init(){
 			currStates[i][j] = nullptr;
 		}
 	}
-	defaultSetup("white", "black");
+	defaultSetup(wp->getColour(), bp->getColour());
 
 	// initializing Possible Moves
 	//cerr << "blackMoves initialization" << endl;
