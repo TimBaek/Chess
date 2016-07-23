@@ -6,6 +6,7 @@ using namespace std;
 TextDisplay::TextDisplay() {
     for(int i=0; i<8; i++) {
         theDisplay.push_back(vector<char>(8));
+    }
 }
 
 void TextDisplay::notify(Board *b) {
