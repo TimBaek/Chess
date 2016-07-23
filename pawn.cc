@@ -1,19 +1,14 @@
-#include "piece.h"
 #include "pawn.h"
 using namespace std;
 
-Pawn::Pawn(Board *bd, int r, int c, string co, bool b):
-  Piece{bd, r, c, co, b} {
+Pawn::Pawn(Board *bd, int r, int c, string co, bool b, bool b2):
+  Piece{bd, r, c, co, b}, EnPassant{b2} {
 }
 
 Pawn::~Pawn() { }
 
 char Pawn::getLetter() {
-  if (colour == "white") {
-    return 'P';
-  } else {
-    return 'p';
-  }
+	return (colour == "white"? 'P' : 'p');
 }
 
 bool Pawn::canEnPassant() const {

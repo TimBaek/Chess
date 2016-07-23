@@ -1,4 +1,3 @@
-#include "piece.h"
 #include "queen.h"
 using namespace std;
 
@@ -10,9 +9,5 @@ Queen::~Queen() { }
 
 
 char Queen::getLetter() {
-  if (colour == "white") {
-   return 'Q';
-  } else {
-   return 'q';
-  }
+	return (colour == "white"? 'Q' : 'q');
 }

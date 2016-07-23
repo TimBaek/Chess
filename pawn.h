@@ -3,10 +3,9 @@
 #include "piece.h"
 
 class Pawn: public Piece {
-  bool moved = false;
   bool EnPassant = false;
  public:
-  Pawn(Board *bd, int r, int c, std::string co, bool b=false);
+  Pawn(Board *bd, int r, int c, std::string co, bool b=false, bool b2=false);
   ~Pawn();
   char getLetter() override;
   bool canEnPassant() const;

@@ -1,20 +1,8 @@
 #ifndef _PIECE_H_
 #define _PIECE_H_
-#include <memory>
 #include <string>
-#include <vector>
-#include <utility>
 
 class Board;
-/*
-class Piece;
-class Board {
- public:
-  void notify(int r, int c, Piece &p) {
-  }
-};
-*/
-
 
 class Piece {
  protected:
@@ -22,7 +10,7 @@ class Piece {
   int row;
   int col;
   std::string colour;
-  bool moved = false;
+  bool moved;
 
  public:
   Piece(Board *bd, int r, int c, std::string co, bool b=false);
