@@ -203,6 +203,7 @@ bool Board::canMove(shared_ptr<Piece> p, int destr, int destc, string plcol) {
 	if (p == nullptr) return false;
 	char let = p->getLetter();
 	if (p->getColour() != plcol) return false;
+	if (p->getRow() == destr && p->getCol() == destc) return false;
 	if (let == 'k' || let == 'K') {
 		return canMoveK(p, destr, destc, plcol);
 	} else if (let == 'q' || let == 'Q') {
@@ -236,12 +237,9 @@ bool Board::canMoveK(shared_ptr<Piece> p, int destr, int destc, string col) {
 	} else if (destr == crow && (destc == ccol +2 || destc == ccol -2)) {
 		if (checkState(crow,ccol)->everMoved() == true) return false;
 		// checking if the squares are empty
+		int colInc = (ccol < destc? 1 : -1);
 		while(0 < ccol && ccol < 7) {
-			if (destc > p->getCol()) {
-				++ccol;
-			} else {
-				--ccol;
-			} 
+			ccol += colInc; 
 			if (checkState(crow,ccol) != nullptr) break;
 		}
 		// checking if there is an ally rook
@@ -263,6 +261,44 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 	int crow = p->getRow();
 	int ccol = p->getCol();
 
+	while(true) {
+		// straight move
+		if (destr == crow || destc == ccol) {
+			if (destr < crow) {
+				--crow;
+			} else if (destr > crow) {
+				++crow;
+			} else if (destc < ccol) {
+				--ccol;
+			} else if (destc > ccol) {
+				++ccol;
+			}
+		// diagonal move
+		} else if (abs(crow -destr) == abs(ccol -destc)) {
+			int rowInc = (crow < destr? 1 : -1);
+			int colInc = (ccol < destc? 1 : -1);
+			crow += rowInc;
+			ccol += colInc;
+		}
+		// check if destination is empty or an enemy
+		if (destr == crow && destc == ccol) {
+			if (checkState(destr,destc) == nullptr ||
+				checkState(destr,destc)->getColour() != colour) {
+				return true;
+			} else {
+				return false;
+			}
+		// check if the way to destination is empty
+		} else {
+			if (checkState(crow,ccol) == nullptr) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		
+	}
+/*
 	if (destr == crow || destc == ccol) {
 		while (true) {
 			if (destr < crow) {
@@ -290,6 +326,7 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 			}
 		}	
 	} else if (abs(crow -destr) == abs(ccol -destc)) {
+		int rowInc = (crow);
 		while(true) {
 			if (crow < destr && ccol < destc) {
 				++crow;
@@ -322,13 +359,13 @@ bool Board::canMoveQ(shared_ptr<Piece> p, int destr, int destc, string col) {
 	} else {
 		 return false;
 	}
+	*/
 }
 
 bool Board::canMoveR(shared_ptr<Piece> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
-
 	if (destr != crow && destc != ccol) return false;
 	while (true) {
 		if (destr < crow) {
@@ -370,6 +407,8 @@ bool Board::canMoveN(shared_ptr<Piece> p, int destr, int destc, string col) {
 		if (checkState(destr,destc) == nullptr ||
 			checkState(destr,destc)->getColour() != colour) {
 	    	return true;
+		} else {
+			return false;
 		}
 	} else {
 		return false;
@@ -381,10 +420,11 @@ bool Board::canMoveB(shared_ptr<Piece> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
-
+	int rowInc = (crow < destr? 1 : -1);
+	int colInc = (ccol < destc? 1 : -1);
 	if (abs(crow -destr) != abs(ccol -destc)) return false;
 	while(true) {
-		if (crow < destr && ccol < destc) {
+/*		if (crow < destr && ccol < destc) {
 			++crow;
 			++ccol;
 		} else if (crow < destr && ccol > destc) {
@@ -399,6 +439,9 @@ bool Board::canMoveB(shared_ptr<Piece> p, int destr, int destc, string col) {
 		} else {
 			return false;
 		}
+*/
+		crow += rowInc;
+		ccol += colInc;
 		if (crow != destr && ccol != destc) {
 			if (checkState(crow,ccol) == nullptr) {
 				continue;
@@ -422,13 +465,9 @@ void Board::offEnPassant(string colour) {
 	for(int i=0; i < 8; ++i) {
 		auto piece = checkState(row,i);
 		if (row == 4 && piece && piece->getLetter() == 'P') {
-			auto pawn = dynamic_pointer_cast<Pawn>(piece);
-			pawn->setEnPassant(false);
-//			cout << row << ' ' << i << ' ' << "cant EnPassant" << endl;
+			dynamic_pointer_cast<Pawn>(piece)->setEnPassant(false);
 		} else if (row == 3 && piece && piece->getLetter() == 'p') {
-			auto pawn = dynamic_pointer_cast<Pawn>(piece);
-			pawn->setEnPassant(false);
-//			cout << row << ' ' << i << ' ' << "cant EnPassant" << endl;
+			dynamic_pointer_cast<Pawn>(piece)->setEnPassant(false);
 		}
  	}
 }
@@ -437,9 +476,49 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 	string colour = p->getColour();
 	int crow = p->getRow();
 	int ccol = p->getCol();
-	char allyPawn = p->getLetter();
-	char enemyPawn = (allyPawn == 'p'? 'P':'p'); 
+	char enemyPawn = (p->getLetter() == 'p'? 'P':'p'); 
+	int one = (colour == "white"? 1 : -1);
+	int two = (colour == "white"? 2 : -2);
 
+	// diagonal move
+	if (destr == crow +one && (destc == ccol +1 || destc == ccol -1)) {
+		if ((checkState(destr,destc) == nullptr &&
+			dynamic_pointer_cast<Pawn>(p)->canEnPassant()) // EnPassant move
+			||
+			((checkState(destr,destc) &&
+			checkState(destr,destc)->getColour() != colour))) // Attacking move
+			return true;
+		else return false;
+	// double step move
+	} else if (destr == crow +two && destc == ccol) {
+		if (p->everMoved() == false &&
+			checkState(crow +one, ccol) == nullptr &&
+			checkState(crow +two, ccol) == nullptr) {
+			if (ccol -1 >= 0) {
+				auto left = dynamic_pointer_cast<Pawn>(checkState(destr,ccol-1));
+				if (left && left->getLetter() == enemyPawn) {
+					left->setEnPassant(true);
+				}
+			}
+			if (ccol +1 <= 7.) {
+				auto right = dynamic_pointer_cast<Pawn>(checkState(destr,ccol+1));
+				if (right && right->getLetter() == enemyPawn) {
+					right->setEnPassant(true);
+				}
+			}
+			return true;	
+		} else {
+			return false;
+		}
+	// regular move
+	} else if (destr == crow +one && destc == ccol) {
+		if (checkState(crow +one, ccol) == nullptr) return true;
+		else return false;
+	} else {
+		return false;
+	}
+
+/*
 	if (colour == "white") {
 		// attack move
 		if (destr == crow +1 && (destc == ccol +1 || destc == ccol -1)) {
@@ -513,11 +592,11 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 		}	
 	}
 	else { return false; }
+	*/
 }
 
 
 void Board::castling(int r, int c, int destc) {
-	int rrow = r;
 	int rcol = c;
 	int jumpedCol = (c < destc? c +1 : c -1);
 	while(true) {
@@ -526,15 +605,17 @@ void Board::castling(int r, int c, int destc) {
 		} else {
 			--rcol;
 		}
-		if (checkState(rrow, rcol)) break;
+		if (checkState(r, rcol)) break;
 	}
-	checkState(rrow,rcol)->move(r,jumpedCol);
-//	checkState(r,c)->move(r,destc); removed
+	checkState(r,rcol)->move(r,jumpedCol);
 }
 
-bool Board::isPromo(int destr, int destc) {
-	if ((checkState(destr,destc)->getLetter() == 'p' && destr == 0) ||
-		(checkState(destr,destc)->getLetter() == 'P' && destr == 7)) {
+bool Board::isPromo(int r, int c, int destr, int destc) {
+	auto cp = checkState(r,c);
+	auto dp = checkState(destr, destc);
+	if (cp && !dp && 
+		((cp->getLetter() == 'p' && destr == 0) ||
+		(cp->getLetter() == 'P' && destr == 7))) {
 		return true;
 	} else {
 		return false;

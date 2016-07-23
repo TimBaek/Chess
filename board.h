@@ -61,7 +61,7 @@ class Board {
   bool isbadPawnPosition();
   char getLetter(int r, int c);
   std::shared_ptr<Piece> checkState(int r, int c);
-  bool isPromo(int destr, int destc);
+  bool isPromo(int r, int c, int destr, int destc);
 };
 
 #endif
