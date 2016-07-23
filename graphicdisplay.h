@@ -11,7 +11,7 @@ class Board;
 
 class GraphicDisplay: public View {
         std::shared_ptr<Xwindow> xw;
-        int side, origin, line, dimension;
+        int origin, line;
         std::vector<std::vector<char>> theDisplay;
  public:
         GraphicDisplay(std::shared_ptr<Xwindow> xw);
