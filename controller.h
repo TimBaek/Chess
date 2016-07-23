@@ -18,8 +18,7 @@
 class Controller {
 	std::istream *in;
 	std::string currPlayerColour;
-	std::shared_ptr<Player> wp,bp;
-	std::shared_ptr<Player> currPlayer;
+	std::shared_ptr<Player> wp,bp,currPlayer;
 	std::shared_ptr<View> view;
 	Board board;
 	InputValidation iv;
@@ -28,6 +27,7 @@ class Controller {
  	void init();
  	void calculateScore(std::string colour);
  	void rebuild();
+ 	void printScore(const int& w, const int& b);
  public:
  	Controller();
  	~Controller();

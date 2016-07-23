@@ -6,7 +6,7 @@ using namespace std;
 
 #include "controller.h"
 
-Controller::Controller(): in{&cin}, board{this}, customized{false} {}
+Controller::Controller(): in{&cin}, currPlayerColour{"white"}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc, char piece) {
@@ -20,7 +20,7 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 			board.castling(r,c,destc);	
 		} 
 	}
-	// EnPassant Move + Pawn Promotion
+	// EnPassant Move
 	else if (board.checkState(r,c)->getLetter() == 'p' || board.checkState(r,c)->getLetter() == 'P') {
 		if (abs(destr -r) == 1 && abs(destc -c) == 1 &&
 			board.isEmpty(destr,destc)) {
@@ -30,8 +30,7 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	}
 	board.offEnPassant(currPlayerColour);
 	board.checkState(r,c)->move(destr,destc); // Regular Move
-	if (board.isPromo(destr,destc)) {
-		if (piece == 'K' || piece == 'k') throw iv;
+	if (piece != ' ') { // Pawn Promotion
 		board.setup_delete(destr,destc);
 		board.setup_add(piece,destr,destc);
 	}
@@ -46,6 +45,14 @@ void Controller::setNextPlayer() {
 void Controller::calculateScore(string colour) {
 	if (colour == "white") wp->addScore();
 	else bp->addScore();
+}
+
+void Controller::printScore(const int& w, const int& b) {
+	cout << endl;
+	cout << "Final score:" << endl;
+	cout << "White: " << w << endl;
+	cout << "Black: " << b << endl;
+	cout << endl;
 }
 
 void Controller::rebuild() {
@@ -80,6 +87,7 @@ void Controller::setup() {
 			} else if (cmd == "done") {
 				if (board.numKing("white") != 1 || board.numKing("black") != 1) iv.numKingMessage();
 				else if (!board.isbadPawnPosition()) iv.badPawnPositionMessage();
+				//ischeck
 				else break;
 			} else throw iv;
 		} catch (InputValidation e) {
@@ -101,11 +109,8 @@ void Controller::init() {
 		else bp = make_shared<Computer>("black", stoi(b.substr(8,1)), &board);
 		
 		board.setPlayers(wp,bp);
-		if (!customized) currPlayer = wp;
-		if (customized) {
-			if (currPlayerColour == "white" || currPlayerColour == "") currPlayer = wp;
-			else currPlayer = bp;
-		}
+		if (currPlayerColour == "white") currPlayer = wp;
+		else currPlayer = bp;
 
 		//Board init
 		if (!customized) board.init();
@@ -142,25 +147,22 @@ void Controller::game() {
 						string tmp;
 						while(iss >> tmp) cord.emplace_back(tmp);
 						if (cord.size() != 3 && cord.size() != 2) throw iv;
-						else if (cord.size() == 2) {
-							if (!iv.isValid(cord[0][1],cord[0][0]) || !iv.isValid(cord[1][1],cord[1][0])) throw iv;
-							int r,c,destr,destc;
-							r = cord[0][1]-'0'-1;
-							c = cord[0][0]-'a';	
-							destr = cord[1][1]-'0'-1;
-							destc = cord[1][0]-'a';
-							notify(r,c,destr,destc);
-						} else { // Pawn Promotion
-							if(!iv.isValid(cord[0][1],cord[0][0],cord[2][0]) || !iv.isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
+						else {
 							int r,c,destr,destc;
 							char piece;
+							if (cord.size() == 2) {
+								if (!iv.isValid(cord[0][1],cord[0][0]) || !iv.isValid(cord[1][1],cord[1][0])) throw iv;
+							} else {
+								if(!iv.isValid(cord[0][1],cord[0][0],cord[2][0]) || !iv.isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
+								if (!board.isPromo(cord[0][1]-'0'-1, cord[0][0]-'a', cord[1][1]-'0'-1, cord[1][0]-'a') || (cord[2][0] == 'k' || cord[2][0] == 'K')) throw iv;
+								if (currPlayerColour == "white" && islower(cord[2][0])) piece = toupper(cord[2][0]);
+								else if (currPlayerColour == "black" && isupper(cord[2][0])) piece = tolower(cord[2][0]);
+								else piece = cord[2][0];
+							}
 							r = cord[0][1]-'0'-1;
 							c = cord[0][0]-'a';	
 							destr = cord[1][1]-'0'-1;
 							destc = cord[1][0]-'a';
-							if (currPlayerColour == "white" && islower(cord[2][0])) piece = toupper(cord[2][0]);
-							else if (currPlayerColour == "black" && isupper(cord[2][0])) piece = tolower(cord[2][0]);
-							else piece = cord[2][0];
 							notify(r,c,destr,destc,piece);
 						}
 					}
@@ -192,14 +194,16 @@ void Controller::game() {
 				if (ans == "Y" || ans == "y") {
 					rebuild();
 				} else {
-					iv.printScore(wp->getScore(), bp->getScore());
 					break;
 				}
 			} catch (InputValidation e) {
 				e.errorMessage();
 			}
 		}
-		if(customized) customized = false;
+		printScore(wp->getScore(), bp->getScore());
+		throw 1;
+	} catch(int e) {
+		throw e;
 	} catch (InputValidation e) {
 		throw e;
 	}
@@ -219,7 +223,6 @@ void Controller::play() {
 				view = make_shared<GraphicDisplay>(xw);
 				break;
 			} else throw iv;
-			
 		} catch (InputValidation e) {
 			e.errorMessage();
 		}
@@ -233,8 +236,9 @@ void Controller::play() {
 			*in >> cmd;
 			if (cmd == "game") game();
 			else if (cmd == "setup") setup();
-			else if (cmd == "quit") break;
 			else throw iv;
+		} catch (int e) {
+			break;
 		} catch (InputValidation e) {
 			e.errorMessage();
 		} //input failure for menu

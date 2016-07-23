@@ -48,7 +48,7 @@ void InputValidation::level0Message() const {
 
 void InputValidation::menuMessage() const{
 	cout << endl;
-	cout << "Avaliable Commands: [ game white-player black-player ] [ setup ] [ quit ]" << endl;
+	cout << "Avaliable Commands: [ game white-player black-player ] [ setup ]" << endl;
 	cout << "Player Options: [ human | computer[1-4] ]" << endl;
 }
 
@@ -96,12 +96,4 @@ void InputValidation::badPawnPositionMessage() const {
 
 void InputValidation::regameMessage() const {
 	cout << "Would you like to play again? (y/n): ";
-}
-
-void InputValidation::printScore(const int& w, const int& b) {
-	cout << endl;
-	cout << "Final score:" << endl;
-	cout << "White: " << w << endl;
-	cout << "Black: " << b << endl;
-	cout << endl;
 }

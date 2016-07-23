@@ -22,7 +22,6 @@ class InputValidation {
  	void checkmateMessage(const std::string& colour);
  	void stalemateMessage();
  	void resignMessage(const std::string& currPlayer);
- 	void printScore(const int& w, const int& b);
 };
 
 #endif
