@@ -149,7 +149,7 @@ void Controller::game() {
 						if (cord.size() != 3 && cord.size() != 2) throw iv;
 						else {
 							int r,c,destr,destc;
-							char piece;
+							char piece = ' ';
 							if (cord.size() == 2) {
 								if (!iv.isValid(cord[0][1],cord[0][0]) || !iv.isValid(cord[1][1],cord[1][0])) throw iv;
 							} else {
