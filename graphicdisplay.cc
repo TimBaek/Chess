@@ -5,7 +5,7 @@
 #include "board.h"
 using namespace std;
 
-GraphicDisplay::GraphicDisplay(shared_ptr<Xwindow> xw): theDisplay(8,vector<char>(8)), xw{xw}, side{400}, origin{50}, line{5}, dimension{50} {
+GraphicDisplay::GraphicDisplay(shared_ptr<Xwindow> xw): theDisplay(8,vector<char>(8)), xw{xw}, origin{50}, dimension{50} {
 }
 
 
