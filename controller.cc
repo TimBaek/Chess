@@ -47,11 +47,11 @@ void Controller::calculateScore(string colour) {
 	else bp->addScore();
 }
 
-void Controller::printScore(const int& w, const int& b) {
+void Controller::printScore() {
 	cout << endl;
 	cout << "Final score:" << endl;
-	cout << "White: " << w << endl;
-	cout << "Black: " << b << endl;
+	cout << "White: " << wp->getScore() << endl;
+	cout << "Black: " << bp->getScore() << endl;
 	cout << endl;
 }
 
@@ -200,7 +200,7 @@ void Controller::game() {
 				e.errorMessage();
 			}
 		}
-		printScore(wp->getScore(), bp->getScore());
+		printScore();
 		throw 1;
 	} catch(int e) {
 		throw e;

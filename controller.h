@@ -27,7 +27,7 @@ class Controller {
  	void init();
  	void calculateScore(std::string colour);
  	void rebuild();
- 	void printScore(const int& w, const int& b);
+ 	void printScore();
  public:
  	Controller();
  	~Controller();
