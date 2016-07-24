@@ -73,8 +73,8 @@ void InputValidation::checkMessage(const string& colour) {
 }
 
 void InputValidation::checkmateMessage(const string& colour) {
-	if (colour == "white") cout << "Checkmate! White wins!" << endl;
-	else cout << "Checkmate! Black wins!" << endl;
+	if (colour == "white") cout << "Checkmate! Black wins!" << endl;
+	else cout << "Checkmate! White wins!" << endl;
 }
 
 void InputValidation::stalemateMessage() {

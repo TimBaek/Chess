@@ -5,7 +5,7 @@
 #include <sstream>
 using namespace std;
 
-Computer::Computer(string colour, int level, Board *b): colour{colour}, stalemate{false}, checkmate{false}, check{false}, b{b}, level{level}, currR{-1}, currC{-1}, destR{-1}, destC{-1}, score{0} {}
+Computer::Computer(string colour, Board *b, int level): colour{colour}, b{b}, level{level}, currR{-1}, currC{-1}, destR{-1}, destC{-1}, score{0} {}
 
 Computer::~Computer() {}
 
@@ -15,14 +15,6 @@ struct Coordinates{
 
 string Computer::getColour() { return colour; }
 string Computer::getName(){ return "computer"; }
-
-bool Computer::isStalemate() { return stalemate; }
-
-bool Computer::isCheckmate() { return checkmate; }
-
-bool Computer::isCheck() { return check; }
-
-void Computer::setBoard(Board *board){ b = board; }
 
 int Computer::getR(){ return currR; }
 int Computer::getC(){ return currC; }

@@ -6,16 +6,17 @@ using namespace std;
 
 #include "controller.h"
 
-Controller::Controller(): in{&cin}, currPlayerColour{"white"}, board{this}, customized{false} {}
+Controller::Controller(): in{&cin}, currPlayer{wp}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	if (currPlayer->getName() == "human") {
-		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || 
-			board.willBeChecked(r,c,destr,destc,currPlayerColour)) throw iv;	
+		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer->getColour()) || 
+			board.willBeChecked(r,c,destr,destc,currPlayer->getColour())) throw iv;	
 	}
 	// Castling Move
-	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
+	if ((board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') &&
+		!board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
 		if (destr == r && abs(destc - c) == 2) {
 			board.castling(r,c,destc);	
 		} 
@@ -24,12 +25,13 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	else if (board.checkState(r,c)->getLetter() == 'p' || board.checkState(r,c)->getLetter() == 'P') {
 		if (abs(destr -r) == 1 && abs(destc -c) == 1 &&
 			board.isEmpty(destr,destc)) {
-			if (currPlayerColour == "white") board.setup_delete(destr -1,destc);
+			if (currPlayer->getColour() == "white") board.setup_delete(destr -1,destc);
 			else board.setup_delete(destr +1, destc);
 		} 
 	}
-	board.offEnPassant(currPlayerColour);
+	board.offEnPassant(currPlayer->getColour());
 	board.checkState(r,c)->move(destr,destc); // Regular Move
+
 	if (piece != ' ') { // Pawn Promotion
 		board.setup_delete(destr,destc);
 		board.setup_add(piece,destr,destc);
@@ -38,7 +40,7 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 }
 
 void Controller::setNextPlayer() {
-	if (currPlayerColour == "white") currPlayer = bp;
+	if (currPlayer->getColour() == "white") currPlayer = bp;
 	else currPlayer = wp;
 }
 
@@ -81,8 +83,8 @@ void Controller::setup() {
 				board.setup_delete(r-'0'-1, c-'a');
 			} else if (cmd == "=") {
 				*in >> colour;
-				if (colour == "white") currPlayerColour = "white";
-				else if (colour == "black") currPlayerColour = "black";
+				if (colour == "white") currPlayer = wp;
+				else if (colour == "black") currPlayer = bp;
 				else throw iv;
 			} else if (cmd == "done") {
 				if (board.numKing("white") != 1 || board.numKing("black") != 1) iv.numKingMessage();
@@ -104,13 +106,10 @@ void Controller::init() {
 
 		//Player init
 		if (w == "human") wp = make_shared<Human>("white");
-		else wp = make_shared<Computer>("white", stoi(w.substr(8,1)), &board);
+		else wp = make_shared<Computer>("white", &board, stoi(w.substr(8,1)));
 		if (b == "human") bp = make_shared<Human>("black");
-		else bp = make_shared<Computer>("black", stoi(b.substr(8,1)), &board);
-		
+		else bp = make_shared<Computer>("black", &board, stoi(b.substr(8,1)));
 		board.setPlayers(wp,bp);
-		if (currPlayerColour == "white") currPlayer = wp;
-		else currPlayer = bp;
 
 		//Board init
 		if (!customized) board.init();
@@ -127,10 +126,21 @@ void Controller::game() {
 		init();
 		iv.gameMessage(); //Start new game
 		while (1) {
-			currPlayerColour = currPlayer->getColour();
 			cout << endl;
 			view->print();
-			iv.currPlayerMessage(currPlayerColour);
+			if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour()) {
+				if (board.isCheckmate(currPlayer->getColour())) {
+					iv.checkmateMessage(currPlayer->getColour());
+					if (currPlayer->getColour() == "white") calculateScore("black");
+					else calculateScore("white");
+					break;
+				} else iv.checkMessage(currPlayer->getColour());
+			}
+			if (board.isStalemate(currPlayer->getColour())) {
+				// message
+				// throw
+			}
+			iv.currPlayerMessage(currPlayer->getColour());
 			try {
 				string cmd;
 				*in >> cmd;
@@ -155,8 +165,8 @@ void Controller::game() {
 							} else {
 								if(!iv.isValid(cord[0][1],cord[0][0],cord[2][0]) || !iv.isValid(cord[1][1],cord[1][0],cord[2][0])) throw iv;
 								if (!board.isPromo(cord[0][1]-'0'-1, cord[0][0]-'a', cord[1][1]-'0'-1, cord[1][0]-'a') || (cord[2][0] == 'k' || cord[2][0] == 'K')) throw iv;
-								if (currPlayerColour == "white" && islower(cord[2][0])) piece = toupper(cord[2][0]);
-								else if (currPlayerColour == "black" && isupper(cord[2][0])) piece = tolower(cord[2][0]);
+								if (currPlayer->getColour() == "white" && islower(cord[2][0])) piece = toupper(cord[2][0]);
+								else if (currPlayer->getColour() == "black" && isupper(cord[2][0])) piece = tolower(cord[2][0]);
 								else piece = cord[2][0];
 							}
 							r = cord[0][1]-'0'-1;
@@ -167,24 +177,11 @@ void Controller::game() {
 						}
 					}
 				} else if (cmd == "resign") {
-					iv.resignMessage(currPlayerColour);
-					if (currPlayerColour == "white") calculateScore("black");
+					iv.resignMessage(currPlayer->getColour());
+					if (currPlayer->getColour() == "white") calculateScore("black");
 					else calculateScore("white");
 					throw 1;
 				} else throw iv;
-
-				// Display state of the game
-				/*if (wp->isCheckmate()) { // checkmate
-					iv.checkmateMessage(wp->getColour());
-					break;
-				}
-				if (bp->isCheckmate()) {
-					iv.checkmateMessage(bp->getColour());
-					break;
-				}
-				if (wp->isCheck()) iv.checkMessage(wp->getColour()); //check
-				if (bp->isCheck()) iv.checkMessage(bp->getColour());
-				if (wp->isStalemate() && bp->isStalemate()) iv.stalemateMessage(); */
 
 				setNextPlayer();
 			} catch (int e) {

@@ -17,7 +17,6 @@
 
 class Controller {
 	std::istream *in;
-	std::string currPlayerColour;
 	std::shared_ptr<Player> wp,bp,currPlayer;
 	std::shared_ptr<View> view;
 	Board board;

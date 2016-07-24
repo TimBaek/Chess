@@ -6,9 +6,6 @@
 
 class Computer: public Player {
  	std::string colour;
-	bool stalemate;
-	bool checkmate;
-	bool check;
 	Board *b;
 	int level;
 	int score;
@@ -18,7 +15,7 @@ class Computer: public Player {
 	void capturingMove();
 	//void avoidCapture2();
  public:
- 	Computer(std::string colour, int level, Board *b);
+ 	Computer(std::string colour, Board *b, int level);
  	~Computer();
  	std::string getColour();
  	std::string getName();
@@ -29,7 +26,6 @@ class Computer: public Player {
 	bool isStalemate();
 	bool isCheckmate();
 	bool isCheck();
-	void setBoard(Board *b);
 	void nextMove();
 	void addScore();
 	int getScore();

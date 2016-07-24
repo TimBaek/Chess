@@ -6,9 +6,6 @@
 
 class Human: public Player {
 	std::string colour;
-	bool stalemate;
-	bool checkmate;
-	bool check;
 	int score;
  public:
 	Human(std::string colour);
@@ -20,9 +17,6 @@ class Human: public Player {
  	int getDestR();
  	int getDestC();
  	void nextMove();
-	bool isStalemate();
-	bool isCheckmate();
-	bool isCheck();
 	void addScore();
 	int getScore();
 };

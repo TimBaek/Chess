@@ -1,18 +1,12 @@
 #include "human.h"
 using namespace std;
 
-Human::Human(string colour): colour{colour}, stalemate{false}, checkmate{false}, check{false}, score{0} {}
+Human::Human(string colour): colour{colour}, score{0} {}
 
 Human::~Human() {}
 
 string Human::getName() { return "human"; }
 string Human::getColour() { return colour; }
-
-bool Human::isStalemate() { return stalemate; }
-
-bool Human::isCheckmate() { return checkmate; }
-
-bool Human::isCheck() { return check; }
 
 int Human::getR(){ return -1; }
 
