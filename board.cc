@@ -436,7 +436,6 @@ bool isValidRC(int r, int c) {
 	        (0 <= c && c <= 7));
 }
 
-
 bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	vector<vector<shared_ptr<Piece>>> vBoard;
 	char klet = (colour == "white"? 'K':'k');
@@ -453,22 +452,21 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 					krow = p->getRow();
 					kcol = p->getCol();
 				}
-
 				if(p->getLetter() == 'K' || p->getLetter() == 'k') {
-					vBoard[i].emplace_back(make_shared<King>(this, p->getRow(), p->getCol(), p->getColour()));
+					vBoard[i][j] = make_shared<King>(this, p->getRow(), p->getCol(), p->getColour());
 				} else if(p->getLetter() == 'Q' || p->getLetter() == 'q') {
-					vBoard[i].emplace_back(make_shared<Queen>(this, p->getRow(), p->getCol(), p->getColour()));
+					vBoard[i][j] = make_shared<Queen>(this, p->getRow(), p->getCol(), p->getColour());
 				} else if(p->getLetter() == 'B' || p->getLetter() == 'b') {
-					vBoard[i].emplace_back(make_shared<Bishop>(this, p->getRow(), p->getCol(), p->getColour()));
+					vBoard[i][j] = make_shared<Bishop>(this, p->getRow(), p->getCol(), p->getColour());
 				} else if(p->getLetter() == 'R' || p->getLetter() == 'r') {
-					vBoard[i].emplace_back(make_shared<Rook>(this, p->getRow(), p->getCol(), p->getColour()));
+					vBoard[i][j] = make_shared<Rook>(this, p->getRow(), p->getCol(), p->getColour());
 				} else if(p->getLetter() == 'N' || p->getLetter() == 'n') {
-					vBoard[i].emplace_back(make_shared<Knight>(this, p->getRow(), p->getCol(), p->getColour()));
+					vBoard[i][j] = make_shared<Knight>(this, p->getRow(), p->getCol(), p->getColour());
 				} else if(p->getLetter() == 'P' || p->getLetter() == 'p') {
-					vBoard[i].emplace_back(make_shared<Pawn>(this, p->getRow(), p->getCol(), p->getColour()));
+					vBoard[i][j] = make_shared<Pawn>(this, p->getRow(), p->getCol(), p->getColour());
 				}	
 			} else {
-				vBoard[i].emplace_back(nullptr);
+				vBoard[i][j] = nullptr;
 			}
 		}
 	}
@@ -496,7 +494,6 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 		vBoard[destr][destc] = checkState(r,c);
 		vBoard[r][c] = nullptr;
 	}
-	
 	if (krow == r && kcol == c) {
 		krow = destr;
 		kcol = destc;
