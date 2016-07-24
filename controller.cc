@@ -6,7 +6,7 @@ using namespace std;
 
 #include "controller.h"
 
-Controller::Controller(): in{&cin}, currPlayer{wp}, board{this}, customized{false} {}
+Controller::Controller(): in{&cin}, currPlayerColour{"white"}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc, char piece) {
@@ -83,8 +83,8 @@ void Controller::setup() {
 				board.setup_delete(r-'0'-1, c-'a');
 			} else if (cmd == "=") {
 				*in >> colour;
-				if (colour == "white") currPlayer = wp;
-				else if (colour == "black") currPlayer = bp;
+				if (colour == "white") currPlayerColour = "white";
+				else if (colour == "black") currPlayerColour = "black";
 				else throw iv;
 			} else if (cmd == "done") {
 				if (board.numKing("white") != 1 || board.numKing("black") != 1) iv.numKingMessage();
@@ -110,6 +110,10 @@ void Controller::init() {
 		if (b == "human") bp = make_shared<Human>("black");
 		else bp = make_shared<Computer>("black", &board, stoi(b.substr(8,1)));
 		board.setPlayers(wp,bp);
+		
+		if (currPlayerColour == "white") currPlayer = wp;
+		else currPlayer = bp;
+
 
 		//Board init
 		if (!customized) board.init();
@@ -131,8 +135,7 @@ void Controller::game() {
 			if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
 				if (board.isCheckmate(currPlayer->getColour())) {
 					iv.checkmateMessage(currPlayer->getColour());
-					if (currPlayer->getColour() == "white") calculateScore("black");
-					else calculateScore("white");
+					calculateScore(currPlayer->getColour() == "white" ? "black" : "white");
 					break;
 				} else iv.checkMessage(currPlayer->getColour());
 			}
@@ -178,8 +181,7 @@ void Controller::game() {
 					}
 				} else if (cmd == "resign") {
 					iv.resignMessage(currPlayer->getColour());
-					if (currPlayer->getColour() == "white") calculateScore("black");
-					else calculateScore("white");
+					calculateScore(currPlayer->getColour() == "white" ? "black" : "white");
 					throw 1;
 				} else throw iv;
 
