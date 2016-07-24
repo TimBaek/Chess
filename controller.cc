@@ -140,7 +140,7 @@ void Controller::game() {
 					throw 1;
 				}
 				if (board.isStalemate(currPlayer->getColour())) {
-					iv.stalemateMessage(currPlayer->getColour());
+					iv.stalemateMessage();
 					calculateScore("white", 0.5);
 					calculateScore("black", 0.5);
 					throw 1;
