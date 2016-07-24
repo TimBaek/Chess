@@ -25,7 +25,7 @@ class Controller {
  	bool customized;
  	void setNextPlayer();
  	void init();
- 	void calculateScore(std::string colour);
+ 	void calculateScore(std::string colour, double s);
  	void rebuild();
  	void printScore();
  public:

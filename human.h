@@ -6,7 +6,6 @@
 
 class Human: public Player {
 	std::string colour;
-	int score;
  public:
 	Human(std::string colour);
 	~Human();
@@ -17,8 +16,6 @@ class Human: public Player {
  	int getDestR();
  	int getDestC();
  	void nextMove();
-	void addScore();
-	int getScore();
 };
 
 #endif
