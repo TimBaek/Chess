@@ -11,8 +11,8 @@ Controller::~Controller() {}
 
 void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	if (currPlayer->getName() == "human") {
-		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) /*|| 
-			board.willBeChecked(r,c,destr,destc,currPlayerColour)*/) throw iv;	
+		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayerColour) || 
+			board.willBeChecked(r,c,destr,destc,currPlayerColour)) throw iv;	
 	}
 	// Castling Move
 	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {

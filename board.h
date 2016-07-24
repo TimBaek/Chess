@@ -58,6 +58,7 @@ class Board {
   char getLetter(int r, int c);
   std::shared_ptr<Piece> checkState(int r, int c);
   bool isPromo(int r, int c, int destr, int destc);
+  bool willBeChecked(int r, int c, int dr, int dc, std::string colour);
 };
 
 #endif
