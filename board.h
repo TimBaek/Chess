@@ -28,8 +28,6 @@ class Board {
 
   void defaultSetup(std::string colour1, std::string colour2);
   void updateState(int r, int c, int destr, int destc);
-  void updatePossibleMove();
-  void updatePiece(std::shared_ptr<Piece> p);
 
  public:
   Board(Controller *ctrl);
