@@ -439,218 +439,121 @@ bool Board::isPromo(int r, int c, int destr, int destc) {
 } 
 
 
+
+
 bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	vector<vector<shared_ptr<Piece>>> vBoard;
-	char klet = (colour == "white"? 'K':'k');
-	int krow = -1;
-	int kcol = -1;
-	
-	// setting vBoard based on currState
-	for(int i=0; i < 8; ++i) {
-		vBoard.emplace_back(vector<shared_ptr<Piece>>(8));
-		for(int j=0; j < 8; ++j) {
-			auto p = checkState(i,j);
-			if (p) {
-				if (p->getLetter() == klet) {
-					krow = p->getRow();
-					kcol = p->getCol();
-				}
-				if(p->getLetter() == 'K' || p->getLetter() == 'k') {
-					vBoard[i][j] = make_shared<King>(this, p->getRow(), p->getCol(), p->getColour());
-				} else if(p->getLetter() == 'Q' || p->getLetter() == 'q') {
-					vBoard[i][j] = make_shared<Queen>(this, p->getRow(), p->getCol(), p->getColour());
-				} else if(p->getLetter() == 'B' || p->getLetter() == 'b') {
-					vBoard[i][j] = make_shared<Bishop>(this, p->getRow(), p->getCol(), p->getColour());
-				} else if(p->getLetter() == 'R' || p->getLetter() == 'r') {
-					vBoard[i][j] = make_shared<Rook>(this, p->getRow(), p->getCol(), p->getColour());
-				} else if(p->getLetter() == 'N' || p->getLetter() == 'n') {
-					vBoard[i][j] = make_shared<Knight>(this, p->getRow(), p->getCol(), p->getColour());
-				} else if(p->getLetter() == 'P' || p->getLetter() == 'p') {
-					vBoard[i][j] = make_shared<Pawn>(this, p->getRow(), p->getCol(), p->getColour());
-				}	
-			} else {
-				vBoard[i][j] = nullptr;
-			}
+	for(int i=0; i<8; i++){
+		vBoard.push_back(vector<shared_ptr<Piece>>(8));
+		for(int j=0; j<8; j++){
+			if(currStates[i][j] == nullptr) vBoard[i][j] = nullptr;
+			char letter = currStates[i][j]->getLetter();
+			if(letter < 'Z') letter = letter - 'A' +'a';
+			switch(c){
+				case 'k': vBoard[i][j] = make_shared<King>(this, i,j,currStates[i][j]->getColour()); break;
+				case 'q': vBoard[i][j] = make_shared<Queen>(this, i,j,currStates[i][j]->getColour()); break;
+				case 'r': vBoard[i][j] = make_shared<Rook>(this, i,j,currStates[i][j]->getColour()); break;
+				case 'b': vBoard[i][j] = make_shared<Bishop>(this, i,j,currStates[i][j]->getColour()); break;
+				case 'n': vBoard[i][j] = make_shared<Knight>(this, i,j,currStates[i][j]->getColour()); break;
+				case 'p': vBoard[i][j] = make_shared<Pawn>(this, i,j,currStates[i][j]->getColour());
+			}	
 		}
 	}
-	if (isValidRC(r,c) && isValidRC(destr,destc)) {
-		// castling
-		if (vBoard[r][c]->getLetter() == 'k' || vBoard[r][c]->getLetter() == 'K') {
-			if (destr == r && abs(destc - c) == 2) {
-				int rcol = c;
-				int jumpedCol = (c < destc? c +1 : c -1);
-				int colInc = (c < destc? 1:-1);
-				while(true) {
-					rcol += colInc;
-					if (vBoard[r][rcol]) break;
-				}
-				vBoard[r][jumpedCol] = vBoard[r][rcol];
-				vBoard[r][rcol] = nullptr;
-			} 
-		// EnPassant		
-		} else if (vBoard[r][c]->getLetter() == 'p' || vBoard[r][c]->getLetter() == 'P') {
-			if (abs(destr -r) == 1 && abs(destc -c) == 1 &&	vBoard[r][c] == nullptr) {
-				if (colour == "white") vBoard[destr -1][destc] = nullptr;
-				else vBoard[destr +1][destc];
-			} 
+	currStates[r][c]->move(destr,destc);
+	bool check = isCheck(colour);
+
+	currStates.clear();
+	for(int i=0; i<8; i++){
+		currStates.push_back(vector<shared_ptr<Piece>>(8));
+		for(int j=0; j<8; j++){
+			if(vBoard[i][j] == nullptr) currStates[i][j] = nullptr;
+			char letter = vBoard[i][j]->getLetter();
+			if(letter < 'Z') letter = letter - 'A' +'a';
+			switch(c){
+				case 'k': currStates[i][j] = make_shared<King>(this, i,j,vBoard[i][j]->getColour()); break;
+				case 'q': currStates[i][j] = make_shared<Queen>(this, i,j,vBoard[i][j]->getColour()); break;
+				case 'r': currStates[i][j] = make_shared<Rook>(this, i,j,vBoard[i][j]->getColour()); break;
+				case 'b': currStates[i][j] = make_shared<Bishop>(this, i,j,vBoard[i][j]->getColour()); break;
+				case 'n': currStates[i][j] = make_shared<Knight>(this, i,j,vBoard[i][j]->getColour()); break;
+				case 'p': currStates[i][j] = make_shared<Pawn>(this, i,j,vBoard[i][j]->getColour());
+			}	
 		}
-		vBoard[destr][destc] = vBoard[r][c];
-		vBoard[r][c] = nullptr;
 	}
-	
-	if (krow == r && kcol == c) {
-		krow = destr;
-		kcol = destc;
-	}
-	char enemyPawn = (colour == "white"? 'p' : 'P');
-	char enemyBishop = (colour == "white"? 'b' : 'B');
-	char enemyKnight = (colour == "white"? 'n' : 'N');
-	char enemyRook = (colour == "white"? 'r' : 'R');
-	char enemyQueen = (colour == "white"? 'q' : 'Q');
-	char enemyKing = (colour == "white"? 'k' : 'K');
+	return check;
 
-	// up
-	for(int i=krow+1; isValidRC(i,kcol); ++i) {
-		if (getLetter(i,kcol) == enemyRook || getLetter(i,kcol) == enemyQueen) return true;
-		if (vBoard[i][kcol] && vBoard[i][kcol]->getColour() == colour) break;
-	}
-	// down
-	for(int i=krow-1; isValidRC(i,kcol); --i) {
-		if (getLetter(i,kcol) == enemyRook || getLetter(i,kcol) == enemyQueen) return true;
-		if (vBoard[i][kcol] && vBoard[i][kcol]->getColour() == colour) break;
-	}
-	// left
-	for(int i=kcol-1; isValidRC(krow,i); --i) {
-		if (getLetter(krow,i) == enemyRook || getLetter(krow,i) == enemyQueen) return true;
-		if (vBoard[krow][i] && vBoard[krow][i]->getColour() == colour) break;
-	}
-	// right
-	for(int i=kcol+1; isValidRC(krow,i); ++i) {
-		if (getLetter(krow,i) == enemyRook || getLetter(krow,i) == enemyQueen) return true;
-		if (vBoard[krow][i] && vBoard[krow][i]->getColour() == colour) break;
-	}
-	// up-right
-	int i = krow +1;
-	int j = kcol +1;
-	while (isValidRC(i,j)) {
-		if (getLetter(i,j) == enemyBishop || getLetter(i,j) == enemyQueen) return true;
-		if (vBoard[i][j] && vBoard[i][j]->getColour() == colour) break;
-		++i;
-		++j;
-	}
-	// down-right
-	i = krow -1;
-	j = kcol +1;
-	while (isValidRC(i,j)) {
-		if (getLetter(i,j) == enemyBishop || getLetter(i,j) == enemyQueen) return true;
-		if (vBoard[i][j] && vBoard[i][j]->getColour() == colour) break;		
-		--i;
-		++j;
-	}
-	// down-left
-	i = krow -1;
-	j = kcol -1;
-	while (isValidRC(i,j)) {
-		if (getLetter(i,j) == enemyBishop || getLetter(i,j) == enemyQueen) return true;
-		if (vBoard[i][j] && vBoard[i][j]->getColour() == colour) break;		
-		--i;
-		--j;
-	}
-	// up-left
-	i = krow +1;
-	j = kcol -1;
-	while (isValidRC(i,j)) {
-		if (getLetter(i,j) == enemyBishop || getLetter(i,j) == enemyQueen) return true;
-		if (vBoard[i][j] && vBoard[i][j]->getColour() == colour) break;
-		++i;
-		--j;
-	}
-	int ePawnRow = (colour == "white"? krow +1: krow -1);
-
-	// left pawn check
-	if ((isValidRC(ePawnRow, kcol -1) && getLetter(ePawnRow,kcol -1) == enemyPawn)) return true;
-	// right pawn check
-	if ((isValidRC(ePawnRow, kcol +1) && getLetter(ePawnRow,kcol +1) == enemyPawn)) return true;
-
-	// king vs king check
-	if (isValidRC(krow, kcol +1) && getLetter(krow, kcol +1) == enemyKing) 		 return true;
-	if (isValidRC(krow +1, kcol +1) && getLetter(krow +1, kcol +1) == enemyKing) return true;
-	if (isValidRC(krow +1, kcol) && getLetter(krow +1, kcol) == enemyKing) 		 return true;
-	if (isValidRC(krow +1, kcol -1) && getLetter(krow +1, kcol -1) == enemyKing) return true;
-	if (isValidRC(krow, kcol -1) && getLetter(krow, kcol -1) == enemyKing) 		 return true;
-	if (isValidRC(krow -1, kcol -1) && getLetter(krow -1, kcol -1) == enemyKing) return true;
-	if (isValidRC(krow -1, kcol) && getLetter(krow -1, kcol) == enemyKing) 		 return true;
-	if (isValidRC(krow -1, kcol +1) && getLetter(krow -1, kcol +1) == enemyKing) return true;
-
-	// knight
-	if ((isValidRC(krow+1, kcol+2) && getLetter(krow+1, kcol+2) == enemyKnight) ||
-		(isValidRC(krow-1, kcol+2) && getLetter(krow-1, kcol+2) == enemyKnight) ||
-		(isValidRC(krow+2, kcol+1) && getLetter(krow+2, kcol+1) == enemyKnight) ||
-		(isValidRC(krow-2, kcol+1) && getLetter(krow-2, kcol+1) == enemyKnight) ||
-		(isValidRC(krow+2, kcol-1) && getLetter(krow+2, kcol-1) == enemyKnight) ||
-		(isValidRC(krow+1, kcol-2) && getLetter(krow+1, kcol-2) == enemyKnight) ||
-		(isValidRC(krow-1, kcol-2) && getLetter(krow-1, kcol-2) == enemyKnight) ||
-		(isValidRC(krow-2, kcol-1) && getLetter(krow-2, kcol-1) == enemyKnight)) {
-		return true;
-	}
-	return false;
 }
 
-bool Board::isCheckmate(string colour) {
-	vector<shared_ptr<Piece>> pieces;
-	// collecting the same colour pieces and finding king
-	for(int r=0; r < 8; ++r) {
-		for(int c=0; c < 8; ++c) {
-			auto piece = checkState(r,c);
-			if (piece) {
-				if (piece->getColour() == colour) {
-					pieces.emplace_back(piece);
-				}
-			}
-		}
-	}
 
-	// check if there is a legal move that stops check
-	int len = pieces.size();
-	for(int i=0; i < len; ++i) {
-		for (int r=0; r < 8; ++r) {
-			for(int c=0; c < 8; ++c) {
-				auto p = pieces.at(i);
-				if (canMove(p, r, c, colour) &&
-					!willBeChecked(p->getRow(), p->getCol(), r,c, colour)) {
-					return false;
+bool Board::isCheck(string colour){
+	string oppColour = colour == "black" ? "white" : "black";
+	char king = colour == "black" ? 'k' : 'K';
+	int kr, kc;
+	for(int i=0; i<8; i++){
+		for(int j=0; j<8; j++){
+			if(currStates[i][j]->getLetter() == king){
+				kr = i;
+				kc = j;
+			}
+		}
+	}
+	bool check =false;
+	for(int i=0; i<8; i++){
+		if(!check) break;
+		for(int j=0; j<8; j++){
+			if(isEmpty(i,j)) continue;
+			if(currStates[i][j]->getColour() != oppColour) continue;
+			if(canMove(currStates[i][j], kr, kc, oppColour)){
+				check = true;
+				break;
+			}
+		}
+	}
+	return check;
+}
+
+
+
+
+bool Board::isCheckmate(string colour) {
+	bool checkmate = true;
+	for(int i=0; i<8; i++){
+		if(!checkmate) break;
+		for(int j=0; j<8; j++){
+			if(!checkmate) break;
+			if(isEmpty(i,j)) continue;
+			if(currStates[i][j]->getColour() != colour) continue;
+			for(int desti=0; desti<8; desti++){
+				if(!checkmate) break;
+				for(int destj=0; destj<8; destj++){
+					if(!willBeChecked(i,j,desti,destj,colour)){
+						checkmate = false;
+						break;
+					}
 				}
 			}
 		}
 	}
-	return true;
+	return checkmate;
 }
 
 bool Board::isStalemate(string colour) {
-	vector<shared_ptr<Piece>> pieces;
-	// collecting the same colour pieces and finding king
-	for(int r=0; r < 8; ++r) {
-		for(int c=0; c < 8; ++c) {
-			auto piece = checkState(r,c);
-			if (piece) {
-				if (piece->getColour() == colour) {
-					pieces.emplace_back(piece);
+	bool stalemate = true;
+	for(int i=0; i<8; i++){
+		if(!stalemate) break;
+		for(int j=0; j<8; j++){
+			if(!stalemate) break;
+			if(isEmpty(i,j)) continue;
+			if(currStates[i][j]->getColour() != colour) continue;
+			for(int desti=0; desti<8; desti++){
+				if(!stalemate) break;
+				for(int destj=0; destj<8; destj++){
+					if(canMove(currStates[i][j], desti, destj, colour)){
+						stalemate = false;
+						break;
+					}
 				}
 			}
 		}
 	}
-
-	// check if there is a legal move
-	int len = pieces.size();
-	for(int i=0; i < len; ++i) {
-		for (int r=0; r < 8; ++r) {
-			for(int c=0; c < 8; ++c) {
-				auto p = pieces.at(i);
-				if (canMove(p, r, c, colour)) {
-					return false;
-				}
-			}
-		}
-	}
-	return true;	
+	return stalemate;	
 }
