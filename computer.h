@@ -13,6 +13,7 @@ class Computer: public Player {
 	void randomMove();
 	void avoidCapture();
 	int capturingMove();
+	void pawnPromo(int r, int c);
 	//void avoidCapture2();
  public:
  	Computer(std::string colour, Board *b, int level);
