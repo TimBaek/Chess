@@ -33,6 +33,31 @@ void Computer::nextMove(){
 	if(level==1) randomMove();
 	else if(level==2){ if(capturingMove() ==0) randomMove(); }
 	else if(level==3){ if(capturingMove() == 0) avoidCapture(); }
+
+	if(b->isPromo(currR, currC, destR, destC)){ pawnPromo(currR,currC); }
+}
+
+void Computer::pawnPromo(int r, int c){
+	if(level==3){
+		b->setup_add(getColour()=="black" ? 'q' : 'Q', r,c);
+	}
+	else{
+		char letter;
+		srand(time(NULL));
+		int x;
+		if(level==2){ x = rand() % 6; }
+		if(level==1){ x = rand() % 4; }
+		switch(x) {
+			case 5: letter = 'q'; break;
+			case 4: letter = 'q'; break;
+			case 0: letter = 'q'; break;
+			case 1: letter = 'b'; break;
+			case 2: letter = 'r'; break;
+			case 3: letter = 'n';
+		}
+		if(getColour()=="white") letter = letter - 'a' + 'A';
+		b->setup_add(letter,r,c);
+	}
 }
 
 void Computer::randomMove(){
@@ -127,11 +152,18 @@ int Computer::capturingMove(){
 	string oppColour = getColour()=="black" ? "white" : "black";
 	int currPriority=0;
 	for(int r=0; r<8; r++){
+		if(currPriority==6) break;
 		for(int c=0; c<8; c++){
+			if(currPriority==6) break;
 			if(b->isEmpty(r,c)) continue;
 			if(b->checkState(r,c)->getColour() != getColour()) continue;
 			for(int i=0; i<8; i++){
+				if(currPriority==6) break;
 				for(int j=0; j<8; j++){
+					if(!(b->willBeChecked(r,c,i,j,oppColour))){
+						currPriority = 6;
+						break;
+					}
 					if(b->checkState(i,j) == nullptr) continue;
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
 					if(b->willBeChecked(r,c,i,j, getColour())) continue;
@@ -140,7 +172,6 @@ int Computer::capturingMove(){
 					letter = letter < 'Z' ? letter + 'a' - 'A' : letter;
 					int priority;
 					switch(letter) {
-						case 'k': priority = 6; break;
 						case 'q': priority = 5; break;
 						case 'b': priority = 4; break;
 						case 'r': priority = 3; break;
