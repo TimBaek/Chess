@@ -24,29 +24,10 @@ bool Board::isThere(Piece &p, int r, int c){
 	return((p.getRow()==r) && (p.getCol()==c));
 }
 
-/*
-bool Board::canMove(int r, int c, int destr, int destc){
-	return true;
-}
-*/
 void Board::updateState(int r, int c, int destr, int destc){
 	shared_ptr<Piece> tmp = currStates[r][c];
 	currStates[destr][destc] = tmp;
 	currStates[r][c] = nullptr;
-	updatePossibleMove();
-}
-
-void Board::updatePossibleMove(){
-	for(int i=0; i<8; i++){
-		for(int j=0; j<8; j++){
-			if(currStates[i][j]==nullptr) continue;
-			updatePiece(currStates[i][j]);
-		}
-	}
-}
-
-void Board::updatePiece(shared_ptr<Piece> p){
-
 }
 
 
