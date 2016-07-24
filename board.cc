@@ -35,29 +35,11 @@ void Board::init(){
 	// initializing Current State
 	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		blackMoves.push_back(vector<vector<int>>(8));
 		for(int j=0; j<8; j++){
 			currStates[i][j] = nullptr;
 		}
 	}
 	defaultSetup(wp->getColour(), bp->getColour());
-
-	// initializing Possible Moves
-	//cerr << "blackMoves initialization" << endl;
-	//cerr << "numBlack is " << numPieces("black") << endl;
-	for(int i=0; i<numPieces("black"); i++){
-		blackMoves.push_back(vector<vector<int>>());
-		whiteMoves.push_back(vector<vector<int>>());
-		for(int j=0; j<8; j++){
-			blackMoves[i].push_back(vector<int>());
-			whiteMoves[i].push_back(vector<int>());
-			for(int k=0; k<8; k++){
-				blackMoves[i][j].push_back(0);
-				whiteMoves[i][j].push_back(0);
-			}
-		}
-	}
-
 }
 
 void Board::setPlayers(shared_ptr<Player> w, shared_ptr<Player> b) {
@@ -632,7 +614,7 @@ bool Board::isCheckmate(string colour) {
 	return true;
 }
 
-bool Board::isSatlemate(string colour) {
+bool Board::isStalemate(string colour) {
 	vector<shared_ptr<Piece>> pieces;
 	// collecting the same colour pieces and finding king
 	for(int r=0; r < 8; ++r) {

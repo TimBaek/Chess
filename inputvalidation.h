@@ -9,7 +9,7 @@ class InputValidation {
  	~InputValidation();
  	bool isPlayer(const std::string& w, const std::string& b);
  	bool isValid(const char& r, char& c, const char& p = ' ');
- 	void currPlayerMessage(std::string& p);
+ 	void currPlayerMessage(const std::string& p);
  	void level0Message() const;
  	void menuMessage() const;
  	void errorMessage() const;
