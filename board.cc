@@ -570,6 +570,16 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	// right pawn check
 	if ((isValidRC(ePawnRow, kcol +1) && getLetter(ePawnRow,kcol +1) == enemyPawn)) return true;
 
+	// king vs king check
+	if (isValidRC(krow, kcol +1) && getLetter(krow, kcol +1) == enemyKing) 		 return true;
+	if (isValidRC(krow +1, kcol +1) && getLetter(krow +1, kcol +1) == enemyKing) return true;
+	if (isValidRC(krow +1, kcol) && getLetter(krow +1, kcol) == enemyKing) 		 return true;
+	if (isValidRC(krow +1, kcol -1) && getLetter(krow +1, kcol -1) == enemyKing) return true;
+	if (isValidRC(krow, kcol -1) && getLetter(krow, kcol -1) == enemyKing) 		 return true;
+	if (isValidRC(krow -1, kcol -1) && getLetter(krow -1, kcol -1) == enemyKing) return true;
+	if (isValidRC(krow -1, kcol) && getLetter(krow -1, kcol) == enemyKing) 		 return true;
+	if (isValidRC(krow -1, kcol +1) && getLetter(krow -1, kcol +1) == enemyKing) return true;
+
 	// knight
 	if ((isValidRC(krow+1, kcol+2) && getLetter(krow+1, kcol+2) == enemyKnight) ||
 		(isValidRC(krow-1, kcol+2) && getLetter(krow-1, kcol+2) == enemyKnight) ||
