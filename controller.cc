@@ -128,7 +128,7 @@ void Controller::game() {
 		while (1) {
 			cout << endl;
 			view->print();
-			if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour()) {
+			if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
 				if (board.isCheckmate(currPlayer->getColour())) {
 					iv.checkmateMessage(currPlayer->getColour());
 					if (currPlayer->getColour() == "white") calculateScore("black");
@@ -137,8 +137,8 @@ void Controller::game() {
 				} else iv.checkMessage(currPlayer->getColour());
 			}
 			if (board.isStalemate(currPlayer->getColour())) {
-				// message
-				// throw
+				iv.stalemateMessage();
+				//change scoring system
 			}
 			iv.currPlayerMessage(currPlayer->getColour());
 			try {
