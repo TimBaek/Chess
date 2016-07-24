@@ -24,8 +24,8 @@ GraphicDisplay::~GraphicDisplay() {}
 void GraphicDisplay::print() {
         // print messages
         xw->drawString(200, 17, "Welcome to Chess!");
-        xw->drawString(200, 34, "White Player:  0");
-        xw->drawString(200, 487, "Black Player:  0");
+        xw->drawString(200, 34, "Black Player:  0");
+        xw->drawString(200, 487, "White Player:  0");
         for(int i=0; i<8; i++){
         stringstream ss1, ss2;
             string message1, message2;
