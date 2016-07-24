@@ -734,3 +734,60 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	}
 	return false;
 }
+
+bool Board::isCheckmate(string colour) {
+	vector<shared_ptr<Piece>> pieces;
+	// collecting the same colour pieces and finding king
+	for(int r=0; r < 8; ++r) {
+		for(int c=0; c < 8; ++c) {
+			auto piece = checkState(r,c);
+			if (piece) {
+				if (piece->getColour() == colour) {
+					pieces.emplace_back(piece);
+				}
+			}
+		}
+	}
+
+	// check if there is a legal move that stops check
+	for(int i=0; i < pieces.size(); ++i) {
+		for (int r=0; r < 8; ++r) {
+			for(int c=0; c < 8; ++c) {
+				auto p = pieces.at(i);
+				if (canMove(p, r, c, colour) &&
+					!willBeChecked(p->getRow(), p->getCol(), r,c, colour)) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+bool Board::isSatlemate(string colour) {
+	vector<shared_ptr<Piece>> pieces;
+	// collecting the same colour pieces and finding king
+	for(int r=0; r < 8; ++r) {
+		for(int c=0; c < 8; ++c) {
+			auto piece = checkState(r,c);
+			if (piece) {
+				if (piece->getColour() == colour) {
+					pieces.emplace_back(piece);
+				}
+			}
+		}
+	}
+
+	// check if there is a legal move
+	for(int i=0; i < pieces.size(); ++i) {
+		for (int r=0; r < 8; ++r) {
+			for(int c=0; c < 8; ++c) {
+				auto p = pieces.at(i);
+				if (canMove(p, r, c, colour)) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;	
+}

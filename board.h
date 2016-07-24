@@ -59,6 +59,8 @@ class Board {
   std::shared_ptr<Piece> checkState(int r, int c);
   bool isPromo(int r, int c, int destr, int destc);
   bool willBeChecked(int r, int c, int dr, int dc, std::string colour);
+  bool isCheckmate(std::string colour);
+  bool isStalemate(std::string colour);
 };
 
 #endif
