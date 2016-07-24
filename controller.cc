@@ -136,7 +136,7 @@ void Controller::game() {
 				if (board.isCheckmate(currPlayer->getColour())) {
 					iv.checkmateMessage(currPlayer->getColour());
 					calculateScore(currPlayer->getColour() == "white" ? "black" : "white");
-					break;
+					throw 1;
 				} else iv.checkMessage(currPlayer->getColour());
 			}
 			if (board.isStalemate(currPlayer->getColour())) {
