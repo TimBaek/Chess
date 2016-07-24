@@ -474,7 +474,7 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	}
 	if (r != -1 && c != -1 && destr != -1 && destc != -1) {
 		// castling
-		if (vBoard[r,c]->getLetter() == 'k' || vBoard[r][c]->getLetter() == 'K') {
+		if (vBoard[r][c]->getLetter() == 'k' || vBoard[r][c]->getLetter() == 'K') {
 			if (destr == r && abs(destc - c) == 2) {
 				int rcol = c;
 				int jumpedCol = (c < destc? c +1 : c -1);
@@ -489,7 +489,7 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 		// EnPassant		
 		} else if (vBoard[r][c]->getLetter() == 'p' || vBoard[r][c]->getLetter() == 'P') {
 			if (abs(destr -r) == 1 && abs(destc -c) == 1 &&	vBoard[r][c] == nullptr) {
-				if (currPlayerColour == "white") vBoard[destr -1][destc] = nullptr;
+				if (colour == "white") vBoard[destr -1][destc] = nullptr;
 				else vBoard[destr +1][destc];
 			} 
 		}
@@ -501,7 +501,6 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 		krow = destr;
 		kcol = destc;
 	}
-	bool checked = false;
 	char enemyPawn = (colour == "white"? 'p' : 'P');
 	char enemyBishop = (colour == "white"? 'b' : 'B');
 	char enemyKnight = (colour == "white"? 'n' : 'N');
@@ -600,7 +599,8 @@ bool Board::isCheckmate(string colour) {
 	}
 
 	// check if there is a legal move that stops check
-	for(int i=0; i < pieces.size(); ++i) {
+	int len = pieces.size();
+	for(int i=0; i < len; ++i) {
 		for (int r=0; r < 8; ++r) {
 			for(int c=0; c < 8; ++c) {
 				auto p = pieces.at(i);
@@ -629,7 +629,8 @@ bool Board::isStalemate(string colour) {
 	}
 
 	// check if there is a legal move
-	for(int i=0; i < pieces.size(); ++i) {
+	int len = pieces.size();
+	for(int i=0; i < len; ++i) {
 		for (int r=0; r < 8; ++r) {
 			for(int c=0; c < 8; ++c) {
 				auto p = pieces.at(i);
