@@ -31,8 +31,8 @@ int Computer::getScore() {
 
 void Computer::nextMove(){
 	if(level==1) randomMove();
-	else if(level==2){ avoidCapture(); }
-	else if(level==3){ capturingMove(); }
+	else if(level==2){ if(capturingMove() ==0) randomMove(); }
+	else if(level==3){ if(capturingMove() == 0) avoidCapture(); }
 }
 
 void Computer::randomMove(){
@@ -122,7 +122,7 @@ void Computer::avoidCapture(){
 }
 
 
-void Computer::capturingMove(){
+int Computer::capturingMove(){
 	
 	string oppColour = getColour()=="black" ? "white" : "black";
 	int currPriority=0;
@@ -157,6 +157,7 @@ void Computer::capturingMove(){
 			}
 		}
 	}
+	return currPriority;
 	// if there is no possible capture, avoid being captured.
 	if(currPriority==0) avoidCapture();
 	char c1 = 'a' + currC;
