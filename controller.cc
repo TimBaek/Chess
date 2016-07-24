@@ -37,20 +37,7 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	if (currPlayer->getName() == "human") {
 		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer->getColour())) throw iv;
 	}
-	// Check if opponent is in check, chekmate, or stalemate
-	if (board.willBeChecked(r,c,destr,destc,currPlayer->getColour() == "white" ? "black" : "white")) {
-		if (board.isCheckmate(currPlayer->getColour() == "white" ? "black" : "white")) {
-			iv.checkmateMessage(currPlayer->getColour());
-			calculateScore(currPlayer->getColour(), 1);
-			throw 1;
-		} else iv.checkMessage(currPlayer->getColour());
-	}
-	if (board.isStalemate(currPlayer->getColour())) {
-		iv.stalemateMessage();
-		calculateScore("white", 0.5);
-		calculateScore("black", 0.5);
-		throw 1;
-	}
+	if (board.willBeChecked(r,c,destr,destc,currPlayer->getColour())) throw iv;
 
 	// Castling Move
 	if ((board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') &&
@@ -145,8 +132,24 @@ void Controller::game() {
 		while (1) {
 			cout << endl;
 			view->print();
-			iv.currPlayerMessage(currPlayer->getColour());
 			try {
+				// check if currentPlayer's king is in Check
+				if (board.isCheckmate(currPlayer->getColour())) {
+					iv.checkmateMessage(currPlayer->getColour());
+					calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
+					throw 1;
+				}
+				if (board.isStalemate(currPlayer->getColour())) {
+					iv.stalemateMessage(currPlayer->getColour());
+					calculateScore("white", 0.5);
+					calculateScore("black", 0.5);
+					throw 1;
+				}
+				if (board.isCheck(currPlayer->getColour())) {
+					iv.checkMessage(currPlayer->getColour());
+				}
+				iv.currPlayerMessage(currPlayer->getColour());
+
 				string cmd;
 				*in >> cmd;
 				if (cmd == "move") {
