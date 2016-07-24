@@ -442,54 +442,22 @@ bool Board::isPromo(int r, int c, int destr, int destc) {
 
 
 bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
-	vector<vector<shared_ptr<Piece>>> vBoard;
-	for(int i=0; i<8; i++){
-		vBoard.push_back(vector<shared_ptr<Piece>>(8));
-		for(int j=0; j<8; j++){
-			if(currStates[i][j] == nullptr) vBoard[i][j] = nullptr;
-			char letter = currStates[i][j]->getLetter();
-			if(letter < 'Z') letter = letter - 'A' +'a';
-			switch(c){
-				case 'k': vBoard[i][j] = make_shared<King>(this, i,j,currStates[i][j]->getColour()); break;
-				case 'q': vBoard[i][j] = make_shared<Queen>(this, i,j,currStates[i][j]->getColour()); break;
-				case 'r': vBoard[i][j] = make_shared<Rook>(this, i,j,currStates[i][j]->getColour()); break;
-				case 'b': vBoard[i][j] = make_shared<Bishop>(this, i,j,currStates[i][j]->getColour()); break;
-				case 'n': vBoard[i][j] = make_shared<Knight>(this, i,j,currStates[i][j]->getColour()); break;
-				case 'p': vBoard[i][j] = make_shared<Pawn>(this, i,j,currStates[i][j]->getColour());
-			}	
-		}
-	}
+	shared_ptr<Piece> tmp = currStates[destr][destc];
 	currStates[r][c]->move(destr,destc);
 	bool check = isCheck(colour);
-
-	currStates.clear();
-	for(int i=0; i<8; i++){
-		currStates.push_back(vector<shared_ptr<Piece>>(8));
-		for(int j=0; j<8; j++){
-			if(vBoard[i][j] == nullptr) currStates[i][j] = nullptr;
-			char letter = vBoard[i][j]->getLetter();
-			if(letter < 'Z') letter = letter - 'A' +'a';
-			switch(c){
-				case 'k': currStates[i][j] = make_shared<King>(this, i,j,vBoard[i][j]->getColour()); break;
-				case 'q': currStates[i][j] = make_shared<Queen>(this, i,j,vBoard[i][j]->getColour()); break;
-				case 'r': currStates[i][j] = make_shared<Rook>(this, i,j,vBoard[i][j]->getColour()); break;
-				case 'b': currStates[i][j] = make_shared<Bishop>(this, i,j,vBoard[i][j]->getColour()); break;
-				case 'n': currStates[i][j] = make_shared<Knight>(this, i,j,vBoard[i][j]->getColour()); break;
-				case 'p': currStates[i][j] = make_shared<Pawn>(this, i,j,vBoard[i][j]->getColour());
-			}	
-		}
-	}
+	currStates[r][c] = currStates[destr][destc];
+	currStates[destr][destc] = tmp;
 	return check;
-
 }
 
 
 bool Board::isCheck(string colour){
 	string oppColour = colour == "black" ? "white" : "black";
 	char king = colour == "black" ? 'k' : 'K';
-	int kr, kc;
+	int kr, kc;	
 	for(int i=0; i<8; i++){
 		for(int j=0; j<8; j++){
+			if(isEmpty(i,j)) continue;
 			if(currStates[i][j]->getLetter() == king){
 				kr = i;
 				kc = j;
