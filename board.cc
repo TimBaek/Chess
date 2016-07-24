@@ -470,7 +470,7 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 			}
 		}
 	}
-	if (r != -1 && c != -1 && destr != -1 && destc != -1) {
+	if (isValidRC(r,c) && isValidRC(destr,destc)) {
 		// castling
 		if (vBoard[r][c]->getLetter() == 'k' || vBoard[r][c]->getLetter() == 'K') {
 			if (destr == r && abs(destc - c) == 2) {
@@ -506,22 +506,22 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	char enemyKing = (colour == "white"? 'k' : 'K');
 
 	// up
-	for(int i=krow+1; i < 8; ++i) {
+	for(int i=krow+1; isValidRC(i,kcol); ++i) {
 		if (getLetter(i,kcol) == enemyRook || getLetter(i,kcol) == enemyQueen) return true;
 		if (vBoard[i][kcol] && vBoard[i][kcol]->getColour() == colour) break;
 	}
 	// down
-	for(int i=krow-1; i >= 0; --i) {
+	for(int i=krow-1; isValidRC(i,kcol); --i) {
 		if (getLetter(i,kcol) == enemyRook || getLetter(i,kcol) == enemyQueen) return true;
 		if (vBoard[i][kcol] && vBoard[i][kcol]->getColour() == colour) break;
 	}
 	// left
-	for(int i=kcol-1; i >= 0; --i) {
+	for(int i=kcol-1; isValidRC(krow,i); --i) {
 		if (getLetter(krow,i) == enemyRook || getLetter(krow,i) == enemyQueen) return true;
 		if (vBoard[krow][i] && vBoard[krow][i]->getColour() == colour) break;
 	}
 	// right
-	for(int i=kcol+1; i <8; ++i) {
+	for(int i=kcol+1; isValidRC(krow,i); ++i) {
 		if (getLetter(krow,i) == enemyRook || getLetter(krow,i) == enemyQueen) return true;
 		if (vBoard[krow][i] && vBoard[krow][i]->getColour() == colour) break;
 	}
@@ -564,7 +564,7 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	int ePawnRow = (colour == "white"? krow +1: krow -1);
 
 	// left pawn check
-	if ((isValidRC(ePawnRow, kcol +1) && getLetter(ePawnRow,kcol -1) == enemyPawn)) return true;
+	if ((isValidRC(ePawnRow, kcol -1) && getLetter(ePawnRow,kcol -1) == enemyPawn)) return true;
 	// right pawn check
 	if ((isValidRC(ePawnRow, kcol +1) && getLetter(ePawnRow,kcol +1) == enemyPawn)) return true;
 
