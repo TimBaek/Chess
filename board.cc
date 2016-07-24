@@ -419,6 +419,12 @@ void Board::castling(int r, int c, int destc) {
 	checkState(r,rcol)->move(r,jumpedCol);
 }
 
+
+bool isValidRC(int r, int c) {
+	return ((0 <= r && r <= 7) &&
+	        (0 <= c && c <= 7));
+}
+
 bool Board::isPromo(int r, int c, int destr, int destc) {
 	if (!isValidRC(r,c) || !isValidRC(destr,destc)) return false;
 	auto cp = checkState(r,c);
@@ -432,10 +438,6 @@ bool Board::isPromo(int r, int c, int destr, int destc) {
 	}
 } 
 
-bool isValidRC(int r, int c) {
-	return ((0 <= r && r <= 7) &&
-	        (0 <= c && c <= 7));
-}
 
 bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	vector<vector<shared_ptr<Piece>>> vBoard;
@@ -492,9 +494,10 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 				else vBoard[destr +1][destc];
 			} 
 		}
-		vBoard[destr][destc] = checkState(r,c);
+		vBoard[destr][destc] = vBoard[r][c];
 		vBoard[r][c] = nullptr;
 	}
+	
 	if (krow == r && kcol == c) {
 		krow = destr;
 		kcol = destc;
