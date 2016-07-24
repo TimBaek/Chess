@@ -44,9 +44,9 @@ void Controller::setNextPlayer() {
 	else currPlayer = wp;
 }
 
-void Controller::calculateScore(string colour) {
-	if (colour == "white") wp->addScore();
-	else bp->addScore();
+void Controller::calculateScore(string colour, double s) {
+	if (colour == "white") wp->addScore(s);
+	else bp->addScore(s);
 }
 
 void Controller::printScore() {
@@ -114,7 +114,6 @@ void Controller::init() {
 		if (currPlayerColour == "white") currPlayer = wp;
 		else currPlayer = bp;
 
-
 		//Board init
 		if (!customized) board.init();
 
@@ -130,21 +129,24 @@ void Controller::game() {
 		init();
 		iv.gameMessage(); //Start new game
 		while (1) {
-			cout << endl;
-			view->print();
-			if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
-				if (board.isCheckmate(currPlayer->getColour())) {
-					iv.checkmateMessage(currPlayer->getColour());
-					calculateScore(currPlayer->getColour() == "white" ? "black" : "white");
-					throw 1;
-				} else iv.checkMessage(currPlayer->getColour());
-			}
-			if (board.isStalemate(currPlayer->getColour())) {
-				iv.stalemateMessage();
-				//change scoring system
-			}
-			iv.currPlayerMessage(currPlayer->getColour());
 			try {
+				cout << endl;
+				view->print();
+				if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
+					if (board.isCheckmate(currPlayer->getColour())) {
+						iv.checkmateMessage(currPlayer->getColour());
+						calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
+						throw 1;
+					} else iv.checkMessage(currPlayer->getColour());
+				}
+				if (board.isStalemate(currPlayer->getColour())) {
+					iv.stalemateMessage();
+					calculateScore("white", 0.5);
+					calculateScore("black", 0.5);
+					throw 1;
+				}
+				iv.currPlayerMessage(currPlayer->getColour());
+
 				string cmd;
 				*in >> cmd;
 				if (cmd == "move") {
@@ -181,7 +183,7 @@ void Controller::game() {
 					}
 				} else if (cmd == "resign") {
 					iv.resignMessage(currPlayer->getColour());
-					calculateScore(currPlayer->getColour() == "white" ? "black" : "white");
+					calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
 					throw 1;
 				} else throw iv;
 

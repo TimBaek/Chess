@@ -3,9 +3,11 @@
 #include <string>
 
 class Player {
-	int score;
+	double score;
  public:
  	Player();
+ 	void addScore(const double& s);
+ 	double getScore();
  	virtual ~Player() = 0;
  	virtual std::string getColour() = 0;
  	virtual std::string getName() = 0;
@@ -14,8 +16,6 @@ class Player {
  	virtual int getDestR() = 0;
  	virtual int getDestC() = 0;
  	virtual void nextMove() = 0;
- 	virtual void addScore() = 0;
- 	virtual int getScore() = 0;
 };
 
 
