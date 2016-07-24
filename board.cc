@@ -506,6 +506,7 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	char enemyKnight = (colour == "white"? 'n' : 'N');
 	char enemyRook = (colour == "white"? 'r' : 'R');
 	char enemyQueen = (colour == "white"? 'q' : 'Q');
+	char enemyKing = (colour == "white"? 'k' : 'K');
 
 	// up
 	for(int i=krow+1; i < 8; ++i) {
