@@ -9,11 +9,49 @@ using namespace std;
 Controller::Controller(): in{&cin}, currPlayerColour{"white"}, board{this}, customized{false} {}
 Controller::~Controller() {}
 
+void Controller::setNextPlayer() {
+	if (currPlayer->getColour() == "white") currPlayer = bp;
+	else currPlayer = wp;
+}
+
+void Controller::calculateScore(string colour, double s) {
+	if (colour == "white") wp->addScore(s);
+	else bp->addScore(s);
+}
+
+void Controller::printScore() {
+	cout << endl;
+	cout << "Final score:" << endl;
+	cout << "White: " << wp->getScore() << endl;
+	cout << "Black: " << bp->getScore() << endl;
+	cout << endl;
+}
+
+void Controller::rebuild() {
+	board.init();
+	view->notify(&board);
+	currPlayer = wp;
+}
+
 void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	if (currPlayer->getName() == "human") {
-		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer->getColour()) || 
-			board.willBeChecked(r,c,destr,destc,currPlayer->getColour())) throw iv;	
+		if (!board.canMove(board.checkState(r,c), destr, destc, currPlayer->getColour())) throw iv;
 	}
+	// Check if opponent is in check, chekmate, or stalemate
+	if (board.willBeChecked(r,c,destr,destc,currPlayer->getColour() == "white" ? "black" : "white")) {
+		if (board.isCheckmate(currPlayer->getColour() == "white" ? "black" : "white")) {
+			iv.checkmateMessage(currPlayer->getColour());
+			calculateScore(currPlayer->getColour(), 1);
+			throw 1;
+		} else iv.checkMessage(currPlayer->getColour());
+	}
+	if (board.isStalemate(currPlayer->getColour())) {
+		iv.stalemateMessage();
+		calculateScore("white", 0.5);
+		calculateScore("black", 0.5);
+		throw 1;
+	}
+
 	// Castling Move
 	if ((board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') &&
 		!board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
@@ -37,30 +75,6 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 		board.setup_add(piece,destr,destc);
 	}
 	view->notify(&board);
-}
-
-void Controller::setNextPlayer() {
-	if (currPlayer->getColour() == "white") currPlayer = bp;
-	else currPlayer = wp;
-}
-
-void Controller::calculateScore(string colour, double s) {
-	if (colour == "white") wp->addScore(s);
-	else bp->addScore(s);
-}
-
-void Controller::printScore() {
-	cout << endl;
-	cout << "Final score:" << endl;
-	cout << "White: " << wp->getScore() << endl;
-	cout << "Black: " << bp->getScore() << endl;
-	cout << endl;
-}
-
-void Controller::rebuild() {
-	board.init();
-	view->notify(&board);
-	currPlayer = wp;
 }
 
 void Controller::setup() {
@@ -129,24 +143,10 @@ void Controller::game() {
 		init();
 		iv.gameMessage(); //Start new game
 		while (1) {
+			cout << endl;
+			view->print();
+			iv.currPlayerMessage(currPlayer->getColour());
 			try {
-				cout << endl;
-				view->print();
-				if (board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
-					if (board.isCheckmate(currPlayer->getColour())) {
-						iv.checkmateMessage(currPlayer->getColour());
-						calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
-						throw 1;
-					} else iv.checkMessage(currPlayer->getColour());
-				}
-				if (board.isStalemate(currPlayer->getColour())) {
-					iv.stalemateMessage();
-					calculateScore("white", 0.5);
-					calculateScore("black", 0.5);
-					throw 1;
-				}
-				iv.currPlayerMessage(currPlayer->getColour());
-
 				string cmd;
 				*in >> cmd;
 				if (cmd == "move") {
