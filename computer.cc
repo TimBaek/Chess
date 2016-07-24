@@ -44,6 +44,7 @@ void Computer::randomMove(){
 			for(int i=0; i<8; i++){
 				for(int j=0; j<8; j++){
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
+					if(b->willBeChecked(r,c,i,j, getColour())) continue;
 					coord1.push_back(Coordinates{r,c});
 					coord2.push_back(Coordinates{i,j});
 				}
@@ -73,7 +74,7 @@ void Computer::avoidCapture(){
 			for(int i=0; i<8; i++){
 				for(int j=0; j<8; j++){
 					if(b->checkState(i,j) == nullptr) continue;
-					if(!b->canMove(b->checkState(r,c), i, j, oppColour)) continue;
+					if(!b->canMove(b->checkState(r,c), i, j, oppColour)) continue;					
 					if(b->checkState(i,j)->getColour() != getColour()) continue;
 					char letter = b->checkState(i,j)->getLetter();
 					letter = letter < 'Z' ? letter + 'a' - 'A' : letter;
@@ -91,6 +92,7 @@ void Computer::avoidCapture(){
 					for(int x=0; x<8; x++){
 						if(movable) break;
 						for(int y=0; y<8; y++){
+							if(b->willBeChecked(i,j,x,y, getColour())) continue;
 							if(b->canMove(b->checkState(i,j),x,y, getColour())){
 								r2=x;
 								c2=y;
@@ -132,6 +134,7 @@ void Computer::capturingMove(){
 				for(int j=0; j<8; j++){
 					if(b->checkState(i,j) == nullptr) continue;
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
+					if(b->willBeChecked(r,c,i,j, getColour())) continue;
 					if(b->checkState(i,j)->getColour() != oppColour) continue;
 					char letter = b->checkState(i,j)->getLetter();
 					letter = letter < 'Z' ? letter + 'a' - 'A' : letter;
