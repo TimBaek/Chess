@@ -420,6 +420,7 @@ void Board::castling(int r, int c, int destc) {
 }
 
 bool Board::isPromo(int r, int c, int destr, int destc) {
+	if (!isValidRC(r,c) || !isValidRC(destr,destc)) return false;
 	auto cp = checkState(r,c);
 	auto dp = checkState(destr, destc);
 	if (cp && !dp && 
