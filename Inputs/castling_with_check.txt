@@ -2,6 +2,7 @@ td
 setup
 + K e1
 + k e8
++ r c8
 + R a1
 done
 game human human
