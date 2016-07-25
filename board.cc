@@ -476,11 +476,11 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 	else if (checkState(r,c)->getLetter() == 'p' || checkState(r,c)->getLetter() == 'P') {
 		if (abs(destr -r) == 1 && abs(destc -c) == 1 &&
 			isEmpty(destr,destc)) {
-			if (currPlayer->getColour() == "white") setup_delete(destr -1,destc);
+			if (colour == "white") setup_delete(destr -1,destc);
 			else setup_delete(destr +1, destc);
 		} 
 	}
-	offEnPassant(currPlayer->getColour());
+	offEnPassant(colour);
 
 
  	currStates[r][c]->move(destr,destc);
