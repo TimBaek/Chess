@@ -28,6 +28,7 @@ void Controller::printScore() {
 }
 
 void Controller::printMoves(vector<string> allMoves) {
+	cout << "History of Moves: ";
 	for (int i = 0; i < allMoves.size(); i++) {
 		cout << allMoves[i] << " ";
 	}
@@ -196,6 +197,7 @@ void Controller::game() {
 							notify(r,c,destr,destc,piece);
 						}
 					}
+					setNextPlayer();
 				} else if (cmd == "resign") {
 					allMoves.emplace_back(cmd);
 					iv.resignMessage(currPlayer->getColour());
@@ -206,13 +208,11 @@ void Controller::game() {
 					char r,c;
 					*in >> c >> r;
 					if (!iv.isValid(r,c)) throw iv;
-					cout << board.showPossibleMoves(r-'0'-1, c-'a') << endl;
+					cout << "Possible Moves are: "<< board.showPossibleMoves(r-'0'-1, c-'a') << endl;
 				} else if (cmd == "print") {
 					printMoves(allMoves);
 					allMoves.emplace_back(cmd);
 				}else throw iv;
-
-				setNextPlayer();
 			} catch (int e) {
 				string ans;
 				iv.regameMessage();
