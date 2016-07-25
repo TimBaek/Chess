@@ -569,3 +569,21 @@ bool Board::noLegalMove(string colour) {
 	return legal;
 }
 
+
+
+string Board::showPossibleMoves(int r, int c){
+	string output = "";
+	if(isEmpty(r,c)) return output;
+	for(int i=0; i<8; i++){
+		for(int j=0; j<8; j++){
+			if(!canMove(currStates[r][c],i,j,currStates[r][c]->getColour())) continue;
+			if(output!="") output += " ";
+			char letter = 'a' + j;
+			string num = to_string(i+1);
+			output += letter + num;
+		}
+	}
+	return output;
+}
+
+
