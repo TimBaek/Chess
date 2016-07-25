@@ -61,6 +61,7 @@ class Board {
   bool willBeChecked(int r, int c, int dr, int dc, std::string colour);
   bool isCheck(std::string colour);
   bool noLegalMove(std::string colour);
+  std::string showPossibleMoves(int r, int c);
 };
 
 #endif
