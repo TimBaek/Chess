@@ -40,8 +40,7 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 	if (board.willBeChecked(r,c,destr,destc,currPlayer->getColour())) throw iv;
 
 	// Castling Move
-	if ((board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') &&
-		!board.willBeChecked(-1,-1,-1,-1,currPlayer->getColour())) {
+	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
 		if (destr == r && abs(destc - c) == 2) {
 			board.castling(r,c,destc);	
 		} 

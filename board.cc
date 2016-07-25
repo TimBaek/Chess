@@ -442,16 +442,6 @@ bool Board::isPromo(int r, int c, int destr, int destc) {
 
 
 bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
-/*
-cout << "willBeChecked called" << endl;	
-cout << "****************************" << endl;
-	for(int i=0; i<8; i++){
-		for(int j=0;j<8; j++){
-			if(isEmpty(i,j)) cout << " " ;
-			else cout << currStates[i][j]->getLetter(); }
-			cout << endl;
-	}
-cout << "****************************" << endl << endl;	*/
 
 	vector<vector<shared_ptr<Piece>>> vBoard;
 	for(int i=0; i<8; i++){
@@ -477,16 +467,6 @@ cout << "****************************" << endl << endl;	*/
  	}
  	currStates[r][c]->move(destr,destc);
   	bool check = isCheck(colour);
-/*
-cout << "*********** 222222 *****************" << endl;
-	for(int i=0; i<8; i++){
-		for(int j=0;j<8; j++){
-			if(isEmpty(i,j)) cout << " " ;
-			else cout << currStates[i][j]->getLetter(); }
-			cout << endl;
-	}
-cout << "****************************" << endl << endl;	
-*/
  	currStates.clear();
  	for(int i=0; i<8; i++){
 		currStates.push_back(vector<shared_ptr<Piece>>(8));
@@ -509,16 +489,7 @@ cout << "****************************" << endl << endl;
  			}	
  		}
  	}
-/*
-cout << "************* 33333333 ***************" << endl;
-	for(int i=0; i<8; i++){
-		for(int j=0;j<8; j++){
-			if(isEmpty(i,j)) cout << " " ;
-			else cout << currStates[i][j]->getLetter(); }
-			cout << endl;
-	}
-cout << "****************************" << endl << endl;	
-*/
+
  	return check;
  }
 
@@ -568,6 +539,7 @@ bool Board::isCheckmate(string colour) {
 			for(int desti=0; desti<8; desti++){
 				if(!checkmate) break;
 				for(int destj=0; destj<8; destj++){
+					if(!canMove(currStates[i][j],desti,destj, colour)) continue;
 					if(!willBeChecked(i,j,desti,destj,colour)){
 						checkmate = false;
 						break;
