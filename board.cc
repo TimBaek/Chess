@@ -528,47 +528,26 @@ bool Board::isCheck(string colour){
 
 
 
-bool Board::isCheckmate(string colour) {
-	bool checkmate = true;
+bool Board::noLegalMove(string colour) {
+	bool legal = true;
 	for(int i=0; i<8; i++){
-		if(!checkmate) break;
+		if(!legal) break;
 		for(int j=0; j<8; j++){
-			if(!checkmate) break;
+			if(!legal) break;
 			if(isEmpty(i,j)) continue;
 			if(currStates[i][j]->getColour() != colour) continue;
 			for(int desti=0; desti<8; desti++){
-				if(!checkmate) break;
+				if(!legal) break;
 				for(int destj=0; destj<8; destj++){
 					if(!canMove(currStates[i][j],desti,destj, colour)) continue;
 					if(!willBeChecked(i,j,desti,destj,colour)){
-						checkmate = false;
+						legal = false;
 						break;
 					}
 				}
 			}
 		}
 	}
-	return checkmate;
+	return legal;
 }
 
-bool Board::isStalemate(string colour) {
-	bool stalemate = true;
-	for(int i=0; i<8; i++){
-		if(!stalemate) break;
-		for(int j=0; j<8; j++){
-			if(!stalemate) break;
-			if(isEmpty(i,j)) continue;
-			if(currStates[i][j]->getColour() != colour) continue;
-			for(int desti=0; desti<8; desti++){
-				if(!stalemate) break;
-				for(int destj=0; destj<8; destj++){
-					if(canMove(currStates[i][j], desti, destj, colour)){
-						stalemate = false;
-						break;
-					}
-				}
-			}
-		}
-	}
-	return stalemate;	
-}
