@@ -60,8 +60,7 @@ class Board {
   bool isPromo(int r, int c, int destr, int destc);
   bool willBeChecked(int r, int c, int dr, int dc, std::string colour);
   bool isCheck(std::string colour);
-  bool isCheckmate(std::string colour);
-  bool isStalemate(std::string colour);
+  bool noLegalMove(std::string colour);
 };
 
 #endif
