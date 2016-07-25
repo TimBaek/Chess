@@ -140,7 +140,6 @@ void Computer::avoidCapture(){
 
 
 int Computer::capturingMove(){
-	
 	string oppColour = getColour()=="black" ? "white" : "black";
 	int currPriority=0;
 	for(int r=0; r<8; r++){
@@ -152,14 +151,14 @@ int Computer::capturingMove(){
 			for(int i=0; i<8; i++){
 				if(currPriority==6) break;
 				for(int j=0; j<8; j++){
-					if(!(b->willBeChecked(r,c,i,j,oppColour))){
-						currPriority = 6;
-						break;
-					}
 					if(b->checkState(i,j) == nullptr) continue;
 					if(!b->canMove(b->checkState(r,c), i, j, getColour())) continue;
 					if(b->willBeChecked(r,c,i,j, getColour())) continue;
 					if(b->checkState(i,j)->getColour() != oppColour) continue;
+					if(b->willBeChecked(r,c,i,j,oppColour)){
+						currPriority = 6;
+						break;
+					}
 					char letter = b->checkState(i,j)->getLetter();
 					letter = letter < 'Z' ? letter + 'a' - 'A' : letter;
 					int priority;
@@ -180,6 +179,7 @@ int Computer::capturingMove(){
 			}
 		}
 	}
+	cout << "currPriority is " << currPriority << endl;
 	return currPriority;
 	// if there is no possible capture, avoid being captured.
 	if(currPriority==0) avoidCapture();
