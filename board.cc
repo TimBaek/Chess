@@ -442,13 +442,85 @@ bool Board::isPromo(int r, int c, int destr, int destc) {
 
 
 bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
-	shared_ptr<Piece> tmp = currStates[destr][destc];
-	currStates[r][c]->move(destr,destc);
-	bool check = isCheck(colour);
-	currStates[r][c] = currStates[destr][destc];
-	currStates[destr][destc] = tmp;
-	return check;
-}
+/*
+cout << "willBeChecked called" << endl;	
+cout << "****************************" << endl;
+	for(int i=0; i<8; i++){
+		for(int j=0;j<8; j++){
+			if(isEmpty(i,j)) cout << " " ;
+			else cout << currStates[i][j]->getLetter(); }
+			cout << endl;
+	}
+cout << "****************************" << endl << endl;	*/
+
+	vector<vector<shared_ptr<Piece>>> vBoard;
+	for(int i=0; i<8; i++){
+		vBoard.push_back(vector<shared_ptr<Piece>>(8));
+		for(int j=0; j<8; j++){
+			vBoard[i][j] = nullptr;
+		}
+	}
+ 	for(int i=0; i<8; i++){
+ 		for(int j=0; j<8; j++){
+			if(currStates[i][j] == nullptr) continue;
+			char letter = currStates[i][j]->getLetter();
+			if(letter < 'Z') letter = letter - 'A' +'a';
+			switch(letter){
+ 				case 'k': vBoard[i][j] = make_shared<King>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'q': vBoard[i][j] = make_shared<Queen>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'r': vBoard[i][j] = make_shared<Rook>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'b': vBoard[i][j] = make_shared<Bishop>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'n': vBoard[i][j] = make_shared<Knight>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'p': vBoard[i][j] = make_shared<Pawn>(this, i,j,currStates[i][j]->getColour());
+ 			}	
+ 		}
+ 	}
+ 	currStates[r][c]->move(destr,destc);
+  	bool check = isCheck(colour);
+/*
+cout << "*********** 222222 *****************" << endl;
+	for(int i=0; i<8; i++){
+		for(int j=0;j<8; j++){
+			if(isEmpty(i,j)) cout << " " ;
+			else cout << currStates[i][j]->getLetter(); }
+			cout << endl;
+	}
+cout << "****************************" << endl << endl;	
+*/
+ 	currStates.clear();
+ 	for(int i=0; i<8; i++){
+		currStates.push_back(vector<shared_ptr<Piece>>(8));
+		for(int j=0; j<8; j++){
+			currStates[i][j] = nullptr;
+		}
+	}
+ 	for(int i=0; i<8; i++){
+		for(int j=0; j<8; j++){
+			if(vBoard[i][j] == nullptr) continue;
+ 			char letter = vBoard[i][j]->getLetter();
+ 			if(letter < 'Z') letter = letter - 'A' +'a';
+ 			switch(letter){
+ 				case 'k': currStates[i][j] = make_shared<King>(this, i,j,vBoard[i][j]->getColour()); break;
+				case 'q': currStates[i][j] = make_shared<Queen>(this, i,j,vBoard[i][j]->getColour()); break;
+ 				case 'r': currStates[i][j] = make_shared<Rook>(this, i,j,vBoard[i][j]->getColour()); break;
+ 				case 'b': currStates[i][j] = make_shared<Bishop>(this, i,j,vBoard[i][j]->getColour()); break;
+ 				case 'n': currStates[i][j] = make_shared<Knight>(this, i,j,vBoard[i][j]->getColour()); break;
+ 				case 'p': currStates[i][j] = make_shared<Pawn>(this, i,j,vBoard[i][j]->getColour());
+ 			}	
+ 		}
+ 	}
+/*
+cout << "************* 33333333 ***************" << endl;
+	for(int i=0; i<8; i++){
+		for(int j=0;j<8; j++){
+			if(isEmpty(i,j)) cout << " " ;
+			else cout << currStates[i][j]->getLetter(); }
+			cout << endl;
+	}
+cout << "****************************" << endl << endl;	
+*/
+ 	return check;
+ }
 
 
 bool Board::isCheck(string colour){
@@ -466,10 +538,13 @@ bool Board::isCheck(string colour){
 	}
 	bool check =false;
 	for(int i=0; i<8; i++){
-		if(!check) break;
+		if(check) break;
 		for(int j=0; j<8; j++){
-			if(isEmpty(i,j)) continue;
-			if(currStates[i][j]->getColour() != oppColour) continue;
+			if(isEmpty(i,j)) {
+				continue;
+			}
+			if(currStates[i][j]->getColour() != oppColour){ 
+				continue; }
 			if(canMove(currStates[i][j], kr, kc, oppColour)){
 				check = true;
 				break;
