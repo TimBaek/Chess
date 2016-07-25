@@ -465,6 +465,24 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
  			}	
  		}
  	}
+
+ 	// Castling Move
+	if (board.checkState(r,c)->getLetter() == 'k' || board.checkState(r,c)->getLetter() == 'K') {
+		if (destr == r && abs(destc - c) == 2) {
+			board.castling(r,c,destc);	
+		} 
+	}
+	// EnPassant Move
+	else if (board.checkState(r,c)->getLetter() == 'p' || board.checkState(r,c)->getLetter() == 'P') {
+		if (abs(destr -r) == 1 && abs(destc -c) == 1 &&
+			board.isEmpty(destr,destc)) {
+			if (currPlayer->getColour() == "white") board.setup_delete(destr -1,destc);
+			else board.setup_delete(destr +1, destc);
+		} 
+	}
+	board.offEnPassant(currPlayer->getColour());
+
+
  	currStates[r][c]->move(destr,destc);
   	bool check = isCheck(colour);
  	currStates.clear();
