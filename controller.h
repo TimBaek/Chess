@@ -28,7 +28,7 @@ class Controller {
  	void calculateScore(std::string colour, double s);
  	void rebuild();
  	void printScore();
- 	void printMoves();
+ 	void printMoves(std::vector<std::string> allmoves);
  public:
  	Controller();
  	~Controller();

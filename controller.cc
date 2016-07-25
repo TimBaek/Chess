@@ -206,7 +206,7 @@ void Controller::game() {
 					char r,c;
 					*in >> c >> r;
 					if (!iv.isValid(r,c)) throw iv;
-					cout << board.showPossibleMove(r-'0'-1, c-'a') << endl;
+					cout << board.showPossibleMoves(r-'0'-1, c-'a') << endl;
 				} else if (cmd == "print") {
 					printMoves(allMoves);
 					allMoves.emplace_back(cmd);
