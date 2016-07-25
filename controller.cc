@@ -133,19 +133,24 @@ void Controller::game() {
 			view->print();
 			try {
 				// check if currentPlayer's king is in Check
-				if (board.isCheckmate(currPlayer->getColour())) {
-					iv.checkmateMessage(currPlayer->getColour());
-					calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
-					throw 1;
-				}
-				if (board.isStalemate(currPlayer->getColour())) {
-					iv.stalemateMessage();
-					calculateScore("white", 0.5);
-					calculateScore("black", 0.5);
-					throw 1;
-				}
+
 				if (board.isCheck(currPlayer->getColour())) {
-					iv.checkMessage(currPlayer->getColour());
+					if (board.isCheckmate(currPlayer->getColour())) {
+						iv.checkmateMessage(currPlayer->getColour());
+						calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
+						throw 1;
+					}
+					else{
+						iv.checkMessage(currPlayer->getColour());
+					}
+				}
+				else{
+					if (board.isStalemate(currPlayer->getColour())) {
+						iv.stalemateMessage();
+						calculateScore("white", 0.5);
+						calculateScore("black", 0.5);
+						throw 1;
+					}
 				}
 				iv.currPlayerMessage(currPlayer->getColour());
 
