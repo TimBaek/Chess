@@ -58,7 +58,7 @@ void InputValidation::errorMessage() const {
 
 void InputValidation::gameMessage() const {
 	cout << endl;
-	cout << "Human Avaliable Commands: [ move cord cord ] [ move cord cord piece ] [ resign ]" << endl;
+	cout << "Human Avaliable Commands: [ move cord cord ] [ move cord cord piece ] [ resign ] [ show cord ] [ print ]" << endl;
 	cout << "Computer Avaliable Commands: [ move ] [ resign ]" << endl;
 }
 

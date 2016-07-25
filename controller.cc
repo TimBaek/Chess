@@ -27,6 +27,12 @@ void Controller::printScore() {
 	cout << endl;
 }
 
+void Controller::printMoves(vector<string> allMoves) {
+	for (int i = 0; i < allMoves.size(); i++) {
+		cout << allMoves[i] << " ";
+	}
+	cout << endl;
+}
 void Controller::rebuild() {
 	board.init();
 	view->notify(&board);
@@ -128,6 +134,7 @@ void Controller::game() {
 	try {
 		init();
 		iv.gameMessage(); //Start new game
+		vector<string> allMoves;
 		while (1) {
 			cout << endl;
 			view->print();
@@ -156,6 +163,7 @@ void Controller::game() {
 				string cmd;
 				*in >> cmd;
 				if (cmd == "move") {
+					allMoves.emplace_back(cmd);
 					string move;
 					getline(*in,move);
 					vector<string> cord;
@@ -169,6 +177,7 @@ void Controller::game() {
 						while(iss >> tmp) cord.emplace_back(tmp);
 						if (cord.size() != 3 && cord.size() != 2) throw iv;
 						else {
+							for (int i = 0; i < cord.size(); i++) allMoves.emplace_back(cord[i]);
 							int r,c,destr,destc;
 							char piece = ' ';
 							if (cord.size() == 2) {
@@ -188,10 +197,20 @@ void Controller::game() {
 						}
 					}
 				} else if (cmd == "resign") {
+					allMoves.emplace_back(cmd);
 					iv.resignMessage(currPlayer->getColour());
 					calculateScore((currPlayer->getColour() == "white" ? "black" : "white"), 1);
 					throw 1;
-				} else throw iv;
+				} else if (cmd == "show") {
+					allMoves.emplace_back(cmd);
+					char r,c;
+					*in >> c >> r;
+					if (!iv.isValid(r,c)) throw iv;
+					cout << board.showPossibleMove(r-'0'-1, c-'a') << endl;
+				} else if (cmd == "print") {
+					printMoves(allMoves);
+					allMoves.emplace_back(cmd);
+				}else throw iv;
 
 				setNextPlayer();
 			} catch (int e) {
