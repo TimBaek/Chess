@@ -179,12 +179,7 @@ int Computer::capturingMove(){
 			}
 		}
 	}
-	cout << "currPriority is " << currPriority << endl;
 	return currPriority;
-	// if there is no possible capture, avoid being captured.
-	if(currPriority==0) avoidCapture();
-	char c1 = 'a' + currC;
-	char c2 = 'a' + destC;
 }
 
 
