@@ -1,0 +1,9 @@
+td
+setup
++ k f8
++ P f7
++ K f6
+= black
+done
+game human human 
+n

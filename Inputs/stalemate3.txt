@@ -1,0 +1,9 @@
+td
+setup
++ k a1
++ K c3
++ R b2
+= black
+done
+game human human
+n

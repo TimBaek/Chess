@@ -1,0 +1,9 @@
+td
+setup
++ k f1
++ K h1
++ n f2
++ P h2
+done
+game human human
+n
