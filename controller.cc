@@ -197,6 +197,7 @@ void Controller::game() {
 							notify(r,c,destr,destc,piece);
 						}
 					}
+					allMoves.emplace_back("/");
 					setNextPlayer();
 				} else if (cmd == "resign") {
 					allMoves.emplace_back(cmd);
@@ -209,9 +210,15 @@ void Controller::game() {
 					*in >> c >> r;
 					if (!iv.isValid(r,c)) throw iv;
 					cout << "Possible Moves are: "<< board.showPossibleMoves(r-'0'-1, c-'a') << endl;
+					string s = "";
+					s += c;
+					s += r;
+					allMoves.emplace_back(s);
+					allMoves.emplace_back("/");
 				} else if (cmd == "print") {
 					printMoves(allMoves);
 					allMoves.emplace_back(cmd);
+					allMoves.emplace_back("/");
 				}else throw iv;
 			} catch (int e) {
 				string ans;
