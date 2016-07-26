@@ -7,6 +7,7 @@
 #include "textdisplay.h"
 #include "graphicdisplay.h"
 
+
 class Controller;
 class Human;
 class Computer;
@@ -18,8 +19,6 @@ class Bishop;
 class Pawn;
 
 class Board {
-  //std::vector<Piece> P1;
-  //std::vector<Piece> P2;
   Controller *ctrl; // The Controller
   std::shared_ptr<Player> wp, bp;
   std::vector<std::vector<std::shared_ptr<Piece>>> currStates;  // current state of the board
@@ -31,7 +30,6 @@ class Board {
   Board(Controller *ctrl);
   ~Board();
   
-  //void notifyTd(TextDisplay *td);
   void notify(int r, int c, Piece &p);
 
   bool isThere(Piece &p, int r, int c);
@@ -44,8 +42,6 @@ class Board {
   bool canMoveN(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
   bool canMoveB(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
   bool canMoveP(std::shared_ptr<Piece> p, int destr, int destc, std::string col);
-  //TextDisplay &getTd() const;
-  //void init(std::shared_ptr<Player> player1, std::shared_ptr<Player> player2);
   void init();
   void setPlayers(std::shared_ptr<Player> w, std::shared_ptr<Player> b);
   void setup();

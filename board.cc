@@ -379,18 +379,6 @@ bool Board::canMoveP(shared_ptr<Piece> p, int destr, int destc, string col) {
 		if (p->everMoved() == false &&
 			checkState(crow +one, ccol) == nullptr &&
 			checkState(crow +two, ccol) == nullptr) {
-			if (ccol -1 >= 0) {
-				auto left = dynamic_pointer_cast<Pawn>(checkState(destr,ccol-1));
-				if (left && left->getLetter() == enemyPawn) {
-					left->setEnPassant(true);
-				}
-			}
-			if (ccol +1 <= 7.) {
-				auto right = dynamic_pointer_cast<Pawn>(checkState(destr,ccol+1));
-				if (right && right->getLetter() == enemyPawn) {
-					right->setEnPassant(true);
-				}
-			}
 			return true;	
 		} else {
 			return false;

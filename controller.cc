@@ -5,6 +5,8 @@
 using namespace std;
 
 #include "controller.h"
+#include "pawn.h"
+#include "piece.h"
 
 Controller::Controller(): in{&cin}, currPlayerColour{"white"}, board{this}, customized{false} {}
 Controller::~Controller() {}
@@ -59,7 +61,22 @@ void Controller::notify(int r, int c, int destr, int destc, char piece) {
 			if (currPlayer->getColour() == "white") board.setup_delete(destr -1,destc);
 			else board.setup_delete(destr +1, destc);
 		} 
-	}
+		// setting EnPassant field on if double step move occurs
+		else if (abs(destr -r) == 2) {
+			if (destc -1 >= 0) {
+				auto left = dynamic_pointer_cast<Pawn>(board.checkState(destr,destc-1));
+				if (left && left->getLetter() == (currPlayer->getColour() == "white"? 'p':'P')) {
+					left->setEnPassant(true);
+				}
+			}
+			if (destc +1 <= 7) {
+				auto right = dynamic_pointer_cast<Pawn>(board.checkState(destr,destc+1));
+				if (right && right->getLetter() == (currPlayer->getColour() == "white"? 'p':'P')) {
+					right->setEnPassant(true);
+				}
+			}
+		}
+	} 
 	board.offEnPassant(currPlayer->getColour());
 	board.checkState(r,c)->move(destr,destc); // Regular Move
 
@@ -209,8 +226,7 @@ void Controller::game() {
 					char r,c;
 					*in >> c >> r;
 					if (!iv.isValid(r,c)) throw iv;
-					if(board.showPossibleMoves(r-'0'-1, c-'a')==""){ cout << "There are no possible moves!" << endl; }
-					else{ cout << "Possible Moves are: "<< board.showPossibleMoves(r-'0'-1, c-'a') << endl; }
+					cout << "Possible Moves are: "<< board.showPossibleMoves(r-'0'-1, c-'a') << endl;
 					string s = "";
 					s += c;
 					s += r;
