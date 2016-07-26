@@ -17,7 +17,7 @@ class Piece {
   virtual ~Piece();
   void notifyBoard(int dr, int dc);
   void move(int dr, int dc);
-  bool everMoved();
+  bool everMoved() const;
   int getRow() const;
   int getCol() const;
   virtual char getLetter()=0;

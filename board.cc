@@ -455,13 +455,15 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 			if(currStates[i][j] == nullptr) continue;
 			char letter = currStates[i][j]->getLetter();
 			if(letter < 'Z') letter = letter - 'A' +'a';
+			bool move = currStates[i][j]->everMoved();
 			switch(letter){
- 				case 'k': vBoard[i][j] = make_shared<King>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'k': vBoard[i][j] = make_shared<King>(this, i,j,currStates[i][j]->getColour(),move); break;
  				case 'q': vBoard[i][j] = make_shared<Queen>(this, i,j,currStates[i][j]->getColour()); break;
- 				case 'r': vBoard[i][j] = make_shared<Rook>(this, i,j,currStates[i][j]->getColour()); break;
+ 				case 'r': vBoard[i][j] = make_shared<Rook>(this, i,j,currStates[i][j]->getColour(),move); break;
  				case 'b': vBoard[i][j] = make_shared<Bishop>(this, i,j,currStates[i][j]->getColour()); break;
  				case 'n': vBoard[i][j] = make_shared<Knight>(this, i,j,currStates[i][j]->getColour()); break;
- 				case 'p': vBoard[i][j] = make_shared<Pawn>(this, i,j,currStates[i][j]->getColour());
+ 				case 'p': vBoard[i][j] = make_shared<Pawn>(this, i,j,currStates[i][j]->getColour(), move, 
+ 					dynamic_pointer_cast<Pawn>(currStates[i][j])->canEnPassant());
  			}	
  		}
  	}
@@ -497,13 +499,15 @@ bool Board::willBeChecked(int r, int c, int destr, int destc, string colour) {
 			if(vBoard[i][j] == nullptr) continue;
  			char letter = vBoard[i][j]->getLetter();
  			if(letter < 'Z') letter = letter - 'A' +'a';
+ 			bool move = vBoard[i][j]->everMoved();
  			switch(letter){
- 				case 'k': currStates[i][j] = make_shared<King>(this, i,j,vBoard[i][j]->getColour()); break;
+ 				case 'k': currStates[i][j] = make_shared<King>(this, i,j,vBoard[i][j]->getColour(), move); break;
 				case 'q': currStates[i][j] = make_shared<Queen>(this, i,j,vBoard[i][j]->getColour()); break;
- 				case 'r': currStates[i][j] = make_shared<Rook>(this, i,j,vBoard[i][j]->getColour()); break;
+ 				case 'r': currStates[i][j] = make_shared<Rook>(this, i,j,vBoard[i][j]->getColour(), move); break;
  				case 'b': currStates[i][j] = make_shared<Bishop>(this, i,j,vBoard[i][j]->getColour()); break;
  				case 'n': currStates[i][j] = make_shared<Knight>(this, i,j,vBoard[i][j]->getColour()); break;
- 				case 'p': currStates[i][j] = make_shared<Pawn>(this, i,j,vBoard[i][j]->getColour());
+ 				case 'p': currStates[i][j] = make_shared<Pawn>(this, i,j,vBoard[i][j]->getColour(), move, 
+ 					dynamic_pointer_cast<Pawn>(vBoard[i][j])->canEnPassant());
  			}	
  		}
  	}

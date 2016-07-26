@@ -209,7 +209,8 @@ void Controller::game() {
 					char r,c;
 					*in >> c >> r;
 					if (!iv.isValid(r,c)) throw iv;
-					cout << "Possible Moves are: "<< board.showPossibleMoves(r-'0'-1, c-'a') << endl;
+					if(board.showPossibleMoves(r-'0'-1, c-'a')==""){ cout << "There are no possible moves!" << endl; }
+					else{ cout << "Possible Moves are: "<< board.showPossibleMoves(r-'0'-1, c-'a') << endl; }
 					string s = "";
 					s += c;
 					s += r;

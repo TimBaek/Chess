@@ -14,7 +14,7 @@ void Piece::move(int dr, int dc) {
   moved = true;
 }
 
-bool Piece::everMoved() {
+bool Piece::everMoved() const {
   return moved;
 }
 
