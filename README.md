@@ -1,2 +1,2 @@
 # Chess
-CS246 Group Project
+Strategic traditional chess game with A.I options.
